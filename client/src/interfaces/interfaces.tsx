@@ -16,5 +16,5 @@ export interface marker {
     title: string,
     subtitle?: string,
     text?: string,
-    center:  {latitude: number, longitude: number };
+    center:  {latitude: number, longitude: number },
 }

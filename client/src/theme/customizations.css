@@ -1,0 +1,22 @@
+@media (orientation: landscape) {
+    .postModal {
+        --min-width: 80vw;
+        --min-height : 80vh;
+    }
+
+    div.alert-wrapper {
+        --min-width: 500px;
+        --max-width: 100vw
+    }
+}
+
+@media (orientation: portrait) {
+    .postModal {
+        --min-width: 94vw;
+        --min-height : 94vh;
+    }
+
+    div.alert-wrapper {
+        --min-width: 100vw;
+    }
+}

@@ -19,8 +19,8 @@ const Tab1: React.FC = () => {
 					response.data.map((post)=>{
 						auxMarkers.push({
 							title: post.content.title,
-							center: new Microsoft.Maps.Location(parseFloat(post.ubication.lat), parseFloat(post.ubication.lon)),
-							text: `${post.content.description.slice(0,75)}...`
+							center: {latitude: parseFloat(post.ubication.lat),longitude: parseFloat(post.ubication.lon)},
+							text: `${post.content.description.slice(0,75)}...`,
 						});
 						return null;
 					});

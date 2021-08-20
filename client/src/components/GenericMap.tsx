@@ -12,7 +12,7 @@ interface genericMap{
     mapTypeId?: "grayscale" | "canvaLight" | "canvaDark"
 }
 
-export const GenericMap: React.FC<genericMap> = (props) => {
+export const GenericMap: React.FC<genericMap> = (props:genericMap) => {
     // Este hook sera actualizado a true, cuando el mapa haya concluido su carga.
     const [mapIsReady, setMapIsReady] = useState<boolean>(false)
     // Manejamos el hight y width localmente.
@@ -33,7 +33,7 @@ export const GenericMap: React.FC<genericMap> = (props) => {
             <ReactBingmaps
                 onMapReady={()=>(console.log('ready'), renderMap())}
                 bingMapsKey={API_KEY_BINGMAPS}
-                pushPinsWithInfoboxes={props.markers}
+                pushPins={props.markers}
                 height={props.height ? props.height : '100%'}
                 width={props.width ? props.width : '100%'}
                 mapOptions={{
