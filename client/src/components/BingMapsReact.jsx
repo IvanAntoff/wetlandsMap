@@ -10,10 +10,52 @@ export default function BingMapsReact({
   pushPinsWithInfoboxes,
   viewOptions,
   width,
+  mapEventsHandlers,
+  getLocationOnClick
 }) {
   // refs
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const onClickLocationSetter = useRef(null);
+
+  // onClickLocation handler
+  function addOnClickHanlder(map ,event, valueSetter) {
+    if (event.targetType === "map") {
+      let pixelClicked = new window.Microsoft.Maps.Point(event.getX(), event.getY());
+      let pixToLocation = map.tryPixelToLocation(pixelClicked);
+      valueSetter(pixToLocation);
+    }
+  }
+
+  // get location
+  function getLocationClicked (map, valueSetter) {
+    try{
+      if (map && window.Microsoft && window.Microsoft.Maps && window.Microsoft.Maps.Events  && window.Microsoft.Maps.Events.addHandler && valueSetter) {
+        if (!onClickLocationSetter.current){
+          const aux = window.Microsoft.Maps.Events.addHandler(map, "click", function (e) {addOnClickHanlder(map, e, valueSetter)})
+          onClickLocationSetter.current = aux;
+        }
+      };
+    }
+    catch (error) {
+      console.error('Error on getLocationClicked: ', error);
+    }
+  }
+
+  // events
+  function addEventsHandlers (map, events) {
+    try{
+      if (map && window.Microsoft && window.Microsoft.Maps && window.Microsoft.Maps.Events) {
+        for (let i = 0; i < events.length; i++) {
+          const event = events[i];
+          if (event.eventType && event.func) {window.Microsoft.Maps.Events.addHandler(map, event.eventType, event.func)};
+        }
+      }
+    }
+    catch (error) {
+      console.error('Error on addEventsHandlers: ', error);
+    }
+  }
 
   // removes pushpins
   function removePushpins(map, Maps) {
@@ -110,6 +152,14 @@ export default function BingMapsReact({
         credentials: bingMapsKey,
       });
     }
+
+    if (mapEventsHandlers) {
+      addEventsHandlers(map.current, mapEventsHandlers);
+    }
+    if (getLocationOnClick) {
+      getLocationClicked(map.current, getLocationOnClick);
+    }
+
     // set viewOptions, if any
     if (viewOptions) {
       setMapViewOptions(map.current, viewOptions, Maps);
@@ -147,6 +197,7 @@ export default function BingMapsReact({
     pushPins,
     pushPinsWithInfoboxes,
     viewOptions,
+    getLocationOnClick
   ]);
 
   useEffect(() => {
@@ -179,4 +230,6 @@ BingMapsReact.defaultProps = {
   pushPinsWithInfoboxes: null,
   viewOptions: null,
   width: "100%",
+  mapEventsHandlers: null,
+  getLocationOnClick: null
 };

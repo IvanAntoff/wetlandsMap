@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react';
 import { POSTS_URL } from '../axiosDirs';
 import { GenericMap } from '../components/GenericMap';
 import PostCard from '../components/PostCard';
-import { marker, post } from '../interfaces/interfaces';
+import { bingMapPosition, marker, post } from '../interfaces/interfaces';
 const axios = require('axios');
 
 const Tab1: React.FC = () => {
-  const [ postsData, setPostData ] = useState<post[]>([]);
-  const [ mapCenter, setMapCenter ] = useState<{ latitude: number, longitude: number }>( { latitude: -32.4790999, longitude: -58.2339789 } )
-  const [ markers, setMarkers ] = useState<marker[]>([]);
+	const [ postsData, setPostData ] = useState<post[]>([]);
+	const [ mapCenter, setMapCenter ] = useState<{ latitude: number, longitude: number }>( { latitude: -32.4790999, longitude: -58.2339789 } )
+	const [ markers, setMarkers ] = useState<marker[]>([]);
+	const [ onClickPosition, setOnClickPosition ] = useState<bingMapPosition>()
+	const [ zoom, setZoom ] = useState<number>(5);
 
 	useEffect(()=>{
 		const getData = () =>{
@@ -32,19 +34,21 @@ const Tab1: React.FC = () => {
 		getData();
 	},[postsData.length]);
 
-	useEffect(()=>{
-		console.log('mapPosition value: ',mapCenter)
-	},[mapCenter])
-
-	useEffect(()=>{
-		console.log('markers value: ',markers)
-	},[markers])
-
 	const getPostPosition = (id:string) => {
 		const mapPosition = postsData.find((post) => post.id === (id));
 		if (mapPosition) {
-			console.log(mapPosition)
 			setMapCenter({latitude: parseFloat(mapPosition.ubication.lat), longitude: parseFloat(mapPosition.ubication.lon)})
+			setZoom(10)
+		}
+	}
+
+	const getClickedLocation = (value: bingMapPosition) => {
+		if (value && ((value.latitude && typeof(value.latitude) === 'number') && (value.longitude && typeof(value.longitude) === 'number'))) {
+			if (value !== onClickPosition) {
+				setOnClickPosition(value);
+				setMapCenter(value);
+				setZoom(8);
+			};
 		}
 	}
 
@@ -84,7 +88,9 @@ const Tab1: React.FC = () => {
 						</IonCol>
 						<IonCol size="8" style={{height: '100%'}}>
 							Columna 2
-							<GenericMap center={mapCenter} width={'100%'} height={'100%'} markers={markers} zoom={5} />
+							<GenericMap center={mapCenter} width={'100%'} height={'100%'} markers={markers} zoom={zoom} 
+								getLocationOnClick={(value:bingMapPosition) => getClickedLocation(value)}
+							/>
 						</IonCol>
 					</IonRow>
 				</IonGrid>

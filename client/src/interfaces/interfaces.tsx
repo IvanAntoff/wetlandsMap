@@ -18,3 +18,5 @@ export interface marker {
     text?: string,
     center:  {latitude: number, longitude: number },
 }
+
+export type bingMapPosition = { latitude: number, longitude: number, altitude?: number, altitudeReference?: number };
