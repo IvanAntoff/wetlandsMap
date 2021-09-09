@@ -21,7 +21,9 @@ export const GenericMap: React.FC<genericMap> = (props:genericMap) => {
     const [auxWidth, setAuxWidth] = useState<string>('100%');
     const [auxHeight, setAuxHeight] = useState<string>('100%');
     const [auxZoom, setAuxZoom] = useState<number>(0);
-    const [auxMarkers, setAuxMarkers] = useState<any[]>([]);
+    const [auxMarkers, setAuxMarkers] = useState<marker[]>([]);
+    const [auxInfoMarkers, setInfoAuxMarkers] = useState<marker[]>([]);
+
     const [auxCenter, setAuxCenter] = useState<{ latitude: number, longitude: number }>({latitude: 0, longitude: 0})
     // This ref is only setted once.
     const getLocationSetter = useRef<any>(null);
@@ -45,8 +47,21 @@ export const GenericMap: React.FC<genericMap> = (props:genericMap) => {
     },[auxZoom, props.zoom]);
 
     useEffect(()=>{
-        if ((props.markers) && (auxMarkers !== props.markers)) setAuxMarkers(props.markers);
-    },[auxMarkers, props.markers]);
+        console.log('loop')
+        if (props.markers){
+            let infoMarkers: marker[] = []
+            let markers: marker[] = []
+            for (let i = 0; i < props.markers.length; i++) {
+                const newMarker = props.markers[i];
+                if (newMarker) {
+                    if(newMarker.metadata && newMarker.metadata.title) infoMarkers.push(newMarker);
+                    else markers.push(newMarker);
+                }
+            }
+            setInfoAuxMarkers(infoMarkers);
+            setAuxMarkers(markers);
+        } 
+    },[props.markers]);
 
     useEffect(()=>{
         if ((props.center) && (auxCenter !== props.center)) setAuxCenter(props.center);
@@ -60,6 +75,7 @@ export const GenericMap: React.FC<genericMap> = (props:genericMap) => {
                     onMapReady={() => {if (mapIsReady === false) setMapIsReady(true)}}
                     bingMapsKey={API_KEY_BINGMAPS}
                     pushPins={auxMarkers}
+                    pushPinsWithInfoboxes={auxInfoMarkers}
                     height={auxWidth}
                     width={auxHeight}
                     mapOptions={{

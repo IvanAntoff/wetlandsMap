@@ -17,12 +17,14 @@ const Tab1: React.FC = () => {
 		const getData = () =>{
 			axios.get(`${POSTS_URL}/posts`).then((response: { data: post[] }) => {
 				if (postsData.length !== response.data.length) {
-					let auxMarkers:marker[] = [];
+					let auxMarkers: marker[] = [];
 					response.data.map((post)=>{
 						auxMarkers.push({
-							title: post.content.title,
-							center: {latitude: parseFloat(post.ubication.lat),longitude: parseFloat(post.ubication.lon)},
-							text: `${post.content.description.slice(0,75)}...`,
+							metadata: {
+								title: post.content.title,
+								description: `${post.content?.description.slice(0,75)}...`,
+							},
+							center: {latitude: parseFloat(post.ubication.latitude),longitude: parseFloat(post.ubication.longitude)},
 						});
 						return null;
 					});
@@ -37,7 +39,7 @@ const Tab1: React.FC = () => {
 	const getPostPosition = (id:string) => {
 		const mapPosition = postsData.find((post) => post.id === (id));
 		if (mapPosition) {
-			setMapCenter({latitude: parseFloat(mapPosition.ubication.lat), longitude: parseFloat(mapPosition.ubication.lon)})
+			setMapCenter({latitude: parseFloat(mapPosition.ubication.latitude), longitude: parseFloat(mapPosition.ubication.longitude)})
 			setZoom(10)
 		}
 	}

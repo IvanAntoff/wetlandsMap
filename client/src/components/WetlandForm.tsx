@@ -3,8 +3,9 @@ import { alert, arrowBack } from "ionicons/icons";
 import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { post } from "../interfaces/interfaces";
-
+import { axiosResp, post } from "../interfaces/interfaces";
+import { POSTS_URL } from '../axiosDirs';
+const axios = require('axios');
 interface wetlandFormProps{
     categories: {name: string, value: string}[],
     subcategories: {label: string, values: {name: string, value: string}[]}[],
@@ -14,8 +15,25 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const [ step, setStep ] = useState<number>(1);
     const [ showErrorMessage, setShowErrorMessage ] = useState<boolean>(false);
     const [ errorMessage, setErrorMessage ] = useState<string>('Error desconocido.');
+    const [ errorMessageColor, setErrorMessageColor ] = useState<string>('warning');
+    const [ disableSubmit, setDisableSubmit ] = useState<boolean>(false);
     const { register, getValues ,handleSubmit, formState: { errors } } = useForm<post>();
-    const onSubmit = handleSubmit(data => {console.log(data)});
+    const onSubmit = handleSubmit(data => {
+        setDisableSubmit(true);
+        let post:post = data;
+        post.status = "pending";
+        post.subcategory = [];
+        post.keyword = [];
+        console.log(post)
+        axios.post(`${POSTS_URL}/posts`, post)
+        .then((response: axiosResp) => {
+            if (response && response.status === 200) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
+        })
+        .catch((error: any) => {
+            console.error(error);
+            showError('Algo salio mal al realizar la publicacion, intentelo mas tarde.');
+        });
+    });
     const FIRSTSTEP = 1;
     const LASTSTEP = 4;
 
@@ -29,14 +47,23 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         if (step > FIRSTSTEP) setStep(step-1);
     }
 
+    const showSuccess = (Message: string) => {
+        setErrorMessage(Message);
+        setShowErrorMessage(true);
+        setErrorMessageColor('success')
+    }
+
+
     const showError = (errorMessage: string) => {
         setErrorMessage(`Error: ${errorMessage}`);
         setShowErrorMessage(true);
+        setErrorMessageColor('warning')
     }
 
     const closeErrorMessage = () => {
         setErrorMessage(`Error desconocido.`);
         setShowErrorMessage(false);
+        setErrorMessageColor('warning')
     }
 
     const nextStep = () => {
@@ -58,10 +85,10 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             break;
             case 3:
                 if ( 
-                    (typeof(getValues("ubication.lat") ) !== 'undefined') &&
-                    (getValues("ubication.lat") !== "") &&
-                    (typeof(getValues("ubication.lon") ) !== 'undefined') &&
-                    (getValues("ubication.lon") !== "")
+                    (typeof(getValues("ubication.latitude") ) !== 'undefined') &&
+                    (getValues("ubication.latitude") !== "") &&
+                    (typeof(getValues("ubication.longitude") ) !== 'undefined') &&
+                    (getValues("ubication.longitude") !== "")
                 ) setStep(step+1);
                 else showError('Debe seleccionar una ubicacion.');
             break;
@@ -151,8 +178,8 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         </IonItem>
                         <IonItem hidden={showIfStepIs(3)}>
                             <IonLabel>Ubicacion:</IonLabel>
-                            <IonInput placeholder={"Ingrese la latitud:"} required {...register("ubication.lat", { required: true } )} ></IonInput>
-                            <IonInput placeholder={"Ingrese la longitud:"} required {...register("ubication.lon", { required: true })} ></IonInput>
+                            <IonInput placeholder={"Ingrese la latitud:"} required {...register("ubication.latitude", { required: true } )} ></IonInput>
+                            <IonInput placeholder={"Ingrese la longitud:"} required {...register("ubication.longitude", { required: true })} ></IonInput>
                         </IonItem>
                         <IonText className={"ion-text-center"} hidden={showIfStepIs(LASTSTEP)}><h3>Esta a punto de completar la publicacion</h3></IonText>
                         <IonItem  className={"ion-margin"} hidden={showIfStepIs(LASTSTEP)} lines={"none"}>
@@ -161,7 +188,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                                 <h5>Una vez completada la publicacion, nuestro equipo de moderadores verificara el contenido de la misma. Si la revision es finalizada de manera exitosa su publicacion aparecera en la pantalla principal.</h5><br/>
                             </IonText>
                         </IonItem>
-                        <IonButton type="submit" expand='block' hidden={showIfStepIs(LASTSTEP)}>Completar!</IonButton> 
+                        <IonButton type="submit" expand='block' hidden={showIfStepIs(LASTSTEP)} disabled={disableSubmit}>Completar!</IonButton> 
                     </form>
                 </IonCol>
                 <IonCol size={"1"}>
@@ -171,7 +198,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonCol>
             </IonRow>
         </IonGrid>
-        <IonItem  className={"ion-margin"} lines={"full"} color={"danger"} button detail detailIcon={"close-circle"} 
+        <IonItem  className={"ion-margin"} lines={"full"} color={errorMessageColor} button detail detailIcon={"close-circle"} 
             onClick={()=> closeErrorMessage()} hidden={!showErrorMessage}>
             <IonText>{errorMessage}</IonText>
         </IonItem>
