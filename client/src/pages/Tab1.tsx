@@ -30,7 +30,7 @@ const Tab1: React.FC = () => {
 					let auxMarkers: marker[] = [];
 					for (let i = 0; i < response.data.length; i++) {
 						const post = response.data[i];
-						auxMarkers.push({
+						if (post.status === 'approved') auxMarkers.push({
 							metadata: {
 								title: post.content.title,
 								description: `${post.content?.description.slice(0,75)}...`,
@@ -144,7 +144,7 @@ const Tab1: React.FC = () => {
 							{
 								postsData.length > 0 ? 
 								postsData.map((post, index)=>{
-									return(
+									if(post.status === 'approved') return(
 										<PostCard
 											key={`PostCard-content-index${index}'id'${post.id}`}
 											index={index}
@@ -161,6 +161,7 @@ const Tab1: React.FC = () => {
 											]}
 										/>
 									)
+									return null;
 								}) 
 								:
 								null
