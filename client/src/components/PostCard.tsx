@@ -45,15 +45,6 @@ const PostCard: React.FC<postCard> = (props) => {
                     :
                     null
                 }
-                { props.subcategory && props.subcategory.length > 0 ?
-                    props.subcategory.map((subcategory, index) => {
-                        return (
-                            <IonChip key={`PostCard-Chip-subcategory-${index}`}>{subcategory.type}&nbsp;:&nbsp;{subcategory.value}</IonChip>
-                        )
-                    })
-                    :
-                    null
-                }
             </IonCardContent>
             
         </IonCard>

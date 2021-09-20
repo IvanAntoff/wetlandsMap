@@ -21,7 +21,7 @@ const Tab2: React.FC = () => {
                 <IonGrid>
                     <IonRow>
                         <IonCol>
-                        <IonModal isOpen={modalIsOpen} showBackdrop={true} cssClass={"postModal"} >
+                        {/* <IonModal isOpen={modalIsOpen} showBackdrop={true} cssClass={"postModal"} >
                             <WetlandForm 
                             categories={[
                                 {name: "Documentar un humedal", value: "humedal"},
@@ -33,7 +33,7 @@ const Tab2: React.FC = () => {
                             subcategories={[
                                 
                             ]}/>
-                        </IonModal>
+                        </IonModal> */}
                         </IonCol>
                     </IonRow>
                 </IonGrid>

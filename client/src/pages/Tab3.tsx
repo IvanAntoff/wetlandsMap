@@ -27,9 +27,9 @@ const Tab3: React.FC = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonGrid style={{height: '100%'}}>
-					<IonRow style={{height: '100%'}}>
-						<IonCol size="4">
+				<IonGrid className={'fixHeight'}>
+					<IonRow className={'fixHeight'}>
+						<IonCol size="4" className={'fixHeight scroll'}>
 							Columna 1
 							{
 								postsData.length > 0 ? 
@@ -55,12 +55,12 @@ const Tab3: React.FC = () => {
 								null
 							}
 						</IonCol>
-            <IonCol size="4">
+						<IonCol size="4" className={'fixHeight scroll'}>
 							Columna 1
 							{
 								postsData.length > 0 ? 
 								postsData.map((post, index)=>{
-									if(post.status === 'pending')
+									if(post.status === 'refused')
 									return(
 										<PostCard
 											key={`PostCard-content-index${index}'id'${post.id}`}
@@ -81,12 +81,12 @@ const Tab3: React.FC = () => {
 								null
 							}
 						</IonCol>
-            <IonCol size="4">
+						<IonCol size="4" className={'fixHeight scroll'}>
 							Columna 1
 							{
 								postsData.length > 0 ? 
 								postsData.map((post, index)=>{
-									if(post.status === 'pending')
+									if(post.status === 'approved')
 									return(
 										<PostCard
 											key={`PostCard-content-index${index}'id'${post.id}`}
