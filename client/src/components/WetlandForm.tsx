@@ -16,7 +16,7 @@ const margins = ["Alterado ", "Inalterado"];
 const typePollutant = ["Actividad industrial", "Actividad agrícola", "Actividad ganadera", "Alteración de márgenes del humedal", "Emprendimiento inmobiliario", "Asentamientos urbanos"];
 const analysis = {
     type: ["Físico-químico", "Microbiológico", "Biológico"],
-    results: ['Buena', "Regular", "Maña"]
+    results: ['Buena', "Regular", "Mala"]
 };
 const aspectTypes = ["Olor", "Color", "Materia organiza en la superficie", "Espuma", "Algas"];
 

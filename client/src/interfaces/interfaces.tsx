@@ -80,7 +80,7 @@ interface optionalWetland {
 interface optionalThreat {
     analysis?: {
         type: "Físico-químico" | "Microbiológico" | "Biológico",
-        results: 'Buena' | "Regular" | "Maña"
+        results: 'Buena' | "Regular" | "Mala"
     },
     pollutants?: typePollutant[]
     aspect?: {

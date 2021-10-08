@@ -127,7 +127,7 @@ const Tab1: React.FC = () => {
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
-					<IonTitle>Mapa</IonTitle>
+					<IonTitle>Humedales digitales</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
