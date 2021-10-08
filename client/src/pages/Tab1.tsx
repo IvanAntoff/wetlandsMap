@@ -175,17 +175,17 @@ const Tab1: React.FC = () => {
 								<IonFabButton color={"success"} onClick={() => editModeON()} hidden={!showFab.addFab}><IonIcon icon={add}></IonIcon></IonFabButton>
 								<IonFabButton color={"warning"} onClick={() => editModeOFF()} hidden={!showFab.cancelFab}><IonIcon icon={arrowUndoCircleOutline}></IonIcon></IonFabButton>
 							</IonFab>
-							<GenericMap center={mapCenter} width={'100%'} height={'77vh'} markers={markers} zoom={zoom} 
+							<GenericMap center={mapCenter} width={'100%'} height={'78vh'} markers={markers} zoom={zoom} 
 								getLocationOnClick={(value:bingMapPosition) => getClickedLocation(value)} loading={loading}
 							/>
 							<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} >
 								<WetlandForm location={onClickPosition ? onClickPosition : {latitude: 0, longitude:0}}
 									categories={[
-										{name: "Documentar un humedal", value: "humedal"},
-										{name: "Amenazas o impactos antrópicos", value: "amenazas"},
-										{name: "Iniciativa sustentable", value: "iniciativas"},
-										{name: "Expresiones Artísticas", value: "arte"},
-										{name: "Proyectos de Investigación", value: "investigacion"},
+										{name: "Descripción del humedal/Sitio de interés", value: "humedal"},
+										{name: "Amenazas/impactos antrópicos o naturales", value: "amenazas"},
+										{name: "Iniciativas sustentables", value: "iniciativas"},
+										{name: "Expresiones artísticas", value: "arte"},
+										{name: "Proyectos de investigación", value: "investigacion"},
 									]} 
 								/>
 							</IonModal>
