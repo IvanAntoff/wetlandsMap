@@ -56,7 +56,13 @@ export interface post {
     content: {
         title: string,
         description: string,
-        files: any[]
+        files: any[],
+        genericData: {
+            zone: "ZONA RURAL" | "ZONA PERIURBANA" | "ZONA URBANA" | "OTRO ",
+            type: "Natural" | "Artificial",
+            category: typeWetland,
+            location: "Colón" | "Concepcion Del Uruguay" | "Gualeguaychú"
+        }
     },
     ubication: { latitude: string, longitude: string },
     keyword: string[]
@@ -68,7 +74,6 @@ type typePollutant = "Actividad industrial" | "Actividad agrícola" | "Actividad
 type typeArt = "Producciones artísticas" | "Fotos" | "Audiovisuales" | "Redacciones" | "Documentos";
 type typeInstitute = "Escolar" | "Universitario" | "Laboratorio" | "Instituciones de Investigación" | "Privado" | "ONG" | "Otro";
 interface optionalWetland {
-    type: typeWetland,
     color?: string,
     smell?: string,
     outskirts?: typeOutskirt,
@@ -106,4 +111,40 @@ interface optionalInvestigation {
         type: "Final" | "Parcial",
         publish: "No publicados" | "Revista cientifica" | "Congreso" | "Otro"
     }
+}
+
+// Data
+// Generic data
+export const wetlandTypes = ["Natural", "Artificial"]
+export const wetlandCategories = ["Rio", "Laguna natural", "Laguna artifical", "Cañada", "Arroyo", "Desconocido"];
+export const wetlandZones = ["ZONA RURAL", "ZONA PERIURBANA", "ZONA URBANA", "OTRO "]
+export const wetlandLocation =  ["Colón", "Concepcion Del Uruguay", "Gualeguaychú"]
+
+// Wetlands optionals
+export const outskirtType = ["Industrial", "Residencial", " Agropecuaria", "Reserva natural"]
+export const flora = ["Acuática", "Terrestre", "Otra"];
+export const margins = ["Alterado ", "Inalterado"];
+
+// Threath opcionals
+export const typePollutant = ["Actividad industrial", "Actividad agrícola", "Actividad ganadera", "Alteración de márgenes del humedal", "Emprendimiento inmobiliario", "Asentamientos urbanos"];
+export const analysis = {
+    type: ["Físico-químico", "Microbiológico", "Biológico"],
+    results: ['Buena', "Regular", "Mala"]
+};
+export const aspectTypes = ["Olor", "Color", "Materia organiza en la superficie", "Espuma", "Algas"];
+
+// Initiative optionals
+export const initiativeType = ["Proyecto", "Actividad/es", "Desconocido"];
+export const organizator = ["Vecinos", "Organización", "Municipio" ,, "Otro", "Desconocido"];
+export const objetive = ["Mejorar", "Preservar", "Puesta en valor", "Desconocido"];
+
+// Art optionals
+export const typeArt = ["Producciones artísticas", "Fotos", "Audiovisuales", "Redacciones", "Documentos"];
+
+// Investigations optionals
+export const typeInstitute = ["Escolar", "Universitario", "Laboratorio", "Instituciones de Investigación", "Privado", "ONG", "Otro"];
+export const invetigationState = ["Pendiente", "Activo", "Finalizado"]
+export const investigationResult = {
+    type: ["Final", "Parcial"],
+    publish: ["No publicados", "Revista cientifica", "Congreso", "Otro"]
 }

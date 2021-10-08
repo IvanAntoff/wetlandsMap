@@ -2,39 +2,10 @@ import { IonButton, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonPr
 import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { axiosResp, bingMapPosition, post, postCategory } from "../interfaces/interfaces";
+import { analysis, aspectTypes, axiosResp, bingMapPosition, flora, initiativeType, investigationResult, invetigationState, margins, objetive, organizator, outskirtType, post, postCategory, typeArt, typeInstitute, typePollutant, wetlandCategories, wetlandLocation, wetlandTypes, wetlandZones } from "../interfaces/interfaces";
 import { POSTS_URL } from '../axiosDirs';
 const axios = require('axios');
 
-// Wetlands optionals
-const wetlandTypes = ["Rio", "Laguna natural", "Laguna artifical", "Cañada", "Arroyo", "Desconocido"];
-const outskirtType = ["Industrial", "Residencial", " Agropecuaria", "Reserva natural"]
-const flora = ["Acuática", "Terrestre", "Otra"];
-const margins = ["Alterado ", "Inalterado"];
-
-// Threath opcionals
-const typePollutant = ["Actividad industrial", "Actividad agrícola", "Actividad ganadera", "Alteración de márgenes del humedal", "Emprendimiento inmobiliario", "Asentamientos urbanos"];
-const analysis = {
-    type: ["Físico-químico", "Microbiológico", "Biológico"],
-    results: ['Buena', "Regular", "Mala"]
-};
-const aspectTypes = ["Olor", "Color", "Materia organiza en la superficie", "Espuma", "Algas"];
-
-// Initiative optionals
-const initiativeType = ["Proyecto", "Actividad/es", "Desconocido"];
-const organizator = ["Vecinos", "Organización", "Municipio" ,, "Otro", "Desconocido"];
-const objetive = ["Mejorar", "Preservar", "Puesta en valor", "Desconocido"];
-
-// Art optionals
-const typeArt = ["Producciones artísticas", "Fotos", "Audiovisuales", "Redacciones", "Documentos"];
-
-// Investigations optionals
-const typeInstitute = ["Escolar", "Universitario", "Laboratorio", "Instituciones de Investigación", "Privado", "ONG", "Otro"];
-const invetigationState = ["Pendiente", "Activo", "Finalizado"]
-const investigationResult = {
-    type: ["Final", "Parcial"],
-    publish: ["No publicados", "Revista cientifica", "Congreso", "Otro"]
-}
 interface wetlandFormProps{
     categories: {name: string, value: postCategory}[],
     location: bingMapPosition,
@@ -71,7 +42,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         });
     });
     const FIRSTSTEP = 1;
-    const LASTSTEP = 4;
+    const LASTSTEP = 5;
 
     const showIfStepIs = (stepToCheck: number) : boolean => {
         if (stepToCheck !== step ) return true;
@@ -107,12 +78,18 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         if (showErrorMessage === true) closeErrorMessage();
         switch (step) {
             case 1:
-                if (typeof(getValues("category")) !== 'undefined') setStep(step+1);
-                else showError('Debe seleccionar una categoria.');
+                if (typeof(getValues("category")) === 'undefined') return showError('Debe seleccionar una categoria.');
+                if (!props.location || !props.location.latitude || !props.location.longitude) return showError('Error al confirmar la ubicacion seleccionada, repita el proceso.');
+                setStep(step+1);
             break;
             case 2:
-                if (props.location && props.location.latitude && props.location.longitude) setStep(step+1);
-                else showError('Error al confirmar la ubicacion seleccionada, repita el proceso.');
+                if ( 
+                    (typeof(getValues("content.genericData.category") ) === 'undefined') ||
+                    (typeof(getValues("content.genericData.zone") ) === 'undefined') ||
+                    (typeof(getValues("content.genericData.location") ) === 'undefined') ||
+                    (typeof(getValues("content.genericData.type") ) === 'undefined') 
+                ) return showError('Debe completar todos los campos.');
+                setStep(step+1);
             break;
             case 3:
                 if ( 
@@ -130,13 +107,16 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         let title = '';
         switch (step) {
             case 1:
-                title = `Paso ${step}: Tipo de publicacion.`
+                title = `Paso ${step}: Tipo de publicación.`
             break;
             case 2:
-                title = `Paso ${step}: Datos a publicar.`
+                title = `Paso ${step}: Información general.`
             break;
             case 3:
-                title = `Paso ${step}: Otros detalles.`
+                title = `Paso ${step}: Publicación.`
+            break;
+            case 4:
+                title = `Paso ${step}: Datos adicionales.`
             break;
             case LASTSTEP:
                 title = `¡Ultimo paso!`
@@ -148,25 +128,15 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsWetland = () => {
         return (
             <>
-                <IonItem hidden={showIfStepIs(2)}>
-                    <IonLabel position={'floating'}>Tipo de humedal:</IonLabel>
-                    <IonSelect placeholder={"Tipo de humedal:"} className={'alert-xl'} {...register("subcategory.wetland.type")} >
-                        {
-                        wetlandTypes.map((type, index) => {
-                            return (<IonSelectOption value={type} key={`IonSelectOption-${index}-typeWetland-${type}`}>{type}</IonSelectOption>)
-                        })
-                        }
-                    </IonSelect>
-                </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Color observado:</IonLabel>
                     <IonInput placeholder={"Ingrese un color"} {...register("subcategory.wetland.color")} ></IonInput>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Olor:</IonLabel>
                     <IonInput placeholder={"Ingrese olor"} {...register("subcategory.wetland.smell")} ></IonInput>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Flora:</IonLabel>
                     <IonSelect placeholder={"Tipo de humedal:"} className={'alert-xl'} {...register("subcategory.wetland.flora")} >
                         {
@@ -176,7 +146,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Estado del margenes:</IonLabel>
                     <IonSelect placeholder={"Estado del margen:"} className={'alert-xl'} {...register("subcategory.wetland.margins")} >
                         {
@@ -186,7 +156,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Uso de las zonas aledañas:</IonLabel>
                     <IonSelect placeholder={"zonas aledañas:"} className={'alert-xl'} {...register("subcategory.wetland.outskirts")} >
                         {
@@ -203,7 +173,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsThreath = () => {
         return (
             <>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Contaminantes observados:</IonLabel>
                     <IonSelect multiple placeholder={"Seleccione el/los necesarios:"} className={'alert-xl'} {...register("subcategory.threath.pollutants")} >
                         {
@@ -213,7 +183,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de análisis realizado:</IonLabel>
                     <IonSelect placeholder={"Tipo de análisis:"} className={'alert-xl'} {...register("subcategory.threath.analysis.type")} >
                         {
@@ -223,7 +193,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Resultado del análisis:</IonLabel>
                     <IonSelect placeholder={"Resultado del análisis:"} className={'alert-xl'} {...register("subcategory.threath.analysis.results")} >
                         {
@@ -233,7 +203,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Aspectos alterados del agua:</IonLabel>
                     <IonSelect placeholder={"Seleccione el/los necesarios:"} multiple className={'alert-xl'} {...register("subcategory.threath.aspect.type")} >
                         {
@@ -243,7 +213,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'} className={"ion-align-self-start"}>Describa lo seleccionado:</IonLabel>
                     <IonTextarea placeholder={"Describa, si corresponde, los aspectos alterados seleccionados."} {...register("subcategory.threath.aspect.description")} ></IonTextarea>
                 </IonItem>
@@ -254,7 +224,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsInitiative = () => {
         return (
             <>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de iniciativa:</IonLabel>
                     <IonSelect placeholder={"Seleccione una iniciativa:"} className={'alert-xl'} {...register("subcategory.initiative.type")} >
                         {
@@ -264,7 +234,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Organizador:</IonLabel>
                     <IonSelect placeholder={"Tipo de análisis:"} className={'alert-xl'} {...register("subcategory.initiative.organizator")} >
                         {
@@ -274,7 +244,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Objetivo:</IonLabel>
                     <IonSelect placeholder={"Seleccione el objetivo:"} className={'alert-xl'} {...register("subcategory.initiative.objetive")} >
                         {
@@ -291,7 +261,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsArt = () => {
         return (
             <>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de expresion artistica:</IonLabel>
                     <IonSelect placeholder={"Seleccione una iniciativa:"} className={'alert-xl'} {...register("subcategory.initiative.type")} >
                         {
@@ -308,7 +278,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsInvestigation = () => {
         return (
             <>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de Institución:</IonLabel>
                     <IonSelect placeholder={"Seleccione la institucion a cargo:"} className={'alert-xl'} {...register("subcategory.investigation.institute")} >
                         {
@@ -318,7 +288,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Estado de la investigación:</IonLabel>
                     <IonSelect placeholder={"Seleccione la institucion a cargo:"} className={'alert-xl'} {...register("subcategory.investigation.state")} >
                         {
@@ -328,7 +298,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Resultados:</IonLabel>
                     <IonSelect placeholder={"Seleccione un tipo :"} className={'alert-xl'} {...register("subcategory.investigation.state")} >
                         {
@@ -338,7 +308,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <IonItem hidden={showIfStepIs(2)}>
+                <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Publicaciones de los resultados:</IonLabel>
                     <IonSelect multiple placeholder={"Seleccione el/los necesarios:"} className={'alert-xl'} {...register("subcategory.investigation.state")} >
                         {
@@ -398,7 +368,46 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                                 }
                             </IonSelect>
                         </IonItem>
-                        { getOptionesByType() }
+                        <IonItem hidden={showIfStepIs(2)}>
+                            <IonLabel position={'floating'}>Tipo de humedal:</IonLabel>
+                            <IonSelect placeholder={"Tipo de humedal:"} className={'alert-xl'} {...register("content.genericData.type")} >
+                                {
+                                wetlandTypes.map((type, index) => {
+                                    return (<IonSelectOption value={type} key={`IonSelectOption-${index}-wetlandTypes-${type}`}>{type}</IonSelectOption>)
+                                })
+                                }
+                            </IonSelect>
+                        </IonItem>
+                        <IonItem hidden={showIfStepIs(2)}>
+                            <IonLabel position={'floating'}>Categoría del humedal:</IonLabel>
+                            <IonSelect placeholder={"Categoría del humedal:"} className={'alert-xl'} {...register("content.genericData.category")} >
+                                {
+                                wetlandCategories.map((Categorie, index) => {
+                                    return (<IonSelectOption value={Categorie} key={`IonSelectOption-${index}-wetlandCategories-${Categorie}`}>{Categorie}</IonSelectOption>)
+                                })
+                                }
+                            </IonSelect>
+                        </IonItem>
+                        <IonItem hidden={showIfStepIs(2)}>
+                            <IonLabel position={'floating'}>Ubicación del humedal:</IonLabel>
+                            <IonSelect placeholder={"Ubicación del humedal:"} className={'alert-xl'} {...register("content.genericData.zone")} >
+                                {
+                                wetlandZones.map((zone, index) => {
+                                    return (<IonSelectOption value={zone} key={`IonSelectOption-${index}-wetlandZones-${zone}`}>{zone}</IonSelectOption>)
+                                })
+                                }
+                            </IonSelect>
+                        </IonItem>
+                        <IonItem hidden={showIfStepIs(2)}>
+                            <IonLabel position={'floating'}>Departamento en el que se encuentra:</IonLabel>
+                            <IonSelect placeholder={"Ubicación del humedal:"} className={'alert-xl'} {...register("content.genericData.location")} >
+                                {
+                                wetlandLocation.map((location, index) => {
+                                    return (<IonSelectOption value={location} key={`IonSelectOption-${index}-wetlandLocation-${location}`}>{location}</IonSelectOption>)
+                                })
+                                }
+                            </IonSelect>
+                        </IonItem>
                         <IonItem hidden={showIfStepIs(3)}>
                             <IonLabel position={'floating'}>Titulo:</IonLabel>
                             <IonInput placeholder={"Ingrese un titulo."} required {...register("content.title", { required: 'El titulo es requerido' } )} ></IonInput>
@@ -407,6 +416,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                             <IonLabel position={'floating'} className={"ion-align-self-start"}>Descripcion:</IonLabel>
                             <IonTextarea placeholder={"Ingrese los datos de su publicacion."} required {...register("content.description", { required: true })} ></IonTextarea>
                         </IonItem>
+                        { getOptionesByType() }
                         <IonText className={"ion-text-center"} hidden={showIfStepIs(LASTSTEP)}><h3>Esta a punto de completar la publicacion</h3></IonText>
                         <IonItem  className={"ion-margin"} hidden={showIfStepIs(LASTSTEP)} lines={"none"}>
                             <IonText hidden={showIfStepIs(LASTSTEP)}>
