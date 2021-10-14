@@ -77,21 +77,15 @@ interface optionalWetland {
     color?: string,
     smell?: string,
     outskirts?: typeOutskirt,
-    flora?: "Acuática" | "Terrestre" | "Otra",
+    flora?: string,
+    history?: string,
     margins?: "Alterado " | "Inalterado"
 }
 
 
 interface optionalThreat {
-    analysis?: {
-        type: "Físico-químico" | "Microbiológico" | "Biológico",
-        results: 'Buena' | "Regular" | "Mala"
-    },
-    pollutants?: typePollutant[]
-    aspect?: {
-        type: "Olor" | "Color" | "Materia organiza en la superficie" | "Espuma" | "Algas",
-        description: string
-    }
+    anthropics?: string,
+    pollutants?: string,
 }
 
 interface optionalInitiative {
@@ -107,12 +101,12 @@ interface optionalsArt {
 interface optionalInvestigation {
     institute: typeInstitute,
     state: "Pendiente" | "Activo" | "Finalizado",
-    result: {
-        type: "Final" | "Parcial",
-        publish: "No publicados" | "Revista cientifica" | "Congreso" | "Otro"
-    }
+    result: string,
+    resultType: "Final" | "Parcial",
 }
 
+export const imgFiles = 'image/png, image/jpeg';
+export const docFiles = '.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf';
 // Data
 // Generic data
 export const wetlandTypes = ["Natural", "Artificial"]
@@ -143,8 +137,6 @@ export const typeArt = ["Producciones artísticas", "Fotos", "Audiovisuales", "R
 
 // Investigations optionals
 export const typeInstitute = ["Escolar", "Universitario", "Laboratorio", "Instituciones de Investigación", "Privado", "ONG", "Otro"];
-export const invetigationState = ["Pendiente", "Activo", "Finalizado"]
-export const investigationResult = {
-    type: ["Final", "Parcial"],
-    publish: ["No publicados", "Revista cientifica", "Congreso", "Otro"]
-}
+export const invetigationState = ["Pendiente", "Activo", "Finalizado"];
+export const investigationResult = ["Final", "Parcial"];
+const publish = ["No publicados", "Revista cientifica", "Congreso", "Otro"];
