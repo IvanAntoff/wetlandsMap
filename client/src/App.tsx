@@ -55,15 +55,15 @@ const App: React.FC = () => (
             <Tab1 />
           </Route>
         </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={mapOutline} />
-            <IonLabel>Mapa</IonLabel>
-          </IonTabButton>
+        <IonTabBar slot="bottom" color={'primary'}>
           {/* <IonTabButton tab="tab2" href="/tab2">
             <IonIcon icon={ellipse} />
             <IonLabel>Carga de datos</IonLabel>
           </IonTabButton> */}
+          <IonTabButton tab="tab1" href="/tab1">
+            <IonIcon icon={mapOutline} />
+            <IonLabel>Mapa</IonLabel>
+          </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
             <IonIcon icon={newspaperOutline} />
             <IonLabel>Gestion de publicaciones</IonLabel>

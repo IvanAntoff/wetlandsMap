@@ -21,23 +21,21 @@ export default function BingMapsReact({
   const map = useRef(null);
   const onClickLocationSetter = useRef(null);
   const infoboxHandler = useRef(null);
-  // onClickLocation handler
-  function addOnClickHanlder(map ,event, valueSetter) {
-    if (event.targetType === "map") {
-      let pixelClicked = new window.Microsoft.Maps.Point(event.getX(), event.getY());
-      let pixToLocation = map.tryPixelToLocation(pixelClicked);
-      valueSetter(pixToLocation);
-    }
-  }
 
   // get location
   function getLocationClicked (map, valueSetter) {
     try{
       if (map && window.Microsoft && window.Microsoft.Maps && window.Microsoft.Maps.Events  && window.Microsoft.Maps.Events.addHandler && valueSetter) {
-        if (!onClickLocationSetter.current){
-          const aux = window.Microsoft.Maps.Events.addHandler(map, "click", function (e) {addOnClickHanlder(map, e, valueSetter)})
-          onClickLocationSetter.current = aux;
+        function addOnClickHanlder(map ,event, valueSetter) {
+          if (event.targetType === "map") {
+            let pixelClicked = new window.Microsoft.Maps.Point(event.getX(), event.getY());
+            let pixToLocation = map.tryPixelToLocation(pixelClicked);
+            valueSetter(pixToLocation);
+          }
         }
+        // onClickLocation handler
+        if (onClickLocationSetter.current) window.Microsoft.Maps.Events.removeHandler(onClickLocationSetter.current);
+        onClickLocationSetter.current = window.Microsoft.Maps.Events.addHandler(map, "click", function (e) {addOnClickHanlder(map, e, valueSetter)});
       };
     }
     catch (error) {

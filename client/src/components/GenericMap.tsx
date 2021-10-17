@@ -32,7 +32,7 @@ export const GenericMap: React.FC<genericMap> = (props:genericMap) => {
     const [mapComponent ,setMapComponent] = useState<JSX.Element>(<></>);
 
     useEffect(()=>{
-        if (!getLocationSetter.current) getLocationSetter.current = props.getLocationOnClick;
+        getLocationSetter.current = props.getLocationOnClick;
     },[props.getLocationOnClick])
 
     useEffect(()=>{
@@ -99,7 +99,7 @@ export const GenericMap: React.FC<genericMap> = (props:genericMap) => {
         <>
             { mapIsReady === false || props.loading === true ? 
             <>
-                <h1>El mapa esta siendo cargado.</h1> 
+                <h1 style={{textAlign: 'center'}}>El mapa esta siendo cargado.</h1> 
                 {mapComponent}
             </>
             : 

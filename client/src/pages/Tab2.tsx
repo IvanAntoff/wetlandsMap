@@ -8,13 +8,13 @@ const Tab2: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar>
+                <IonToolbar color={'primary'}>
                 <IonTitle>Carga de datos</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent fullscreen>
+            <IonContent color={'light'} fullscreen>
                 <IonHeader collapse="condense">
-                <IonToolbar>
+                <IonToolbar color={'primary'}>
                     <IonTitle size="large">Carga de datos</IonTitle>
                 </IonToolbar>
                 </IonHeader>

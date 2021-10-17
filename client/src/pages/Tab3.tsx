@@ -89,11 +89,11 @@ const Tab3: React.FC = () => {
 	return (
 		<IonPage>
 			<IonHeader>
-				<IonToolbar>
+				<IonToolbar color={'primary'}>
 					<IonTitle>Mapa</IonTitle>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen>
+			<IonContent color={'light'} fullscreen>
 				<IonGrid className={'fixHeight'}>
 					<IonRow className={'fixHeight'}>
 						<IonCol size="4" className={'fixHeight scroll'}>

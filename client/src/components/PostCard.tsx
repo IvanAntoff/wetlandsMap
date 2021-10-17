@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonRow } from "@ionic/react";
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText } from "@ionic/react";
 import { post } from "../interfaces/interfaces";
 interface postCard extends post {
     index: number,
@@ -12,30 +12,15 @@ interface postCard extends post {
 }
 const PostCard: React.FC<postCard> = (props) => {
     return (
-        <IonCard>
+        <IonCard color={''}>
             <IonCardHeader className="ion-margin-no">
-                { props.buttons && props.buttons.length > 0 ? 
-                    <IonButtons>
-                        {props.buttons.map((button, index) => {
-                            return(
-                                <IonButton size={button.size ? button.size : "default"} onClick={() => button.onClick()}
-                                    color={button.color ? button.color : 'primary'} key={`PostCard-button-${index}`}
-                                >
-                                    {button.label ? button.label : null}
-                                    {button.icon ? <IonIcon name={button.icon} />: null}
-                                </IonButton>
-                            )
-                        })}
-                    </IonButtons>
-                :
-                    null
-                }
-                <IonCardSubtitle>Ubicacion:&nbsp;</IonCardSubtitle>
                 <IonCardTitle>{props.content.title ? props.content.title : 'Titulo no disponible.' }</IonCardTitle>
+                <IonCardSubtitle><b>Ubicacion:</b>&nbsp;{props?.content?.genericData?.location || 'Desconocida'}</IonCardSubtitle>
             </IonCardHeader>
-            <IonCardContent>
-                {props.content.description ? props.content.description : 'Descripcion no disponible.'}
-                <br/>
+            <IonCardContent >
+                <IonText>
+                    {props.content.description ? props.content.description : 'Descripcion no disponible.'}
+                </IonText>
                 { props.keyword && props.keyword.length > 0 ?
                     props.keyword.map((keyword, index) => {
                         return (
@@ -45,8 +30,25 @@ const PostCard: React.FC<postCard> = (props) => {
                     :
                     null
                 }
+                { props.buttons && props.buttons.length > 0 ? 
+                    <IonItem lines={"none"} >
+                        <IonButtons className={'ion-justify-content-between'}>
+                            {props.buttons.map((button, index) => {
+                                return(
+                                    <IonButton size={button.size ? button.size : "default"} onClick={() => button.onClick()}
+                                        color={button.color ? button.color : 'primary'} key={`PostCard-button-${index}`}
+                                    >
+                                        {button.label ? button.label : null}
+                                        {button.icon ? <IonIcon name={button.icon} />: null}
+                                    </IonButton>
+                                )
+                            })}
+                        </IonButtons>
+                    </IonItem>
+                    :
+                    null
+                }
             </IonCardContent>
-            
         </IonCard>
     );
 };

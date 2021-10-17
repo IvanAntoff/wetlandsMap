@@ -105,9 +105,20 @@ interface optionalInvestigation {
     resultType: "Final" | "Parcial",
 }
 
+export type genericFilter = {type: string, value: string};
+
 export const imgFiles = 'image/png, image/jpeg';
 export const docFiles = '.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf';
 // Data
+
+export const categories: {name: string, value: postCategory}[] = [
+    {name: "Descripción del humedal/Sitio de interés", value: "humedal"},
+    {name: "Amenazas/impactos antrópicos o naturales", value: "amenazas"},
+    {name: "Iniciativas sustentables", value: "iniciativas"},
+    {name: "Expresiones artísticas", value: "arte"},
+    {name: "Proyectos de investigación", value: "investigacion"}
+]
+
 // Generic data
 export const wetlandTypes = ["Natural", "Artificial"]
 export const wetlandCategories = ["Rio", "Laguna natural", "Laguna artifical", "Cañada", "Arroyo", "Desconocido"];
@@ -140,3 +151,21 @@ export const typeInstitute = ["Escolar", "Universitario", "Laboratorio", "Instit
 export const invetigationState = ["Pendiente", "Activo", "Finalizado"];
 export const investigationResult = ["Final", "Parcial"];
 const publish = ["No publicados", "Revista cientifica", "Congreso", "Otro"];
+
+// Keywords
+
+export const keywordsItems = ['Flora', 'Fauna', 'Algas', 'Contaminación', 'Residuos sólidos urbanos', 'Efluentes cloacales', 'Efluentes industriales', 'Alteración del paisaje', 'Calidad del agua', 'Biodiversidad', 'Educación ambiental', 'Ecoturismo', 'Actividad residencial', 'Actividad industrial', 'Actividad agrícola', 'Actividad ganadera', 'Emprendimiento inmobiliario',  'Aves', 'Paisaje', 'Rural', 'Periurbano', 'Urbano', 'Natural', 'Artificial', 'Laguna', 'Río', 'Arroyo', 'Cañada', 'Pantano', 'Colón', 'Concepción del Uruguay', 'Gualeguaychú', 'Basura', 'Olor', 'Color', 'Ribera', 'Nutrientes', 'Pesca', 'Recreación', 'Cultivo', 'Granjas', 'Estudio de impacto ambiental', 'Informe técnico ambiental', 'Conservación', 'Proyecto educativo', 'Proyecto de investigación', 'Reserva natural', 'Anfibios', 'Peces', 'Reptiles', 'Aves', 'Mamíferos', 'Insectos', 'Macroinvertebrados', 'Pastizal', 'Bosque', 'Barranca', 'Análisis de agua', 'Físico-químico', 'Microbiológico', 'Biológico', 'Bioensayos', 'Asentamientos', 'Basural', 'Relleno sanitario', 'Materia orgánica', 'Espumas', 'Actividad sustentable', 'Proyecto sustentable', 'Feria de ciencias', 'Congresos', 'Jornadas ambientales', 'Revistas científicas', 'Contaminación orgánica', 'Contaminación Química', 'Contaminación microbiológica', 'Contaminación antrópica', 'Contaminación natural']
+export const postFilters = [
+    {
+        title: 'Tipo de publicacion',
+        placeholder: 'Seleccione una categoria',
+        items: categories,
+        multiple: true,
+    },
+    {
+        title: 'Palabras clave',
+        placeholder: 'Seleccione palabra/s clave',
+        items: keywordsItems.map(item => {return {name: item, value: item.toLowerCase()}}),
+        multiple: true,
+    },
+] 

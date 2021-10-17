@@ -1,3 +1,7 @@
+* {
+    scrollbar-width: thin;
+}
+
 @media (orientation: landscape) {
     .postModal {
         --min-width: 80vw;
