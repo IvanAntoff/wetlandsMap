@@ -2,7 +2,7 @@ import { IonButton, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonPr
 import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { docFiles, axiosResp, bingMapPosition, initiativeType, investigationResult, invetigationState, objetive, organizator, post, postCategory, typeArt, typeInstitute, wetlandCategories, wetlandLocation, wetlandTypes, wetlandZones } from "../interfaces/interfaces";
+import { docFiles, axiosResp, bingMapPosition, initiativeType, investigationResult, invetigationState, objetive, organizator, post, postCategory, typeArt, typeInstitute, wetlandCategories, wetlandLocation, wetlandTypes, wetlandZones, flora, fauna, outskirtType, margins, color, olor, morfology, imgFiles } from "../interfaces/interfaces";
 import { POSTS_URL } from '../axiosDirs';
 const axios = require('axios');
 
@@ -100,6 +100,9 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 ) setStep(step+1);
                 else showError('Debe completar todos los campos.');
             break;
+            case 4:
+                setStep(step+1);
+            break;
         }
     }
 
@@ -129,8 +132,74 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         return (
             <>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Flora y fauna:</IonLabel>
-                    <IonTextarea placeholder={"Describa la flora y/o fauna observada."} {...register("subcategory.wetland.flora")} ></IonTextarea>
+                    <IonLabel position={'floating'}>Color del agua:</IonLabel>
+                    <IonSelect placeholder={"Indique el color observado."} className={'alert-xl'} {...register("subcategory.wetland.color")} >
+                        {
+                        color.map((color, index) => {
+                            return (<IonSelectOption value={color} key={`IonSelectOption-${index}-color-${color}`}>{color}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Presencia de olor en el agua:</IonLabel>
+                    <IonSelect placeholder={"Indique si noto la presencia de olor en el agua."} className={'alert-xl'} {...register("subcategory.wetland.smell")} >
+                        {
+                        olor.map((olor, index) => {
+                            return (<IonSelectOption value={olor} key={`IonSelectOption-${index}-olor-${olor}`}>{olor}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Presencia de flora:</IonLabel>
+                    <IonSelect placeholder={"Indique la flora observada."} multiple className={'alert-xl'} {...register("subcategory.wetland.flora")} >
+                        {
+                        flora.map((flora, index) => {
+                            return (<IonSelectOption value={flora} key={`IonSelectOption-${index}-flora-${flora}`}>{flora}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Presencia de fauna:</IonLabel>
+                    <IonSelect placeholder={"Indique la fauna observada."} multiple className={'alert-xl'} {...register("subcategory.wetland.wildlife")} >
+                        {
+                        fauna.map((fauna, index) => {
+                            return (<IonSelectOption value={fauna} key={`IonSelectOption-${index}-fauna-${fauna}`}>{fauna}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Actividades desarrolladas en zonas aledañas:</IonLabel>
+                    <IonSelect placeholder={"Indique las actividades observadas en los alrededores."} className={'alert-xl'} {...register("subcategory.wetland.outskirts")} >
+                        {
+                        outskirtType.map((outskirt, index) => {
+                            return (<IonSelectOption value={outskirt} key={`IonSelectOption-${index}-outskirt-${outskirt}`}>{outskirt}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Estado de márgenes de ribera:</IonLabel>
+                    <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("subcategory.wetland.margins")} >
+                        {
+                        margins.map((margins, index) => {
+                            return (<IonSelectOption value={margins} key={`IonSelectOption-${index}-margins-${margins}`}>{margins}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Morfología de la costa:</IonLabel>
+                    <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("subcategory.wetland.morfology")} >
+                        {
+                        morfology.map((morfology, index) => {
+                            return (<IonSelectOption value={morfology} key={`IonSelectOption-${index}-morfology-${morfology}`}>{morfology}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Historia:</IonLabel>
@@ -152,7 +221,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonTextarea placeholder={"Descripción de actividades antrópicas, actuales o futuras, que causen un impacto en el humedal/sitio de interés:"} {...register("subcategory.threath.anthropics")} ></IonTextarea>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'fixed'} style={{width: '100%', maxWidth: '100%'}}>Documentación que acredite lo descrito:</IonLabel>
+                    <IonLabel position={'stacked'} style={{width: '100%', maxWidth: '100%'}}>Documentación que acredite lo descrito:</IonLabel>
                     <div style={{display: 'flex', width: '100%', padding: '10px'}}>
                         <input type="file" accept={`${docFiles}`} {...register("content.files")}  style={{display: 'flex'}}/>
                     </div>
@@ -278,7 +347,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         <IonProgressBar value={step / LASTSTEP} buffer={step / LASTSTEP}></IonProgressBar>
         <IonText className={"ion-text-center"}><h1>{getTitle()}</h1></IonText>
         <IonProgressBar value={step / LASTSTEP} buffer={step / LASTSTEP}></IonProgressBar>
-        <IonGrid style={{width: '100%'}}>
+        <IonGrid style={{width: '100%'}} className={'scroll'}>
             <IonRow className={"ion-align-items-center ion-justify-content-evenly"} style={{height: '100%'}}>
                 <IonCol size={"1"}>
                     <IonButton fill={"outline"} onClick={() => backStep()} hidden={step > FIRSTSTEP ? false : true}>
@@ -349,6 +418,12 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         <IonItem hidden={showIfStepIs(3)}>
                             <IonLabel position={'floating'} className={"ion-align-self-start"}>Descripcion:</IonLabel>
                             <IonTextarea placeholder={"Ingrese los datos de su publicacion."} required {...register("content.description", { required: true })} ></IonTextarea>
+                        </IonItem>
+                        <IonItem hidden={showIfStepIs(3)}>
+                            <IonLabel position={'stacked'} style={{width: '100%', maxWidth: '100%'}}>Imagenes/fotos:</IonLabel>
+                            <div style={{display: 'flex', width: '100%', padding: '10px'}}>
+                                <input type="file" multiple accept={`${imgFiles}`} {...register("content.files")}  style={{display: 'flex'}}/>
+                            </div>
                         </IonItem>
                         { getOptionesByType() }
                         <IonText className={"ion-text-center"} hidden={showIfStepIs(LASTSTEP)}><h3>Esta a punto de completar la publicacion</h3></IonText>

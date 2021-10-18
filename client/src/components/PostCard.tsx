@@ -11,6 +11,7 @@ interface postCard extends post {
     }[]
 }
 const PostCard: React.FC<postCard> = (props) => {
+    if (props.content && props.content.description && props.content.description.length >= 100) props.content.description = `${props.content.description.slice(0,100)} ...`
     return (
         <IonCard color={''}>
             <IonCardHeader className="ion-margin-no">
@@ -36,7 +37,7 @@ const PostCard: React.FC<postCard> = (props) => {
                             {props.buttons.map((button, index) => {
                                 return(
                                     <IonButton size={button.size ? button.size : "default"} onClick={() => button.onClick()}
-                                        color={button.color ? button.color : 'primary'} key={`PostCard-button-${index}`}
+                                        color={button.color ? button.color : 'primary'} fill={'clear'} key={`PostCard-button-${index}`}
                                     >
                                         {button.label ? button.label : null}
                                         {button.icon ? <IonIcon name={button.icon} />: null}

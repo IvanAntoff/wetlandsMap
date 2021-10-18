@@ -69,20 +69,20 @@ export interface post {
 }
 
 type typeWetland = "Rio" | "Laguna natural" | "Laguna artifical" | "Cañada" | "Arroyo" | "Desconocido";
-type typeOutskirt = "Industrial" | "Residencial" | " Agropecuaria" | "Reserva natural";
+type typeOutskirt = "Industrial" | "Residencial" | " Agropecuaria" | "De preservación / Reserva natural" | "Ecoturismo" | "Otra";
 type typePollutant = "Actividad industrial" | "Actividad agrícola" | "Actividad ganadera" | "Alteración de márgenes del humedal" | "Emprendimiento inmobiliario" | "Asentamientos urbanos";
 type typeArt = "Producciones artísticas" | "Fotos" | "Audiovisuales" | "Redacciones" | "Documentos";
 type typeInstitute = "Escolar" | "Universitario" | "Laboratorio" | "Instituciones de Investigación" | "Privado" | "ONG" | "Otro";
 interface optionalWetland {
-    color?: string,
-    smell?: string,
+    color?: "Ámbar" | "Marrón" | "Verde" | "Otro",
+    smell?: "Presencia" | "Ausencia",
     outskirts?: typeOutskirt,
-    flora?: string,
+    flora?: "Acuática" | "Terrestre" | "Mixta" | "No se observa",
+    wildlife?: "Anfibios" | "Peces"| "Reptiles" | "Aves"| "Mamíferos"| "Insectos"| "Macroinvertebrados"| "Otra",
     history?: string,
-    margins?: "Alterado " | "Inalterado"
+    margins?: "Alterado " | "Inalterado" | "Otra",
+    morfology: "Barranca" | "Bosque" | "nativo" | "Pastizal" | "Cultivo" | "Mixta"
 }
-
-
 interface optionalThreat {
     anthropics?: string,
     pollutants?: string,
@@ -122,13 +122,17 @@ export const categories: {name: string, value: postCategory}[] = [
 // Generic data
 export const wetlandTypes = ["Natural", "Artificial"]
 export const wetlandCategories = ["Rio", "Laguna natural", "Laguna artifical", "Cañada", "Arroyo", "Desconocido"];
-export const wetlandZones = ["ZONA RURAL", "ZONA PERIURBANA", "ZONA URBANA", "OTRO "]
-export const wetlandLocation =  ["Colón", "Concepcion Del Uruguay", "Gualeguaychú"]
+export const wetlandZones = ["ZONA RURAL", "ZONA PERIURBANA", "ZONA URBANA", "OTRO "];
+export const wetlandLocation =  ["Colón", "Concepcion Del Uruguay", "Gualeguaychú"];
 
 // Wetlands optionals
-export const outskirtType = ["Industrial", "Residencial", " Agropecuaria", "Reserva natural"]
+export const outskirtType = ["Industrial", "Residencial", " Agropecuaria", "De preservación / Reserva natural", "Ecoturismo", "Otra"];
 export const flora = ["Acuática", "Terrestre", "Otra"];
+export const fauna = ["Anfibios" , "Peces", "Reptiles", "Aves", "Mamíferos", "Insectos", "Macroinvertebrados", "Otra"]
 export const margins = ["Alterado ", "Inalterado"];
+export const color = ["Ámbar", "Marrón", "Verde", "Otro"];
+export const olor = ["Presencia", "Ausencia"];
+export const morfology = ["Barranca", "Bosque", "nativo", "Pastizal", "Cultivo", "Mixta"];
 
 // Threath opcionals
 export const typePollutant = ["Actividad industrial", "Actividad agrícola", "Actividad ganadera", "Alteración de márgenes del humedal", "Emprendimiento inmobiliario", "Asentamientos urbanos"];
