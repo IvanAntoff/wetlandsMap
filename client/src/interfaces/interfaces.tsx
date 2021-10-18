@@ -46,17 +46,11 @@ export interface post {
     id: string,
     status: 'pending' | 'refused' | 'approved',
     category: postCategory,
-    subcategory: {
-        wetland?: optionalWetland,
-        threath?: optionalThreat,
-        initiative?: optionalInitiative,
-        art?: optionalsArt,
-        investigation?: optionalInvestigation
-    },
+    data: optionalWetland | optionalThreat | optionalInitiative | optionalsArt | optionalInvestigation,
     content: {
         title: string,
         description: string,
-        files: any[],
+        files: File[],
         genericData: {
             zone: "ZONA RURAL" | "ZONA PERIURBANA" | "ZONA URBANA" | "OTRO ",
             type: "Natural" | "Artificial",
@@ -69,29 +63,24 @@ export interface post {
 }
 
 type typeWetland = "Rio" | "Laguna natural" | "Laguna artifical" | "Cañada" | "Arroyo" | "Desconocido";
-type typeOutskirt = "Industrial" | "Residencial" | " Agropecuaria" | "Reserva natural";
+type typeOutskirt = "Industrial" | "Residencial" | " Agropecuaria" | "De preservación / Reserva natural" | "Ecoturismo" | "Otra";
 type typePollutant = "Actividad industrial" | "Actividad agrícola" | "Actividad ganadera" | "Alteración de márgenes del humedal" | "Emprendimiento inmobiliario" | "Asentamientos urbanos";
 type typeArt = "Producciones artísticas" | "Fotos" | "Audiovisuales" | "Redacciones" | "Documentos";
 type typeInstitute = "Escolar" | "Universitario" | "Laboratorio" | "Instituciones de Investigación" | "Privado" | "ONG" | "Otro";
+
 interface optionalWetland {
-    color?: string,
-    smell?: string,
+    color?: "Ámbar" | "Marrón" | "Verde" | "Otro",
+    smell?: "Presencia" | "Ausencia",
     outskirts?: typeOutskirt,
-    flora?: "Acuática" | "Terrestre" | "Otra",
-    margins?: "Alterado " | "Inalterado"
+    flora?: "Acuática" | "Terrestre" | "Mixta" | "No se observa",
+    wildlife?: "Anfibios" | "Peces"| "Reptiles" | "Aves"| "Mamíferos"| "Insectos"| "Macroinvertebrados"| "Otra",
+    history?: string,
+    margins?: "Alterado " | "Inalterado" | "Otra",
+    morfology: "Barranca" | "Bosque" | "nativo" | "Pastizal" | "Cultivo" | "Mixta"
 }
-
-
 interface optionalThreat {
-    analysis?: {
-        type: "Físico-químico" | "Microbiológico" | "Biológico",
-        results: 'Buena' | "Regular" | "Mala"
-    },
-    pollutants?: typePollutant[]
-    aspect?: {
-        type: "Olor" | "Color" | "Materia organiza en la superficie" | "Espuma" | "Algas",
-        description: string
-    }
+    anthropics?: string,
+    pollutants?: string,
 }
 
 interface optionalInitiative {
@@ -107,23 +96,41 @@ interface optionalsArt {
 interface optionalInvestigation {
     institute: typeInstitute,
     state: "Pendiente" | "Activo" | "Finalizado",
-    result: {
-        type: "Final" | "Parcial",
-        publish: "No publicados" | "Revista cientifica" | "Congreso" | "Otro"
-    }
+    result: string,
+    resultType: "Final" | "Parcial",
 }
 
+export type genericFilter = {type: string, value: string};
+
+export type keywords = 'Flora'| 'Fauna'| 'Algas'| 'Contaminación'| 'Residuos sólidos urbanos'| 'Efluentes cloacales'| 'Efluentes industriales'| 'Alteración del paisaje'| 'Calidad del agua'| 'Biodiversidad'| 'Educación ambiental'| 'Ecoturismo'| 'Actividad residencial'| 'Actividad industrial'| 'Actividad agrícola'| 'Actividad ganadera'| 'Emprendimiento inmobiliario'|  'Aves'| 'Paisaje'| 'Rural'| 'Periurbano'| 'Urbano'| 'Natural'| 'Artificial'| 'Laguna'| 'Río'| 'Arroyo'| 'Cañada'| 'Pantano'| 'Colón'| 'Concepción del Uruguay'| 'Gualeguaychú'| 'Basura'| 'Olor'| 'Color'| 'Ribera'| 'Nutrientes'| 'Pesca'| 'Recreación'| 'Cultivo'| 'Granjas'| 'Estudio de impacto ambiental'| 'Informe técnico ambiental'| 'Conservación'| 'Proyecto educativo'| 'Proyecto de investigación'| 'Reserva natural'| 'Anfibios'| 'Peces'| 'Reptiles'| 'Aves'| 'Mamíferos'| 'Insectos'| 'Macroinvertebrados'| 'Pastizal'| 'Bosque'| 'Barranca'| 'Análisis de agua'| 'Físico-químico'| 'Microbiológico'| 'Biológico'| 'Bioensayos'| 'Asentamientos'| 'Basural'| 'Relleno sanitario'| 'Materia orgánica'| 'Espumas'| 'Actividad sustentable'| 'Proyecto sustentable'| 'Feria de ciencias'| 'Congresos'| 'Jornadas ambientales'| 'Revistas científicas'| 'Contaminación orgánica'| 'Contaminación Química'| 'Contaminación microbiológica'| 'Contaminación antrópica' | 'Contaminación natural';
+
+export const imgFiles = 'image/png, image/jpeg';
+export const docFiles = '.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf';
 // Data
+
+export const categories: {name: string, value: postCategory}[] = [
+    {name: "Descripción del humedal/Sitio de interés", value: "humedal"},
+    {name: "Amenazas / impactos antrópicos o naturales", value: "amenazas"},
+    {name: "Iniciativas sustentables", value: "iniciativas"},
+    {name: "Expresiones artísticas", value: "arte"},
+    {name: "Proyectos de investigación", value: "investigacion"}
+]
+
 // Generic data
 export const wetlandTypes = ["Natural", "Artificial"]
+
 export const wetlandCategories = ["Rio", "Laguna natural", "Laguna artifical", "Cañada", "Arroyo", "Desconocido"];
-export const wetlandZones = ["ZONA RURAL", "ZONA PERIURBANA", "ZONA URBANA", "OTRO "]
-export const wetlandLocation =  ["Colón", "Concepcion Del Uruguay", "Gualeguaychú"]
+export const wetlandZones = ["ZONA RURAL", "ZONA PERIURBANA", "ZONA URBANA", "OTRO "];
+export const wetlandLocation =  ["Colón", "Concepcion Del Uruguay", "Gualeguaychú"];
 
 // Wetlands optionals
-export const outskirtType = ["Industrial", "Residencial", " Agropecuaria", "Reserva natural"]
+export const outskirtType = ["Industrial", "Residencial", " Agropecuaria", "De preservación / Reserva natural", "Ecoturismo", "Otra"];
 export const flora = ["Acuática", "Terrestre", "Otra"];
+export const fauna = ["Anfibios" , "Peces", "Reptiles", "Aves", "Mamíferos", "Insectos", "Macroinvertebrados", "Otra"]
 export const margins = ["Alterado ", "Inalterado"];
+export const color = ["Ámbar", "Marrón", "Verde", "Otro"];
+export const olor = ["Presencia", "Ausencia"];
+export const morfology = ["Barranca", "Bosque", "nativo", "Pastizal", "Cultivo", "Mixta"];
 
 // Threath opcionals
 export const typePollutant = ["Actividad industrial", "Actividad agrícola", "Actividad ganadera", "Alteración de márgenes del humedal", "Emprendimiento inmobiliario", "Asentamientos urbanos"];
@@ -143,8 +150,26 @@ export const typeArt = ["Producciones artísticas", "Fotos", "Audiovisuales", "R
 
 // Investigations optionals
 export const typeInstitute = ["Escolar", "Universitario", "Laboratorio", "Instituciones de Investigación", "Privado", "ONG", "Otro"];
-export const invetigationState = ["Pendiente", "Activo", "Finalizado"]
-export const investigationResult = {
-    type: ["Final", "Parcial"],
-    publish: ["No publicados", "Revista cientifica", "Congreso", "Otro"]
-}
+export const invetigationState = ["Pendiente", "Activo", "Finalizado"];
+export const investigationResult = ["Final", "Parcial"];
+const publish = ["No publicados", "Revista cientifica", "Congreso", "Otro"];
+
+// Keywords
+
+export const keywordsItems = ['Flora', 'Fauna', 'Algas', 'Contaminación', 'Residuos sólidos urbanos', 'Efluentes cloacales', 'Efluentes industriales', 'Alteración del paisaje', 'Calidad del agua', 'Biodiversidad', 'Educación ambiental', 'Ecoturismo', 'Actividad residencial', 'Actividad industrial', 'Actividad agrícola', 'Actividad ganadera', 'Emprendimiento inmobiliario',  'Aves', 'Paisaje', 'Rural', 'Periurbano', 'Urbano', 'Natural', 'Artificial', 'Laguna', 'Río', 'Arroyo', 'Cañada', 'Pantano', 'Colón', 'Concepción del Uruguay', 'Gualeguaychú', 'Basura', 'Olor', 'Color', 'Ribera', 'Nutrientes', 'Pesca', 'Recreación', 'Cultivo', 'Granjas', 'Estudio de impacto ambiental', 'Informe técnico ambiental', 'Conservación', 'Proyecto educativo', 'Proyecto de investigación', 'Reserva natural', 'Anfibios', 'Peces', 'Reptiles', 'Aves', 'Mamíferos', 'Insectos', 'Macroinvertebrados', 'Pastizal', 'Bosque', 'Barranca', 'Análisis de agua', 'Físico-químico', 'Microbiológico', 'Biológico', 'Bioensayos', 'Asentamientos', 'Basural', 'Relleno sanitario', 'Materia orgánica', 'Espumas', 'Actividad sustentable', 'Proyecto sustentable', 'Feria de ciencias', 'Congresos', 'Jornadas ambientales', 'Revistas científicas', 'Contaminación orgánica', 'Contaminación Química', 'Contaminación microbiológica', 'Contaminación antrópica', 'Contaminación natural']
+export const postFilters = [
+    {
+        title: 'Tipo de publicacion',
+        placeholder: 'Seleccione una categoria',
+        items: categories,
+        multiple: true,
+        type: 'category',
+    },
+    {
+        title: 'Palabras clave',
+        placeholder: 'Seleccione palabra/s clave',
+        items: keywordsItems.map(item => {return {name: item, value: item.toLowerCase()}}),
+        multiple: true,
+        type: 'keyword'
+    },
+] 

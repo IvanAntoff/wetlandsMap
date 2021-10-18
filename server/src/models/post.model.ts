@@ -23,10 +23,10 @@ export class Post extends Entity {
   category: string;
 
   @property({
-    type: 'array',
+    type: 'object',
     itemType: 'object',
   })
-  subcategory?: {type: string, value: string}[];
+  data?: any;
 
   @property({
     type: 'object',
@@ -44,7 +44,7 @@ export class Post extends Entity {
     type: 'object',
     required: true,
   })
-  content: {title: string, description: string, files: {type: string, value: any, name: string}[]};
+  content: {title: string, description: string, files: File[]};
 
   constructor(data?: Partial<Post>) {
     super(data);
