@@ -46,17 +46,11 @@ export interface post {
     id: string,
     status: 'pending' | 'refused' | 'approved',
     category: postCategory,
-    subcategory: {
-        wetland?: optionalWetland,
-        threath?: optionalThreat,
-        initiative?: optionalInitiative,
-        art?: optionalsArt,
-        investigation?: optionalInvestigation
-    },
+    data: optionalWetland | optionalThreat | optionalInitiative | optionalsArt | optionalInvestigation,
     content: {
         title: string,
         description: string,
-        files: any[],
+        files: File[],
         genericData: {
             zone: "ZONA RURAL" | "ZONA PERIURBANA" | "ZONA URBANA" | "OTRO ",
             type: "Natural" | "Artificial",
@@ -73,6 +67,7 @@ type typeOutskirt = "Industrial" | "Residencial" | " Agropecuaria" | "De preserv
 type typePollutant = "Actividad industrial" | "Actividad agrícola" | "Actividad ganadera" | "Alteración de márgenes del humedal" | "Emprendimiento inmobiliario" | "Asentamientos urbanos";
 type typeArt = "Producciones artísticas" | "Fotos" | "Audiovisuales" | "Redacciones" | "Documentos";
 type typeInstitute = "Escolar" | "Universitario" | "Laboratorio" | "Instituciones de Investigación" | "Privado" | "ONG" | "Otro";
+
 interface optionalWetland {
     color?: "Ámbar" | "Marrón" | "Verde" | "Otro",
     smell?: "Presencia" | "Ausencia",
@@ -107,13 +102,15 @@ interface optionalInvestigation {
 
 export type genericFilter = {type: string, value: string};
 
+export type keywords = 'Flora'| 'Fauna'| 'Algas'| 'Contaminación'| 'Residuos sólidos urbanos'| 'Efluentes cloacales'| 'Efluentes industriales'| 'Alteración del paisaje'| 'Calidad del agua'| 'Biodiversidad'| 'Educación ambiental'| 'Ecoturismo'| 'Actividad residencial'| 'Actividad industrial'| 'Actividad agrícola'| 'Actividad ganadera'| 'Emprendimiento inmobiliario'|  'Aves'| 'Paisaje'| 'Rural'| 'Periurbano'| 'Urbano'| 'Natural'| 'Artificial'| 'Laguna'| 'Río'| 'Arroyo'| 'Cañada'| 'Pantano'| 'Colón'| 'Concepción del Uruguay'| 'Gualeguaychú'| 'Basura'| 'Olor'| 'Color'| 'Ribera'| 'Nutrientes'| 'Pesca'| 'Recreación'| 'Cultivo'| 'Granjas'| 'Estudio de impacto ambiental'| 'Informe técnico ambiental'| 'Conservación'| 'Proyecto educativo'| 'Proyecto de investigación'| 'Reserva natural'| 'Anfibios'| 'Peces'| 'Reptiles'| 'Aves'| 'Mamíferos'| 'Insectos'| 'Macroinvertebrados'| 'Pastizal'| 'Bosque'| 'Barranca'| 'Análisis de agua'| 'Físico-químico'| 'Microbiológico'| 'Biológico'| 'Bioensayos'| 'Asentamientos'| 'Basural'| 'Relleno sanitario'| 'Materia orgánica'| 'Espumas'| 'Actividad sustentable'| 'Proyecto sustentable'| 'Feria de ciencias'| 'Congresos'| 'Jornadas ambientales'| 'Revistas científicas'| 'Contaminación orgánica'| 'Contaminación Química'| 'Contaminación microbiológica'| 'Contaminación antrópica' | 'Contaminación natural';
+
 export const imgFiles = 'image/png, image/jpeg';
 export const docFiles = '.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf';
 // Data
 
 export const categories: {name: string, value: postCategory}[] = [
     {name: "Descripción del humedal/Sitio de interés", value: "humedal"},
-    {name: "Amenazas/impactos antrópicos o naturales", value: "amenazas"},
+    {name: "Amenazas / impactos antrópicos o naturales", value: "amenazas"},
     {name: "Iniciativas sustentables", value: "iniciativas"},
     {name: "Expresiones artísticas", value: "arte"},
     {name: "Proyectos de investigación", value: "investigacion"}
@@ -121,6 +118,7 @@ export const categories: {name: string, value: postCategory}[] = [
 
 // Generic data
 export const wetlandTypes = ["Natural", "Artificial"]
+
 export const wetlandCategories = ["Rio", "Laguna natural", "Laguna artifical", "Cañada", "Arroyo", "Desconocido"];
 export const wetlandZones = ["ZONA RURAL", "ZONA PERIURBANA", "ZONA URBANA", "OTRO "];
 export const wetlandLocation =  ["Colón", "Concepcion Del Uruguay", "Gualeguaychú"];
@@ -165,11 +163,13 @@ export const postFilters = [
         placeholder: 'Seleccione una categoria',
         items: categories,
         multiple: true,
+        type: 'category',
     },
     {
         title: 'Palabras clave',
         placeholder: 'Seleccione palabra/s clave',
         items: keywordsItems.map(item => {return {name: item, value: item.toLowerCase()}}),
         multiple: true,
+        type: 'keyword'
     },
 ] 

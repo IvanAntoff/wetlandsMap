@@ -63,7 +63,7 @@ const Tab3: React.FC = () => {
 					id={post.id}
 					status={post.status}
 					category={post.category}
-					subcategory={post.subcategory}
+					data={post.data}
 					content={post.content}
 					ubication={post.ubication}
 					keyword={post.keyword}

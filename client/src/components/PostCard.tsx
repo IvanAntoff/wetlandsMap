@@ -10,7 +10,7 @@ interface postCard extends post {
         icon?: string
     }[]
 }
-const PostCard: React.FC<postCard> = (props) => {
+const PostCard: React.FC<postCard> = (props: postCard) => {
     if (props.content && props.content.description && props.content.description.length >= 100) props.content.description = `${props.content.description.slice(0,100)} ...`
     return (
         <IonCard color={''}>
@@ -22,15 +22,6 @@ const PostCard: React.FC<postCard> = (props) => {
                 <IonText>
                     {props.content.description ? props.content.description : 'Descripcion no disponible.'}
                 </IonText>
-                { props.keyword && props.keyword.length > 0 ?
-                    props.keyword.map((keyword, index) => {
-                        return (
-                            <IonChip key={`PostCard-Chip-keyword-${index}`}>{keyword}</IonChip>
-                        )
-                    })
-                    :
-                    null
-                }
                 { props.buttons && props.buttons.length > 0 ? 
                     <IonItem lines={"none"} >
                         <IonButtons className={'ion-justify-content-between'}>
@@ -49,6 +40,17 @@ const PostCard: React.FC<postCard> = (props) => {
                     :
                     null
                 }
+                {/* { props.keyword && props.keyword.length > 0 ?
+                    <IonItem lines={"none"} >
+                        {props.keyword.map((keyword, index) => {
+                            return (
+                                <IonChip key={`PostCard-Chip-keyword-${index}`}>{keyword}</IonChip>
+                            )
+                        })}
+                    </IonItem>
+                    :
+                    null
+                } */}
             </IonCardContent>
         </IonCard>
     );

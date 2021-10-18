@@ -1,5 +1,5 @@
 import { IonContent, IonGrid, IonHeader, IonPage, IonTitle, IonToolbar, IonRow, IonCol, IonFab, IonFabButton, IonIcon, IonLoading, IonModal, IonButtons, IonAlert, IonButton } from '@ionic/react';
-import { add, arrowUndoCircleOutline } from 'ionicons/icons';
+import { add, arrowUndoCircleOutline, pin } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
 import { POSTS_URL } from '../axiosDirs';
 import { GenericFilters } from '../components/GenericFilters';
@@ -147,33 +147,39 @@ const Tab1: React.FC = () => {
 	}
 
 	const filterData = (filters: string[]) => {
-		const posts = postsData;
-		const auxPosts:post[] = [];
-		const auxMarkers: marker[]= [];
-		if (!filters || !Array.isArray(filters) || filters.length <= 0 || !posts || !Array.isArray(posts)) return {filteredPosts: posts, filteredMarkers: markers};
-		for (let i = 0; i < posts.length; i++) {
-			const post = posts[i];
-			for (let j = 0; j < filters.length; j++) {
-				const filter = filters[j];
-				if (
-					post.category.includes(filter) ||
-					post.content.description.includes(filter) ||
-					post.content.title.includes(filter) ||
-					post.keyword.includes(filter)
-				) {
-					auxPosts.push(post);
-					if (post.status === 'approved') auxMarkers.push({
-						metadata: {
-							title: post.content.title,
-							description: `${post.content?.description.slice(0,75)}...`,
-						},
-						center: {latitude: parseFloat(post.ubication.latitude),longitude: parseFloat(post.ubication.longitude)},
-					});
-					break;
+		try{
+			const posts = postsData;
+			const auxPosts:post[] = [];
+			const auxMarkers: marker[]= [];
+			if (!filters || !Array.isArray(filters) || filters.length <= 0 || !posts || !Array.isArray(posts)) return {filteredPosts: posts, filteredMarkers: markers};
+			for (let i = 0; i < posts.length; i++) {
+				const post = posts[i];
+				for (let j = 0; j < filters.length; j++) {
+					const filter = filters[j];
+					if (
+						post.category.includes(filter) ||
+						post.content.description.includes(filter) ||
+						post.content.title.includes(filter) ||
+						post.keyword.some(item => item.toLowerCase() === filter.toLowerCase())
+					) {
+						auxPosts.push(post);
+						if (post.status === 'approved') auxMarkers.push({
+							metadata: {
+								title: post.content.title,
+								description: `${post.content?.description.slice(0,75)}...`,
+							},
+							center: {latitude: parseFloat(post.ubication.latitude),longitude: parseFloat(post.ubication.longitude)},
+						});
+						break;
+					}
 				}
 			}
+			return {filteredPosts: auxPosts, filteredMarkers: auxMarkers}
 		}
-		return {filteredPosts: auxPosts, filteredMarkers: auxMarkers}
+		catch (e) {
+			console.error(e)
+			return {filteredPosts: postsData, filteredMarkers: markers};
+		}
 	}
 
 	return (
@@ -188,8 +194,8 @@ const Tab1: React.FC = () => {
 						:
 						<IonButtons slot='end'>
 							<IonButton>
-								<p>{user && user.nickname}</p>
-								<img className="circular--square" src={user && user.picture} alt={user && user.name} width="35" height="35" />
+								<p>{user?.nickname ? user.nickname : 'Desconocido'}</p>
+								<img className="circular--square" src={user?.picture ? user.picture : ''} alt={user?.name ? user?.name : 'unknowimg'} width="35" height="35" />
 							</IonButton>
 							<LogoutButton />
 						</IonButtons>
@@ -218,7 +224,7 @@ const Tab1: React.FC = () => {
 											id={post.id}
 											status={post.status}
 											category={post.category}
-											subcategory={post.subcategory}
+											data={post.data}
 											content={post.content}
 											ubication={post.ubication}
 											keyword={post.keyword}

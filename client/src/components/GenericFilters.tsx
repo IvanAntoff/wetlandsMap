@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { genericFilter } from "../interfaces/interfaces";
 
 interface Filters {
-    filters: {title: string, placeholder?: string, multiple?: boolean, items: {name: string, value: string}[] }[],
+    filters: {title: string, placeholder?: string, multiple?: boolean, type?: string, items: {name: string, value: string}[] }[],
     getFilters: (appliedFilters: genericFilter[]) => void;
 }
 
@@ -44,7 +44,7 @@ export const GenericFilters: React.FC <Filters> = (props:Filters) => {
                 props.filters.length > 0 ?
                 props.filters.map((filter, index) => {
                     if (!filter.title || filter.title === '' || !filter.items || !Array.isArray(filter.items)) return null;
-                    const type = filter.title.toString().replaceAll(' ', '-');
+                    const type = filter.type ? filter.type : filter.title.toString().replaceAll(' ', '-');
                     return (
                         <IonItem key={`IonItem-${type}-${index}`}>
                             <IonLabel position={'stacked'}>{filter.title}:</IonLabel>
