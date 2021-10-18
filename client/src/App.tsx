@@ -38,7 +38,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { wetlandusers } from './apiKeys';
 
 const App: React.FC = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
 	const useremail = user?.email;
 
   return (
