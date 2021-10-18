@@ -35,7 +35,7 @@ import './theme/variables.css';
 import './theme/customizations.css'
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { wetlandusers } from './interfaces/interfaces';
+import { wetlandusers } from './apiKeys';
 
 const App: React.FC = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
