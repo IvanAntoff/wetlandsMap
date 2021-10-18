@@ -1,4 +1,4 @@
-import { IonContent, IonGrid, IonHeader, IonPage, IonTitle, IonToolbar, IonRow, IonCol, IonFab, IonFabButton, IonIcon, IonLoading, IonModal } from '@ionic/react';
+import { IonContent, IonGrid, IonHeader, IonPage, IonTitle, IonToolbar, IonRow, IonCol, IonFab, IonFabButton, IonIcon, IonLoading, IonModal, IonButtons, IonAlert, IonButton } from '@ionic/react';
 import { add, arrowUndoCircleOutline } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
 import { POSTS_URL } from '../axiosDirs';
@@ -7,6 +7,9 @@ import { GenericMap } from '../components/GenericMap';
 import PostCard from '../components/PostCard';
 import { WetlandForm } from '../components/WetlandForm';
 import { bingMapPosition, categories, marker, post, postFilters } from '../interfaces/interfaces';
+import LoginButton from '../components/LoginButton';
+import LogoutButton from '../components/LogoutButton';
+import { useAuth0 } from "@auth0/auth0-react";
 const axios = require('axios');
 
 const Tab1: React.FC = () => {
@@ -18,10 +21,12 @@ const Tab1: React.FC = () => {
 	const [ colsSize, setColsSize ] = useState<{postCol: string, mapCol: string}>({postCol: '4', mapCol: '8'});
 	const [ showFab, setShowFab ] = useState<{addFab: boolean, cancelFab: boolean}>({addFab: true, cancelFab: false});
 	const [ showFormModal, setShowFormModal ] = useState<boolean>(false);
+	const [ showAlert, setShowAlert ] =useState<boolean> (false);
 	const [ loading, setLoading ] = useState<boolean>(false);
 	const [ infoMarkerIndex, setInfoMarkerIndex ] = useState<number>(-1);
 	const [ appliedFilters, setAppliedFilters ]	= useState<string[]>([]);
 	const editModeActive = useRef<boolean>(false);
+	const { user, isAuthenticated } = useAuth0();
 
 	useEffect(()=>{
 		const getData = async () =>{
@@ -106,6 +111,7 @@ const Tab1: React.FC = () => {
 	}
 
 	const editModeON = () => {
+		if (!isAuthenticated) return setShowAlert(true);
 		editModeActive.current = (true);
 		switchFabsVisibility();
 		switchColsSize();
@@ -175,6 +181,19 @@ const Tab1: React.FC = () => {
 			<IonHeader>
 				<IonToolbar color={'primary'}>
 					<IonTitle>Humedales digitales</IonTitle>
+					{!isAuthenticated || !user ? 
+						<IonButtons slot='end'>
+							<LoginButton />
+						</IonButtons>
+						:
+						<IonButtons slot='end'>
+							<IonButton>
+								<p>{user && user.nickname}</p>
+								<img className="circular--square" src={user && user.picture} alt={user && user.name} width="35" height="35" />
+							</IonButton>
+							<LogoutButton />
+						</IonButtons>
+					}
 				</IonToolbar>
 			</IonHeader>
 			<IonContent color={'light'} fullscreen>
@@ -234,6 +253,14 @@ const Tab1: React.FC = () => {
 						</IonCol>
 					</IonRow>
 				</IonGrid>
+				<IonAlert
+					isOpen={showAlert}
+					onDidDismiss={() => setShowAlert(false)}
+					header={'Alerta'}
+					subHeader={''}
+					message={'Debe iniciar sesión para agregar una publicación'}
+					buttons={['OK']}
+				/>
 			</IonContent>
 		</IonPage>
 	);

@@ -34,3 +34,7 @@
 .scroll {
     overflow-y: scroll;
 }
+
+.circular--square {
+    border-radius: 50%;
+}

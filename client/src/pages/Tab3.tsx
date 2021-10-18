@@ -1,8 +1,10 @@
-import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
+import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { useEffect, useState } from 'react';
 import { POSTS_URL } from '../axiosDirs';
 import PostCard from '../components/PostCard';
-import { post } from '../interfaces/interfaces';
+import { post, wetlandusers } from '../interfaces/interfaces';
+import { useAuth0 } from "@auth0/auth0-react";
+import { useHistory } from "react-router-dom";
 const axios = require('axios');
 
 const Tab3: React.FC = () => {
@@ -11,15 +13,18 @@ const Tab3: React.FC = () => {
 	const [ approveds, setApproveds ] = useState<JSX.Element[]>([]);
 	const [ refuseds, setRefuseds ] = useState<JSX.Element[]>([]);
 	const [ forceRefresh, setForceRefresh ] = useState<boolean>(false);
+	const { user, isAuthenticated, isLoading } = useAuth0();
+	const history = useHistory();
 
 	useEffect(()=>{
+		if (!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) return history.goBack();
 		const getData = () =>{
 			axios.get(`${POSTS_URL}/posts`).then((response: { data: post[] }) => {
 				setPostData(response.data);
 			})
 		}
 		getData();
-	},[]);
+	},[user, isAuthenticated, isLoading]);
 
 	useEffect(()=>{
 		let auxPendings = [];
@@ -90,26 +95,30 @@ const Tab3: React.FC = () => {
 		<IonPage>
 			<IonHeader>
 				<IonToolbar color={'primary'}>
-					<IonTitle>Mapa</IonTitle>
+					<IonTitle>Gestión de centenido</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent color={'light'} fullscreen>
-				<IonGrid className={'fixHeight'}>
-					<IonRow className={'fixHeight'}>
-						<IonCol size="4" className={'fixHeight scroll'}>
-							Pendientes
-							{ pendings }
-						</IonCol>
-						<IonCol size="4" className={'fixHeight scroll'}>
-							Aprobados
-							{ approveds }
-						</IonCol>
-						<IonCol size="4" className={'fixHeight scroll'}>
-							Rechazados
-							{ refuseds }
-						</IonCol>
-					</IonRow>
-				</IonGrid>
+				{	(!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) ?  
+					<IonTitle>Inicie sesion como administrador</IonTitle>
+					:
+					<IonGrid className={'fixHeight'}>
+						<IonRow className={'fixHeight'}>
+							<IonCol size="4" className={'fixHeight scroll'}>
+								<h3 className={'ion-text-center'}>Pendientes</h3>
+								{ pendings }
+							</IonCol>
+							<IonCol size="4" className={'fixHeight scroll'}>
+								<h3 className={'ion-text-center'}>Aprobados</h3>
+								{ approveds }
+							</IonCol>
+							<IonCol size="4" className={'fixHeight scroll'}>
+								<h3 className={'ion-text-center'}>Rechazados</h3>
+								{ refuseds }
+							</IonCol>
+						</IonRow>
+					</IonGrid>
+				}
 			</IonContent>
 		</IonPage>
 	);

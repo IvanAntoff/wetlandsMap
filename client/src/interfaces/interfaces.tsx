@@ -173,3 +173,5 @@ export const postFilters = [
         multiple: true,
     },
 ] 
+
+export const wetlandusers: string[] = ['ivan.antoff@gmail.com', 'burismateo@gmail.com', 'paredes.gimena@gmail.com', 'ireneaguer1@gmail.com', 'aguer.irene@uader.edu.ar', 'avila.eli.05@gmail.com'];

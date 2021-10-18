@@ -34,7 +34,14 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './theme/customizations.css'
 
-const App: React.FC = () => (
+import { useAuth0 } from "@auth0/auth0-react";
+import { wetlandusers } from './interfaces/interfaces';
+
+const App: React.FC = () => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+	const useremail = user?.email;
+
+  return (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
@@ -64,14 +71,18 @@ const App: React.FC = () => (
             <IonIcon icon={mapOutline} />
             <IonLabel>Mapa</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={newspaperOutline} />
-            <IonLabel>Gestion de publicaciones</IonLabel>
-          </IonTabButton>
+          {
+              !isAuthenticated || !useremail || !wetlandusers.includes(useremail)? null :
+            <IonTabButton tab="tab3" href="/tab3">
+              <IonIcon icon={newspaperOutline} />
+              <IonLabel>Gestion de publicaciones</IonLabel>
+            </IonTabButton>
+          }
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
   </IonApp>
-);
+  )
+};
 
 export default App;
