@@ -2,7 +2,7 @@ import { IonButton, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonPr
 import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { docFiles, axiosResp, bingMapPosition, initiativeType, investigationResult, invetigationState, objetive, organizator, post, postCategory, typeArt, typeInstitute, wetlandCategories, wetlandLocation, wetlandTypes, wetlandZones, flora, fauna, outskirtType, margins, color, olor, morfology, imgFiles, keywordsItems } from "../interfaces/interfaces";
+import { axiosResp, bingMapPosition, post, postCategory } from "../interfaces/interfaces";
 import { POSTS_URL } from '../axiosDirs';
 const axios = require('axios');
 
@@ -131,7 +131,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonLabel position={'floating'}>Color del agua:</IonLabel>
                     <IonSelect placeholder={"Indique el color observado."} className={'alert-xl'} {...register("data.color")} >
                         {
-                        color.map((color, index) => {
+                        colorArray.map((color, index) => {
                             return (<IonSelectOption value={color} key={`IonSelectOption-${index}-color-${color}`}>{color}</IonSelectOption>)
                         })
                         }
