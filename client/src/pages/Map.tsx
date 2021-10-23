@@ -1,7 +1,6 @@
 import { IonContent, IonGrid, IonHeader, IonPage, IonTitle, IonToolbar, IonRow, IonCol, IonFab, IonFabButton, IonIcon, IonLoading, IonModal, IonButtons, IonAlert, IonButton } from '@ionic/react';
 import { add, arrowUndoCircleOutline } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
-import { POSTS_URL } from '../axiosDirs';
 import { GenericFilters } from '../components/GenericFilters';
 import { GenericMap } from '../components/GenericMap';
 import PostCard from '../components/PostCard';
@@ -11,6 +10,7 @@ import LoginButton from '../components/LoginButton';
 import LogoutButton from '../components/LogoutButton';
 import { useAuth0 } from "@auth0/auth0-react";
 import { postFilters, categories } from '../enums/data';
+import { POSTS_URL } from '../apiKeys';
 const axios = require('axios');
 
 const Map: React.FC = () => {

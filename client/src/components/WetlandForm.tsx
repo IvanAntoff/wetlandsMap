@@ -3,8 +3,8 @@ import * as React from "react";
 import { useState } from "react";
 import { SubmitHandler, UnpackNestedValue, useForm } from "react-hook-form";
 import { axiosResp, bingMapPosition, post, postCategory } from "../interfaces/interfaces";
-import { POSTS_URL } from '../axiosDirs';
 import { artTypeArray, booleanEnumArray, colorArray, floraArray, hasArray, imgFiles, initiativeObjetiveArray, initiativeTypeArray, keywordsItems, marginsArray, morfologyArray, organizatorArray, originArray, outskirtArray, participantsArray, publicationsArray, resultStateArray, resultTypeArray, smellArray, sourceArray, waterAnalysisResultsArray, waterAnalysisTypeArray, wetlandCategoryArray, wetlandLocationArray, wetlandOriginArray, wetlandZonesArray, wildlifeArray } from "../enums/data";
+import { POSTS_URL } from "../apiKeys";
 const axios = require('axios');
 
 interface wetlandFormProps{

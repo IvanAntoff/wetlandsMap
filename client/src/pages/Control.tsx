@@ -1,11 +1,10 @@
-import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
-import { POSTS_URL } from '../axiosDirs';
 import PostCard from '../components/PostCard';
 import { post } from '../interfaces/interfaces';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
-import { wetlandusers } from '../apiKeys';
+import { POSTS_URL, wetlandusers } from '../apiKeys';
 const axios = require('axios');
 
 const Control: React.FC = () => {
