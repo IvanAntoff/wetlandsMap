@@ -13,7 +13,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { postFilters, categories } from '../enums/data';
 const axios = require('axios');
 
-const Tab1: React.FC = () => {
+const Map: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
 	const [ mapCenter, setMapCenter ] = useState<{ latitude: number, longitude: number }>( { latitude: -32.4790999, longitude: -58.2339789 } )
 	const [ markers, setMarkers ] = useState<marker[]>([]);
@@ -273,4 +273,4 @@ const Tab1: React.FC = () => {
 	);
 };
 
-export default Tab1;
+export default Map;

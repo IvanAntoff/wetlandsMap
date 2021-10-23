@@ -38,3 +38,7 @@
 .circular--square {
     border-radius: 50%;
 }
+
+.background-color-primary {
+    background: var(--ion-color-primary);
+}

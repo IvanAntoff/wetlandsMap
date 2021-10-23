@@ -9,10 +9,10 @@ import {
   IonTabs,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { mapOutline, newspaperOutline } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+import { home, mapOutline, newspaperOutline } from 'ionicons/icons';
+import Map from './pages/Map';
+import Home from './pages/Home';
+import Control from './pages/Control';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -46,34 +46,37 @@ const App: React.FC = () => {
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
+        <Route exact path="/home">
+            <Home />
           </Route>
-          {/* <Route exact path="/tab2">
-            <Tab2 />
-          </Route> */}
-          <Route path="/tab3">
-            <Tab3 />
+          <Route exact path="/mapa">
+            <Map />
+          </Route>
+          <Route path="/control">
+            <Control />
           </Route>
           <Route exact path="/">
-            <Tab1 />
+            <Home />
           </Route>
           <Route exact path="">
-            <Tab1 />
+            <Home />
+          </Route>
+          <Route exact >
+            <Home />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom" color={'primary'}>
-          {/* <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Carga de datos</IonLabel>
-          </IonTabButton> */}
-          <IonTabButton tab="tab1" href="/tab1">
+          <IonTabButton tab="Home" href="/home">
+            <IonIcon icon={home} />
+            <IonLabel>Inicio</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="Map" href="/mapa">
             <IonIcon icon={mapOutline} />
             <IonLabel>Mapa</IonLabel>
           </IonTabButton>
           {
               !isAuthenticated || !useremail || !wetlandusers.includes(useremail)? null :
-            <IonTabButton tab="tab3" href="/tab3">
+            <IonTabButton tab="Control" href="/control">
               <IonIcon icon={newspaperOutline} />
               <IonLabel>Gestion de publicaciones</IonLabel>
             </IonTabButton>

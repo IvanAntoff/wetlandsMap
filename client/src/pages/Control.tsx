@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import { wetlandusers } from '../apiKeys';
 const axios = require('axios');
 
-const Tab3: React.FC = () => {
+const Control: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
 	const [ pendings, setPendings ] = useState<JSX.Element[]>([]);
 	const [ approveds, setApproveds ] = useState<JSX.Element[]>([]);
@@ -125,4 +125,4 @@ const Tab3: React.FC = () => {
 	);
 };
 
-export default Tab3;
+export default Control;

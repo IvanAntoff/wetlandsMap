@@ -23,25 +23,38 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const LASTSTEP = 5;
 
     const onSubmit:SubmitHandler<post> = ((data: UnpackNestedValue<post>, event?: React.BaseSyntheticEvent) => {
-        console.log('in')
-        console.log('event', event)
-        setDisableSubmit(true);
-        let post:post = data;
-        post.status = "pending";
-        post.ubication = {latitude: props.location.latitude.toString(), longitude: props.location.longitude.toString()};
-        console.log('post:',post, props.location)
-        axios.post(`${POSTS_URL}/posts`, {
-            ...post,
-            status: "pending",
-        })
-        .then((response: axiosResp) => {
-            console.log('res:',response)
-            if (response && response.status === 200) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
-        })
-        .catch((error: any) => {
-            console.error(error);
+        try {
+            setDisableSubmit(true);
+            let post:post = data;
+            // if (post.content.files) {
+            //     const auxFiles: string[] = [];
+            //     for (let i = 0; i < post.content.files.length; i++) {
+            //         const file = post.content.files[i];
+            //         const fileStr = JSON.stringify(file);
+            //         if (fileStr) auxFiles.push(fileStr);
+            //     }
+            //     post.content = {...post.content};
+            // }
+            post.status = "pending";
+            post.ubication = {latitude: props.location.latitude.toString(), longitude: props.location.longitude.toString()};
+            // console.log('post:',post, props.location)
+            axios.post(`${POSTS_URL}/posts`, {
+                ...post,
+                status: "pending",
+            })
+            .then((response: axiosResp) => {
+                // console.log('res:',response)
+                if (response && response.status === 200) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
+            })
+            .catch((error: any) => {
+                console.error(error);
+                showError('Algo salio mal al realizar la publicacion, intentelo mas tarde.');
+            });
+        }
+        catch(error){
+            console.error(error)
             showError('Algo salio mal al realizar la publicacion, intentelo mas tarde.');
-        });
+        }
     });
 
     const onSubmitError = (errors:any, e:any) => console.error(errors, e);
