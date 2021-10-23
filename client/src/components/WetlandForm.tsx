@@ -1,7 +1,7 @@
 import { IonButton, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonProgressBar, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea } from "@ionic/react";
 import * as React from "react";
 import { useState } from "react";
-import { useForm, UseFormRegisterReturn } from "react-hook-form";
+import { SubmitHandler, UnpackNestedValue, useForm, UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
 import { axiosResp, bingMapPosition, post, postCategory } from "../interfaces/interfaces";
 import { POSTS_URL } from '../axiosDirs';
 import { artTypeArray, booleanEnumArray, colorArray, floraArray, hasArray, imgFiles, initiativeObjetiveArray, initiativeTypeArray, keywordsItems, marginsArray, morfologyArray, organizatorArray, originArray, outskirtArray, participantsArray, publicationsArray, resultStateArray, resultTypeArray, smellArray, sourceArray, waterAnalysisResultsArray, waterAnalysisTypeArray, wetlandCategoryArray, wetlandLocationArray, wetlandOriginArray, wetlandZonesArray, wildlifeArray } from "../enums/data";
@@ -20,12 +20,17 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const [ errorMessageColor, setErrorMessageColor ] = useState<string>('warning');
     const [ disableSubmit, setDisableSubmit ] = useState<boolean>(false);
     const { register, getValues ,handleSubmit } = useForm<post>();
-    const onSubmit = handleSubmit(data => {
+    const FIRSTSTEP = 1;
+    const LASTSTEP = 5;
+
+    const onSubmit:SubmitHandler<post> = ((data: UnpackNestedValue<post>, event?: React.BaseSyntheticEvent) => {
+        console.log('in')
+        console.log('event', event)
         setDisableSubmit(true);
         let post:post = data;
         post.status = "pending";
         post.ubication = {latitude: props.location.latitude.toString(), longitude: props.location.longitude.toString()};
-        console.log(post, props.location)
+        console.log('post:',post, props.location)
         axios.post(`${POSTS_URL}/posts`, {
             ...post,
             status: "pending",
@@ -39,8 +44,8 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             showError('Algo salio mal al realizar la publicacion, intentelo mas tarde.');
         });
     });
-    const FIRSTSTEP = 1;
-    const LASTSTEP = 5;
+
+    const onSubmitError = (errors:any, e:any) => console.error(errors, e);
 
     const showIfStepIs = (stepToCheck: number) : boolean => {
         if (stepToCheck !== step ) return true;
@@ -129,15 +134,25 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsWetland = () => {
         return (
             <>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Actividades desarrolladas en zonas aledañas'} 
-                    key={'outskirt'} items={outskirtArray} register={register("data.outskirts")}/>
-                <GenericTitle label={'Aspecto del agua'} hidden={showIfStepIs(4)}/>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Actividades desarrolladas en zonas aledañas:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.outskirts")} >
+                        {
+                        outskirtArray.map((outskirt, index) => {
+                            return (<IonSelectOption value={outskirt} key={`IonSelectOption-${index}-outskirt-${outskirt}`}>{outskirt}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Aspecto del agua:</IonLabel>
+                </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Color del agua:</IonLabel>
                     <IonSelect placeholder={"Indique el color observado."} className={'alert-xl'} {...register("data.color")} >
                         {
-                        colorArray.map((color, index) => {
-                            return (<IonSelectOption value={color} key={`IonSelectOption-${index}-color-${color}`}>{color}</IonSelectOption>)
+                        colorArray.map((colorArray, index) => {
+                            return (<IonSelectOption value={colorArray} key={`IonSelectOption-${index}-colorArray-${colorArray}`}>{colorArray}</IonSelectOption>)
                         })
                         }
                     </IonSelect>
@@ -306,14 +321,46 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         }
                     </IonSelect>
                 </IonItem>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Estudios de impacto ambiental'} 
-                    key={'waterAnalysisResults'} items={booleanEnumArray} register={register("data.documentation.waterAnalysisResults")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Estudios de impacto ambiental'} 
-                    key={'environmentalImpactReport'} items={booleanEnumArray} register={register("data.documentation.environmentalImpactReport")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Informe técnico ambiental'} 
-                    key={'environmentalTechnicalReport'} items={booleanEnumArray} register={register("data.documentation.environmentalTechnicalReport")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Imágenes/videos'} 
-                    key={'imagesDoc'} items={booleanEnumArray} register={register("data.documentation.images")}/>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Resultados de los estudios:</IonLabel>
+                    <IonSelect placeholder={"Conoce los resultados de los estudios?."} className={'alert-xl'} {...register("data.documentation.waterAnalysisResults")} >
+                        {
+                        booleanEnumArray.map((waterAnalysisResults, index) => {
+                            return (<IonSelectOption value={waterAnalysisResults} key={`IonSelectOption-${waterAnalysisResults}-waterAnalysisResults-${index}`}>{waterAnalysisResults}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Estudios de impacto ambiental:</IonLabel>
+                    <IonSelect placeholder={"Existen estudios sobre el impacto ambieltal?."} className={'alert-xl'} {...register("data.documentation.environmentalImpactReport")} >
+                        {
+                        booleanEnumArray.map((environmentalImpactReport, index) => {
+                            return (<IonSelectOption value={environmentalImpactReport} key={`IonSelectOption-${environmentalImpactReport}-environmentalImpactReport-${index}`}>{environmentalImpactReport}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Informe técnico ambiental:</IonLabel>
+                    <IonSelect placeholder={"Existen informes técnicos ambientales?."} className={'alert-xl'} {...register("data.documentation.environmentalTechnicalReport")} >
+                        {
+                        booleanEnumArray.map((environmentalTechnicalReport, index) => {
+                            return (<IonSelectOption value={environmentalTechnicalReport} key={`IonSelectOption-${environmentalTechnicalReport}-environmentalTechnicalReport-${index}`}>{environmentalTechnicalReport}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Adjunta imágenes/videos:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.documentation.images")} >
+                        {
+                        booleanEnumArray.map((images, index) => {
+                            return (<IonSelectOption value={images} key={`IonSelectOption-${images}-images-${index}`}>{images}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
             </>
         )
     }
@@ -321,14 +368,46 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsInitiative = () => {
         return (
             <>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Tipo de iniciativa sustentable'} 
-                    key={'initiativeType'} items={initiativeTypeArray} register={register("data.initiativeType")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Organizador/es de la iniciativa sustentable'} 
-                    key={'organizator'} items={organizatorArray} register={register("data.organizator")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Participantes de la iniciativa sustentable'} 
-                    key={'participants'} items={participantsArray} register={register("data.participants")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Objetivo de la iniciativa sustentable'} 
-                    key={'objetive'} items={initiativeObjetiveArray} register={register("data.objetive")}/>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Tipo de iniciativa sustentable:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.initiativeType")} >
+                        {
+                        initiativeTypeArray.map((initiativeType, index) => {
+                            return (<IonSelectOption value={initiativeType} key={`IonSelectOption-${initiativeType}-initiativeType-${index}`}>{initiativeType}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Organizador/es de la iniciativa sustentable:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.organizator")} >
+                        {
+                        organizatorArray.map((organizator, index) => {
+                            return (<IonSelectOption value={organizator} key={`IonSelectOption-${organizator}-organizator-${index}`}>{organizator}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Participantes de la iniciativa sustentable:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.initiativeParticipants")} >
+                        {
+                        participantsArray.map((participants, index) => {
+                            return (<IonSelectOption value={participants} key={`IonSelectOption-${participants}-participants-${index}`}>{participants}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Objetivo de la iniciativa sustentable:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.objetive")} >
+                        {
+                        initiativeObjetiveArray.map((objetive, index) => {
+                            return (<IonSelectOption value={objetive} key={`IonSelectOption-${objetive}-objetive-${index}`}>{objetive}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
             </>
         )
     }
@@ -336,8 +415,16 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsArt = () => {
         return (
             <>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Tipo de expresión artística'} 
-                    key={'artType'} items={artTypeArray} register={register("data.artType")}/>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Tipo de expresión artística:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.artType")} >
+                        {
+                        artTypeArray.map((artType, index) => {
+                            return (<IonSelectOption value={artType} key={`IonSelectOption-${artType}-artType-${index}`}>{artType}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
             </>
         )
     }
@@ -345,14 +432,46 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const optionalsInvestigation = () => {
         return (
             <>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Tipo de expresión artística'} 
-                    key={'participants'} items={participantsArray} register={register("data.participants")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Tipo de expresión artística'} 
-                    key={'state'} items={resultStateArray} register={register("data.state")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Tipo de expresión artística'} 
-                    key={'resultType'} items={resultTypeArray} register={register("data.resultType")}/>
-                <GenericSelect hidden={showIfStepIs(4)} label={'Tipo de expresión artística'} 
-                    key={'publications'} items={publicationsArray} register={register("data.publications")}/>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Instituciones participantes del proyecto de investigación:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.investigationParticipants")} >
+                        {
+                        participantsArray.map((investigationParticipants, index) => {
+                            return (<IonSelectOption value={investigationParticipants} key={`IonSelectOption-${investigationParticipants}-investigationParticipants-${index}`}>{investigationParticipants}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Estado actual del proyecto de investigación:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.state")} >
+                        {
+                        resultStateArray.map((state, index) => {
+                            return (<IonSelectOption value={state} key={`IonSelectOption-${state}-state-${index}`}>{state}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Tipo de resultados obtenidos:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.resultType")} >
+                        {
+                        resultTypeArray.map((resultType, index) => {
+                            return (<IonSelectOption value={resultType} key={`IonSelectOption-${resultType}-resultType-${index}`}>{resultType}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>Estado de publicación/comunicación de resultados obtenidos:</IonLabel>
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.publications")} >
+                        {
+                        publicationsArray.map((publications, index) => {
+                            return (<IonSelectOption value={publications} key={`IonSelectOption-${publications}-publications-${index}`}>{publications}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
             </>
         )
     }
@@ -387,7 +506,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonButton>        
                 </IonCol>
                 <IonCol size={"8"} className={"ion-nowrap nowarp"}>
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         {/*  Paso 1: Seleccionar categoria/tipo de post a cargar */}
                         {/* Categorias */}
                         <IonItem hidden={showIfStepIs(1)}>
@@ -417,8 +536,8 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                             <IonLabel position={'stacked'}>Categoría del humedal:</IonLabel>
                             <IonSelect placeholder={"Categoría del humedal:"} className={'alert-xl'} {...register("content.genericData.category")} >
                                 {
-                                wetlandCategoryArray.map((Categorie, index) => {
-                                    return (<IonSelectOption value={Categorie} key={`IonSelectOption-${index}-wetlandCategories-${Categorie}`}>{Categorie}</IonSelectOption>)
+                                wetlandCategoryArray.map((wetlandCategoryArray, index) => {
+                                    return (<IonSelectOption value={wetlandCategoryArray} key={`IonSelectOption-${index}-wetlandCategoryArray-${wetlandCategoryArray}`}>{wetlandCategoryArray}</IonSelectOption>)
                                 })
                                 }
                             </IonSelect>
@@ -477,7 +596,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                                     Ante inconvenientes o consultas, comunicarse al correo-e <a href={"mailto:fcyt_laboratorioibga@uader.edu.ar"} target={"_blank"}>fcyt_laboratorioibga@uader.edu.ar</a></h5><br/>
                             </IonText>
                         </IonItem>
-                        <IonButton type="submit" expand='block' hidden={showIfStepIs(LASTSTEP)} disabled={disableSubmit}>Completar!</IonButton> 
+                        <IonButton type="submit" onClick={() => console.log('clickeado')} expand='block' hidden={showIfStepIs(LASTSTEP)} disabled={disableSubmit}>Completar!</IonButton> 
                     </form>
                 </IonCol>
                 <IonCol size={"1"}>
@@ -496,38 +615,40 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     );
 }
 
-interface genericSelectInterface {
-    items: any[]
-    label: string,
-    register: UseFormRegisterReturn,
-    key: string,
-    hidden?: boolean | null,
-}
+// interface genericSelectInterface {
+//     items: any[]
+//     label: string,
+//     register: string,
+//     key: string,
+//     multiple?:boolean,
+//     placeholder?: string,
+//     hidden?: boolean | null,
+// }
 
-export const GenericSelect: React.FC<genericSelectInterface> = (props: genericSelectInterface) => {
-    return (
-        <IonItem hidden={ props.hidden ? props.hidden : false}>
-            <IonLabel position={'floating'}>{props.label}:</IonLabel>
-            <IonSelect placeholder={"Existen análisis de muestras de agua."} className={'alert-xl'} {...props.register} >
-                {
-                props.items.map((item, index) => {
-                    return (<IonSelectOption value={item} key={`IonSelectOption-${key}-${index}-${item}`}>{item}</IonSelectOption>)
-                })
-                }
-            </IonSelect>
-        </IonItem>
-    )
-}
+// export const GenericSelect: React.FC<genericSelectInterface> = (props: genericSelectInterface) => {
+//     return (
+//         <IonItem hidden={ props.hidden ? props.hidden : false}>
+//             <IonLabel position={'floating'}>{props.label}:</IonLabel>
+//             <IonSelect placeholder={props.placeholder ? props.placeholder : ''} className={'alert-xl'} { } multiple={props.multiple ? props.multiple : false}>
+//                 {
+//                 props.items.map((item, index) => {
+//                     return (<IonSelectOption value={item} key={`IonSelectOption-${key}-${index}-${item}`}>{item}</IonSelectOption>)
+//                 })
+//                 }
+//             </IonSelect>
+//         </IonItem>
+//     )
+// }
 
-interface genericTitle {
-    label: string,
-    hidden?: boolean | null,
-}
+// interface genericTitle {
+//     label: string,
+//     hidden?: boolean | null,
+// }
 
-export const GenericTitle: React.FC<genericTitle> = (props: genericTitle) => {
-    return (
-        <IonItem hidden={ props.hidden ? props.hidden : false}>
-            <IonLabel position={'floating'}>{props.label}:</IonLabel>
-        </IonItem>
-    )
-}
+// export const GenericTitle: React.FC<genericTitle> = (props: genericTitle) => {
+//     return (
+//         <IonItem hidden={ props.hidden ? props.hidden : false}>
+//             <IonLabel position={'floating'}>{props.label}:</IonLabel>
+//         </IonItem>
+//     )
+// }

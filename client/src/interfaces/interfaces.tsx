@@ -110,7 +110,7 @@ export type booleanEnum = 'Si' | 'No';
 interface optionalInitiative {
     initiativeType: initiativeTypeTypes,
     organizator?: organizatorTypes,
-    participants?: participantsTypes,
+    initiativeParticipants?: participantsTypes,
     objetive: initiativeObjetiveTypes
 }
 
@@ -128,7 +128,7 @@ export type artType = "Producciones artísticas" | "Fotos" | "Audiovisuales" | "
 
 // Investigaciones.
 interface optionalInvestigation {
-    participants: participantsTypes,
+    investigationParticipants: participantsTypes,
     state?: resultStateTypes,
     resultType?: resultTypeTypes,
     publications?: publicationsTypes
