@@ -1,5 +1,5 @@
 import { IonContent, IonGrid, IonHeader, IonPage, IonTitle, IonToolbar, IonRow, IonCol, IonFab, IonFabButton, IonIcon, IonLoading, IonModal, IonButtons, IonAlert, IonButton } from '@ionic/react';
-import { add, arrowUndoCircleOutline, pin } from 'ionicons/icons';
+import { add, arrowUndoCircleOutline } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
 import { POSTS_URL } from '../axiosDirs';
 import { GenericFilters } from '../components/GenericFilters';

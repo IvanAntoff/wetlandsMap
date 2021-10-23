@@ -1,11 +1,10 @@
 import { IonButton, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonProgressBar, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea } from "@ionic/react";
 import * as React from "react";
 import { useState } from "react";
-import { SubmitHandler, UnpackNestedValue, useForm, UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
+import { SubmitHandler, UnpackNestedValue, useForm } from "react-hook-form";
 import { axiosResp, bingMapPosition, post, postCategory } from "../interfaces/interfaces";
 import { POSTS_URL } from '../axiosDirs';
 import { artTypeArray, booleanEnumArray, colorArray, floraArray, hasArray, imgFiles, initiativeObjetiveArray, initiativeTypeArray, keywordsItems, marginsArray, morfologyArray, organizatorArray, originArray, outskirtArray, participantsArray, publicationsArray, resultStateArray, resultTypeArray, smellArray, sourceArray, waterAnalysisResultsArray, waterAnalysisTypeArray, wetlandCategoryArray, wetlandLocationArray, wetlandOriginArray, wetlandZonesArray, wildlifeArray } from "../enums/data";
-import { key } from "ionicons/icons";
 const axios = require('axios');
 
 interface wetlandFormProps{
@@ -276,7 +275,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Describa la materia flotante presenciada:</IonLabel>
-                    <IonTextarea placeholder={"Describa, si corresponde, lo presenciado."} required {...register("data.surface.matterDescrition", { required: true })} minlength={200} maxlength={1000} spellCheck={true} ></IonTextarea>
+                    <IonTextarea placeholder={"Describa, si corresponde, lo presenciado."} {...register("data.surface.matterDescrition")} minlength={200} maxlength={1000} spellCheck={true} ></IonTextarea>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Espumas en la superficie:</IonLabel>
@@ -315,7 +314,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonLabel position={'floating'}>Tipo de análisis:</IonLabel>
                     <IonSelect placeholder={"Existen análisis de muestras de agua."} className={'alert-xl'} {...register("data.documentation.waterAnalysisType")} >
                         {
-                        waterAnalysisResultsArray.map((waterAnalysisRes, index) => {
+                        waterAnalysisTypeArray.map((waterAnalysisRes, index) => {
                             return (<IonSelectOption value={waterAnalysisRes} key={`IonSelectOption-${waterAnalysisRes}-waterAnalysisType-${index}`}>{waterAnalysisRes}</IonSelectOption>)
                         })
                         }
@@ -325,7 +324,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonLabel position={'floating'}>Resultados de los estudios:</IonLabel>
                     <IonSelect placeholder={"Conoce los resultados de los estudios?."} className={'alert-xl'} {...register("data.documentation.waterAnalysisResults")} >
                         {
-                        booleanEnumArray.map((waterAnalysisResults, index) => {
+                        waterAnalysisResultsArray.map((waterAnalysisResults, index) => {
                             return (<IonSelectOption value={waterAnalysisResults} key={`IonSelectOption-${waterAnalysisResults}-waterAnalysisResults-${index}`}>{waterAnalysisResults}</IonSelectOption>)
                         })
                         }
@@ -512,7 +511,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         <IonItem hidden={showIfStepIs(1)}>
                             <IonText><h1>Seleccione el tipo de publicacion a cargar</h1></IonText>
                             <IonLabel position={'stacked'}>Categoria:</IonLabel>
-                            <IonSelect placeholder={"Tipo de publicacion"} className={'alert-xl'} {...register("category", { required: true } )} >
+                            <IonSelect placeholder={"Tipo de publicacion"} className={'alert-xl'} {...register("category")} >
                                 { props.categories.length > 0 ?
                                     props.categories.map((category, index) => {
                                         return (<IonSelectOption value={category.value} key={`IonSelectOption-${index}-categoty-${category.name}`}>{category.name}</IonSelectOption>)
@@ -564,11 +563,11 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         </IonItem>
                         <IonItem hidden={showIfStepIs(3)}>
                             <IonLabel position={'floating'}>Titulo:</IonLabel>
-                            <IonInput placeholder={"Ingrese un titulo."} required {...register("content.title", { required: 'El titulo es requerido' } )} ></IonInput>
+                            <IonInput placeholder={"Ingrese un titulo."} {...register("content.title")} ></IonInput>
                         </IonItem>
                         <IonItem hidden={showIfStepIs(3)}>
                             <IonLabel position={'floating'} className={"ion-align-self-start"}>Descripcion:</IonLabel>
-                            <IonTextarea placeholder={"Ingrese los datos de su publicacion."} required {...register("content.description", { required: true })} minlength={200} maxlength={1000} spellCheck={true} ></IonTextarea>
+                            <IonTextarea placeholder={"Ingrese los datos de su publicacion."} {...register("content.description")} minlength={200} maxlength={1000} spellCheck={true} ></IonTextarea>
                         </IonItem>
                         <IonItem hidden={showIfStepIs(3)}>
                             <IonLabel position={'stacked'}>Palabras clave:</IonLabel>
@@ -596,7 +595,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                                     Ante inconvenientes o consultas, comunicarse al correo-e <a href={"mailto:fcyt_laboratorioibga@uader.edu.ar"} target={"_blank"}>fcyt_laboratorioibga@uader.edu.ar</a></h5><br/>
                             </IonText>
                         </IonItem>
-                        <IonButton type="submit" onClick={() => console.log('clickeado')} expand='block' hidden={showIfStepIs(LASTSTEP)} disabled={disableSubmit}>Completar!</IonButton> 
+                        <IonButton type="submit" onClick={() => onSubmit(getValues())} expand='block' hidden={showIfStepIs(LASTSTEP)} disabled={disableSubmit}>Completar!</IonButton> 
                     </form>
                 </IonCol>
                 <IonCol size={"1"}>
@@ -614,41 +613,3 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     </>
     );
 }
-
-// interface genericSelectInterface {
-//     items: any[]
-//     label: string,
-//     register: string,
-//     key: string,
-//     multiple?:boolean,
-//     placeholder?: string,
-//     hidden?: boolean | null,
-// }
-
-// export const GenericSelect: React.FC<genericSelectInterface> = (props: genericSelectInterface) => {
-//     return (
-//         <IonItem hidden={ props.hidden ? props.hidden : false}>
-//             <IonLabel position={'floating'}>{props.label}:</IonLabel>
-//             <IonSelect placeholder={props.placeholder ? props.placeholder : ''} className={'alert-xl'} { } multiple={props.multiple ? props.multiple : false}>
-//                 {
-//                 props.items.map((item, index) => {
-//                     return (<IonSelectOption value={item} key={`IonSelectOption-${key}-${index}-${item}`}>{item}</IonSelectOption>)
-//                 })
-//                 }
-//             </IonSelect>
-//         </IonItem>
-//     )
-// }
-
-// interface genericTitle {
-//     label: string,
-//     hidden?: boolean | null,
-// }
-
-// export const GenericTitle: React.FC<genericTitle> = (props: genericTitle) => {
-//     return (
-//         <IonItem hidden={ props.hidden ? props.hidden : false}>
-//             <IonLabel position={'floating'}>{props.label}:</IonLabel>
-//         </IonItem>
-//     )
-// }
