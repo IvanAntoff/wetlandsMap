@@ -1,4 +1,3 @@
-
 interface infoboxAction {
     label: string,
     eventHandler: () => void
@@ -78,7 +77,7 @@ export type morfologyTypes = "Barranca" | "Bosque" | "nativo" | "Pastizal" | "Cu
 
 // Amenazas o impactos antropicos.
 interface optionalThreat {
-    type: threatType,
+    threatType: threatType,
     origin: originTypes,
     source: sourceTypes,
     aspect?: {
@@ -90,15 +89,14 @@ interface optionalThreat {
         matterDescrition?: string,
         foam?: hasType,
         seaweed?: hasType,
-        others?: string
     },
     documentation?:{
-        waterAnalysis?: boolean,
+        waterAnalysis?: booleanEnum,
         waterAnalysisType?: waterAnalysisType,
         waterAnalysisResults?: waterAnalysisResults,
-        environmentalImpactReport?: boolean,
-        environmentalTechnicalReport?:boolean,
-        images?: boolean 
+        environmentalImpactReport?: booleanEnum,
+        environmentalTechnicalReport?:booleanEnum,
+        images?: booleanEnum 
     }
 }
 export type threatType = 'Orgánica' | 'Química'| 'Microbiológica '| 'Alteración de paisaje '| 'Alteración de márgenes de ribera '| 'Otra' | 'Desconocido';
@@ -107,10 +105,10 @@ export type sourceTypes = 'Basural no controlado – A cielo abierto' | 'Relleno
 export type hasType = 'Presencia' | 'Ausencia' | 'Desconozco';
 export type waterAnalysisType = 'Físico-químico'|'Microbiológico '|'Biológico'|'Bioensayos'|'Otra';
 export type waterAnalysisResults = 'Calidad del agua buena' | 'Calidad del agua regular' | 'Calidad del agua mala' | 'Otra';
-
+export type booleanEnum = 'Si' | 'No';
 // Iniciativas sustentables.
 interface optionalInitiative {
-    type: initiativeTypeTypes,
+    initiativeType: initiativeTypeTypes,
     organizator?: organizatorTypes,
     participants?: participantsTypes,
     objetive: initiativeObjetiveTypes
@@ -123,10 +121,10 @@ export type initiativeObjetiveTypes = "Mejorar" | "Preservar"  | "Restaurar" | "
 
 // Expresiones artisticas.
 interface optionalsArt {
-    type: typeArt
+    artType: artType
 }
 
-export type typeArt = "Producciones artísticas" | "Fotos" | "Audiovisuales" | "Redacciones" | "Documentos" | "Canciones" | "Poemas" | "Dibujos - Pinturas" | "Otra";
+export type artType = "Producciones artísticas" | "Fotos" | "Audiovisuales" | "Redacciones" | "Documentos" | "Canciones" | "Poemas" | "Dibujos - Pinturas" | "Otra";
 
 // Investigaciones.
 interface optionalInvestigation {

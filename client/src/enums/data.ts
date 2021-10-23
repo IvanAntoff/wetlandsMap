@@ -1,4 +1,4 @@
-import { postCategory, wetlandCategoryTypes, wetlandOriginTypes, wetlanLocationType, wetlandZonesTypes, outskirtTypes, floraTypes, wildlifeTypes, colorTypes, smellTypes, marginsTypes, morfologyTypes, originTypes, threatType, sourceTypes, hasType, waterAnalysisType, waterAnalysisResults, initiativeTypeTypes, initiativeObjetiveTypes, organizatorTypes, participantsTypes, typeArt, publicationsTypes, resultStateTypes, resultTypeTypes } from "../interfaces/interfaces";
+import { postCategory, wetlandCategoryTypes, wetlandOriginTypes, wetlanLocationType, wetlandZonesTypes, outskirtTypes, floraTypes, wildlifeTypes, colorTypes, smellTypes, marginsTypes, morfologyTypes, originTypes, threatType, sourceTypes, hasType, waterAnalysisType, waterAnalysisResults, initiativeTypeTypes, initiativeObjetiveTypes, organizatorTypes, participantsTypes, artType, publicationsTypes, resultStateTypes, resultTypeTypes, booleanEnum } from "../interfaces/interfaces";
 
 // Data
 export const categories: {name: string, value: postCategory}[] = [
@@ -32,6 +32,7 @@ export const sourceArray: sourceTypes[] = ['Basural no controlado – A cielo ab
 export const hasArray: hasType[] = ['Presencia' , 'Ausencia' , 'Desconozco'];
 export const waterAnalysisTypeArray: waterAnalysisType[] = ['Físico-químico','Microbiológico ','Biológico','Bioensayos','Otra'];
 export const waterAnalysisResultsArray: waterAnalysisResults[] = ['Calidad del agua buena', 'Calidad del agua regular', 'Calidad del agua mala' , 'Otra'];
+export const booleanEnumArray: booleanEnum[] = ['Si', 'No'];
 
 // Initiative optionals
 export const initiativeTypeArray: initiativeTypeTypes[] = ["Proyecto" , "Actividad/es" , "Ota" ,"Desconocido"];
@@ -40,7 +41,7 @@ export const participantsArray: participantsTypes[] = ['Persona individual', 'Ve
 export const initiativeObjetiveArray: initiativeObjetiveTypes[] = ["Mejorar" , "Preservar"  , "Restaurar" , "Puesta en valor" , "Otro" , "Desconocido"];
 
 // Art optionals
-export const typeArtArray: typeArt[] = ["Producciones artísticas", "Fotos", "Audiovisuales", "Redacciones", "Documentos"];
+export const artTypeArray: artType[] = ["Producciones artísticas", "Fotos", "Audiovisuales", "Redacciones", "Documentos"];
 
 // Investigations optionals
 export const resultStateArray: resultStateTypes[] =  ["Pendiente" , "Activo" , "Finalizado"];
