@@ -11,7 +11,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { postFilters, categories } from '../enums/data';
 import { API_KEY_BINGMAPS, POSTS_URL } from '../apiKeys';
 import ReactBingmaps from "../components/BingMapsReact";
-const axios = require('axios');
+import { axiosInstance } from '../axiosConf';
 
 const Map: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
@@ -33,7 +33,7 @@ const Map: React.FC = () => {
 		const getData = async () =>{
 			startLoading();
 			try {
-				const response = await axios.get(`${POSTS_URL}/posts`)
+				const response = await axiosInstance.get(`${POSTS_URL}/posts`)
 				if (!response || !response.data || !Array.isArray(response.data)) return;
 					const auxMarkers: marker[] = [];
 					const posts = response.data.filter((item:post) => item.status === 'approved')

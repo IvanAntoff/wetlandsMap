@@ -5,7 +5,7 @@ import { post } from '../interfaces/interfaces';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
 import { POSTS_URL, wetlandusers } from '../apiKeys';
-const axios = require('axios');
+import { axiosInstance } from '../axiosConf';
 
 const Control: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
@@ -19,9 +19,11 @@ const Control: React.FC = () => {
 	useEffect(()=>{
 		if (!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) return history.goBack();
 		const getData = () =>{
-			axios.get(`${POSTS_URL}/posts`).then((response: { data: post[] }) => {
-				setPostData(response.data);
-			})
+			try{
+				axiosInstance.get(`${POSTS_URL}/posts`).then((response: { data: post[] }) => {
+					setPostData(response.data);
+				})
+			} catch (error) {console.error(error)}
 		}
 		getData();
 	},[user, isAuthenticated, isLoading]);
@@ -79,16 +81,18 @@ const Control: React.FC = () => {
 	},[postsData, forceRefresh]);
 
 	const updateState = async (postId: string, status: 'pending' | 'approved' | 'refused') => {
-		let posts = postsData;
-		const postIndex = postsData.findIndex((post) => post.id === postId);
-		if (postIndex !== -1) {
-			let postToUpdate = posts[postIndex];
-			postToUpdate.status = status;
-			const res = await axios.put(`${POSTS_URL}/posts/${postId}`, postToUpdate);
-			posts[postIndex] = postToUpdate;
-			setPostData(posts);
-			setForceRefresh(!forceRefresh);
-		}
+		try{
+			let posts = postsData;
+			const postIndex = postsData.findIndex((post) => post.id === postId);
+			if (postIndex !== -1) {
+				let postToUpdate = posts[postIndex];
+				postToUpdate.status = status;
+				const res = await axiosInstance.put(`${POSTS_URL}/posts/${postId}`, postToUpdate);
+				posts[postIndex] = postToUpdate;
+				setPostData(posts);
+				setForceRefresh(!forceRefresh);
+			}
+		} catch(error) {console.error(error)}
 	}
 
 	return (
