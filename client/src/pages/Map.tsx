@@ -2,7 +2,6 @@ import { IonContent, IonGrid, IonHeader, IonPage, IonTitle, IonToolbar, IonRow, 
 import { add, arrowUndoCircleOutline } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
 import { GenericFilters } from '../components/GenericFilters';
-import { GenericMap } from '../components/GenericMap';
 import PostCard from '../components/PostCard';
 import { WetlandForm } from '../components/WetlandForm';
 import { bingMapPosition, marker, post } from '../interfaces/interfaces';
@@ -10,7 +9,8 @@ import LoginButton from '../components/LoginButton';
 import LogoutButton from '../components/LogoutButton';
 import { useAuth0 } from "@auth0/auth0-react";
 import { postFilters, categories } from '../enums/data';
-import { POSTS_URL } from '../apiKeys';
+import { API_KEY_BINGMAPS, POSTS_URL } from '../apiKeys';
+import ReactBingmaps from "../components/BingMapsReact";
 const axios = require('axios');
 
 const Map: React.FC = () => {
@@ -183,6 +183,22 @@ const Map: React.FC = () => {
 		}
 	}
 
+	const getMarkersByType = (markers: marker[], type: 'info' | 'normal'): marker[] => {
+        let infoMarkers: marker[] = []
+        let normalMarkers: marker[] = []
+        if (markers){
+            for (let i = 0; i < markers.length; i++) {
+                const newMarker = markers[i];
+                if (newMarker) {
+                    if(newMarker.metadata && newMarker.metadata.title) infoMarkers.push(newMarker);
+                    else normalMarkers.push(newMarker);
+                }
+            }
+        }
+        if (type === 'info') return infoMarkers;
+        return normalMarkers;
+    }
+
 	return (
 		<IonPage >
 			<IonHeader>
@@ -249,8 +265,20 @@ const Map: React.FC = () => {
 								<IonFabButton color={"success"} onClick={() => editModeON()} hidden={!showFab.addFab} title={'Publicar nuevo punto!'}><IonIcon icon={add}></IonIcon></IonFabButton>
 								<IonFabButton color={"warning"} onClick={() => editModeOFF()} hidden={!showFab.cancelFab} title={'Cancelar carga'}><IonIcon icon={arrowUndoCircleOutline}></IonIcon></IonFabButton>
 							</IonFab>
-							<GenericMap center={mapCenter} width={'100%'} height={'100%'} markers={ appliedFilters.length > 0 ? filterData(appliedFilters).filteredMarkers : markers} 
-								zoom={zoom} getLocationOnClick={(value:bingMapPosition) => getClickedLocation(value)} loading={loading}
+							<ReactBingmaps
+								bingMapsKey={API_KEY_BINGMAPS}
+								// pushPins={appliedFilters.length > 0 ? getMarkersByType(filterData(appliedFilters).filteredMarkers, 'normal') : getMarkersByType(markers, 'normal')}
+								pushPinsWithInfoboxes={appliedFilters.length > 0 ? filterData(appliedFilters).filteredMarkers : markers}
+								height={'100%'}
+								width={'100%'}
+								mapOptions={{
+									navigationBarMode: "square"
+								}}
+								viewOptions={{
+									center: mapCenter,
+									zoom: zoom,
+								}}
+								getLocationOnClick={(value:bingMapPosition) => getClickedLocation(value)}
 							/>
 							<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} >
 								<WetlandForm location={onClickPosition ? onClickPosition : {latitude: 0, longitude:0}}

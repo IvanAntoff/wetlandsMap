@@ -1,5 +1,6 @@
 // DEPENDENCIES
-import React, { useEffect, useRef, useCallback } from "react";
+import { IonLoading } from "@ionic/react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import './bingMap.css'
 
 export default function BingMapsReact({
@@ -21,7 +22,7 @@ export default function BingMapsReact({
   const map = useRef(null);
   const onClickLocationSetter = useRef(null);
   const infoboxHandler = useRef(null);
-
+  const [loading, setLoading] = useState(true);
   // get location
   function getLocationClicked (map, valueSetter) {
     try{
@@ -203,14 +204,36 @@ export default function BingMapsReact({
   // make map, set options, add pins
   const makeMap = useCallback(() => {
     const { Maps } = window.Microsoft;
-
     // only make a new map if one doesn't already exist
     if (!map.current) {
       map.current = new Maps.Map(mapContainer.current, {
-        credentials: bingMapsKey,
+        showLogo: false,
+        showTrafficButton: false,
       });
+      setLoading(false);
+      onMapReady && onMapReady();
     }
+  },[]);
 
+  useEffect(() => {
+    if(map.current) return;
+    setLoading(true);
+    window.makeMap = makeMap;
+    const scriptTag = document.createElement("script");
+    scriptTag.setAttribute("type", "text/javascript");
+    scriptTag.async = true;
+    scriptTag.defer = true;
+    scriptTag.setAttribute(
+      "src",
+      `https://www.bing.com/api/maps/mapcontrol?callback=makeMap&key=${bingMapsKey}`
+    );
+    document.body.appendChild(scriptTag);
+  }, [makeMap]);
+
+  useEffect(() => {
+    if(!map.current) return;
+    setLoading(true);
+    const { Maps } = window.Microsoft;
     if(!infoboxHandler.current) {
       infoboxHandler.current = new Maps.Infobox(map.current.getCenter(), {
         visible: false,
@@ -252,9 +275,9 @@ export default function BingMapsReact({
       resetInfoboxes(map.current);
       addInfobox(infobox, map.current, Maps);
     }
-
-    onMapReady && onMapReady();
+    setLoading(false);
   },[
+    map,
     addPushpinsWithInfoboxes,
     bingMapsKey,
     mapOptions,
@@ -270,27 +293,17 @@ export default function BingMapsReact({
     infobox,
     width,
     mapEventsHandlers,
-  ]);
-
-  useEffect(() => {
-    if (window.Microsoft && window.Microsoft.Maps) {
-      makeMap();
-    } else {
-      const scriptTag = document.createElement("script");
-      scriptTag.setAttribute("type", "text/javascript");
-      scriptTag.setAttribute(
-        "src",
-        `https://www.bing.com/api/maps/mapcontrol?callback=makeMap`
-      );
-      scriptTag.async = true;
-      scriptTag.defer = true;
-      document.body.appendChild(scriptTag);
-      window.makeMap = makeMap;
-    }
-  }, [makeMap]);
+  ])
 
   return (
-    <div ref={mapContainer} style={{ height: height, width: width }}></div>
+      <div ref={mapContainer} style={loading == true ? { height: '0px', width: '0px' } : { height: height, width: width }}>
+      <IonLoading
+        isOpen={loading}
+        message={'Actualizando mapa...'}
+        keyboardClose={false}
+        backdropDismiss={false}
+        />
+      </div>
   );
 }
 BingMapsReact.defaultProps = {
