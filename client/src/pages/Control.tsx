@@ -87,9 +87,10 @@ const Control: React.FC = () => {
 			if (postIndex !== -1) {
 				let postToUpdate = posts[postIndex];
 				postToUpdate.status = status;
-				const res = axiosInstance.put(`${POSTS_URL}/posts/${postId}`, {
-					...postToUpdate
+				const res = await axiosInstance.patch(`${POSTS_URL}/posts/${postId}`, {
+					status: status
 				})
+				console.log(res)
 				posts[postIndex] = postToUpdate;
 				setPostData(posts);
 				setForceRefresh(!forceRefresh);
