@@ -31,11 +31,11 @@ if (require.main === module) {
         credentials: true,
       },
       port: +(process.env.PORT ?? 3001),
-      host: "humedalesdigitalescuencadelgualeguaychu.com",
-      // // Enable HTTPS
-      // protocol: 'https',
-      // key: fs.readFileSync('key.pem'),
-      // cert: fs.readFileSync('cert.pem'),
+      host: process.env.HOST,
+      // Enable HTTPS
+      protocol: 'https',
+      key: fs.readFileSync('key.pem'),
+      cert: fs.readFileSync('cert.pem'),
       // The `gracePeriodForClose` provides a graceful close for http/https
       // servers with keep-alive clients. The default value is `Infinity`
       // (don't force-close). If you want to immediately destroy all sockets
