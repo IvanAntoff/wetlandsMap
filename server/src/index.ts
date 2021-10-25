@@ -1,6 +1,6 @@
 import {ApplicationConfig, ApiMap} from './application';
-
 export * from './application';
+const fs = require('fs');
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new ApiMap(options);
@@ -12,7 +12,8 @@ export async function main(options: ApplicationConfig = {}) {
   console.log(`Try ${url}/ping`);
   console.log(`Try`,process.env.NODE_ENV === "development");
   console.log(`Try`,process.env.NODE_ENV === "production");
-  console.log(`Try`,process.env.APIEXPLORER);
+  console.log(`Try`,process.env.APIEXPLORER, process.env.HOST);
+  console.log(`cert`,!!fs.readFileSync('cert.pem'),!!fs.readFileSync('./cert.pem'))
   return app;
 }
 
@@ -21,7 +22,7 @@ if (require.main === module) {
   const config = {
     rest: {
       apiExplorer: {
-        disabled: process.env?.APIEXPLORER == 'false' ? false : true,
+        disabled: process.env.NODE_ENV === "production" ? true : false,
       },
       cors: {
         origin: '*',
@@ -33,7 +34,10 @@ if (require.main === module) {
       },
       port: +(process.env.PORT ?? 3001),
       host: process.env.HOST,
-      
+      // Enable HTTPS
+      protocol: 'https',
+      key: fs.readFileSync('key.pem'),
+      cert: fs.readFileSync('cert.pem'),
       // The `gracePeriodForClose` provides a graceful close for http/https
       // servers with keep-alive clients. The default value is `Infinity`
       // (don't force-close). If you want to immediately destroy all sockets
