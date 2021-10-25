@@ -23,7 +23,7 @@ if (require.main === module) {
         disabled: process.env.APIEXPLORER ?? false,
       },
       cors: {
-        origin: '*',
+        origin: 'https://humedalesdigitalescuencadelgualeguaychu.com',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         preflightContinue: false,
         optionsSuccessStatus: 204,
