@@ -1,5 +1,5 @@
 import {Client, expect} from '@loopback/testlab';
-import {ApiMap} from '../..';
+import {ApiMap} from '../../application';
 import {setupApplication} from './test-helper';
 
 describe('PingController', () => {
