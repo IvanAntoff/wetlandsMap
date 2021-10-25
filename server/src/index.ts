@@ -10,7 +10,9 @@ export async function main(options: ApplicationConfig = {}) {
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
   console.log(`Try ${url}/ping`);
-
+  console.log(`Try`,process.env.NODE_ENV === "development");
+  console.log(`Try`,process.env.NODE_ENV === "production");
+  console.log(`Try`,process.env.APIEXPLORER);
   return app;
 }
 
@@ -19,7 +21,7 @@ if (require.main === module) {
   const config = {
     rest: {
       apiExplorer: {
-        disabled: process.env.APIEXPLORER ?? true,
+        disabled: process.env?.APIEXPLORER == 'false' ? false : true,
       },
       cors: {
         origin: '*',
