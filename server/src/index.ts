@@ -22,8 +22,6 @@ if (require.main === module) {
         disabled: process.env.APIEXPLORER ?? false,
       },
       cors: {
-        mode: 'cors',
-        referrerPolicy: 'origin',
         origin: ['*'],
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
         preflightContinue: false,
