@@ -6,3 +6,5 @@ wetlandsVSWorkspace.code-workspace
 server/cert.pem
 server/key.pem
 server/src/dbConf.ts
+server/src/datasources/posts-datasourse.datasource.ts
+server/src/datasources/posts-datasourse.datasource.ts
