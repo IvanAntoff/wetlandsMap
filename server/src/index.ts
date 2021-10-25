@@ -9,9 +9,7 @@ export async function main(options: ApplicationConfig = {}) {
 
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
-  console.log(`Try ${url}/ping`);
-  console.log(`Try`,process.env.NODE_ENV === "development");
-  console.log(`Try`,process.env.NODE_ENV === "production");
+  console.log(`Env mod`,process.env.NODE_ENV);
   console.log(`Try`,process.env.APIEXPLORER, process.env.HOST);
   console.log(`cert`,!!fs.readFileSync('cert.pem'),!!fs.readFileSync('./cert.pem'))
   return app;
@@ -34,6 +32,10 @@ if (require.main === module) {
       },
       port: +(process.env.PORT ?? 3001),
       host: process.env.HOST,
+      // Enable HTTPS
+      protocol: 'https',
+      key: fs.readFileSync('key.pem'),
+      cert: fs.readFileSync('cert.pem'),
       // The `gracePeriodForClose` provides a graceful close for http/https
       // servers with keep-alive clients. The default value is `Infinity`
       // (don't force-close). If you want to immediately destroy all sockets
