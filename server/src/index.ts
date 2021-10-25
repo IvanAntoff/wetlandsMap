@@ -23,7 +23,6 @@ if (require.main === module) {
       },
       cors: {
         origin: ['https://humedalesdigitalescuencadelgualeguaychu.com', 'https://api.humedalesdigitalescuencadelgualeguaychu.com', 'http://68.233.231.176', 'http://68.233.231.176:3001/'],
-        preflightContinue: true,
         optionsSuccessStatus: 204,
       },
       port: +(process.env.PORT ?? 3001),
