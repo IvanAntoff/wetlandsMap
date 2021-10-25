@@ -5,3 +5,4 @@ server/node_modules
 wetlandsVSWorkspace.code-workspace
 server/cert.pem
 server/key.pem
+server/src/dbConf.ts

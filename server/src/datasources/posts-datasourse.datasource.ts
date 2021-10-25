@@ -1,7 +1,7 @@
 import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
-
-const config = {
+import {configDB} from '../dbConf';
+const config = configDB ? configDB : {
   name: process.env.DBNAME ?? 'posts_datasourse',
   connector: process.env.DBCONNECTOR ?? 'mongodb',
   url: process.env.DBURL ?? '',
