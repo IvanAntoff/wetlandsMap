@@ -1,4 +1,4 @@
-import {ApiMap} from '../..';
+import {ApiMap} from '../../application';
 import {
   createRestAppClient,
   givenHttpServerConfig,
