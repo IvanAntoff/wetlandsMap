@@ -22,11 +22,11 @@ if (require.main === module) {
         disabled: process.env.APIEXPLORER ?? false,
       },
       cors: {
-        origin: ['*'],
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE',
         preflightContinue: false,
         optionsSuccessStatus: 204,
-        maxAge: 86400,
+        maxAge: 86400
       },
       port: +(process.env.PORT ?? 3001),
       host: process.env.HOST,
