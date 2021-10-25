@@ -5,7 +5,7 @@ import { SubmitHandler, UnpackNestedValue, useForm } from "react-hook-form";
 import { axiosResp, bingMapPosition, post, postCategory } from "../interfaces/interfaces";
 import { artTypeArray, booleanEnumArray, colorArray, floraArray, hasArray, imgFiles, initiativeObjetiveArray, initiativeTypeArray, keywordsItems, marginsArray, morfologyArray, organizatorArray, originArray, outskirtArray, participantsArray, publicationsArray, resultStateArray, resultTypeArray, smellArray, sourceArray, waterAnalysisResultsArray, waterAnalysisTypeArray, wetlandCategoryArray, wetlandLocationArray, wetlandOriginArray, wetlandZonesArray, wildlifeArray } from "../enums/data";
 import { POSTS_URL } from "../apiKeys";
-const axios = require('axios');
+import { axiosInstance } from "../axiosConf";
 
 interface wetlandFormProps{
     categories: {name: string, value: postCategory}[],
@@ -38,7 +38,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             post.status = "pending";
             post.ubication = {latitude: props.location.latitude.toString(), longitude: props.location.longitude.toString()};
             // console.log('post:',post, props.location)
-            axios.post(`${POSTS_URL}/posts`, {
+            axiosInstance.post(`${POSTS_URL}/posts`, {
                 ...post,
                 status: "pending",
             })
