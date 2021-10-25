@@ -1,14 +1,13 @@
-import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
-import { POSTS_URL } from '../axiosDirs';
 import PostCard from '../components/PostCard';
 import { post } from '../interfaces/interfaces';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
-import { wetlandusers } from '../apiKeys';
-const axios = require('axios');
+import { POSTS_URL, wetlandusers } from '../apiKeys';
+import { axiosInstance } from '../axiosConf';
 
-const Tab3: React.FC = () => {
+const Control: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
 	const [ pendings, setPendings ] = useState<JSX.Element[]>([]);
 	const [ approveds, setApproveds ] = useState<JSX.Element[]>([]);
@@ -20,9 +19,11 @@ const Tab3: React.FC = () => {
 	useEffect(()=>{
 		if (!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) return history.goBack();
 		const getData = () =>{
-			axios.get(`${POSTS_URL}/posts`).then((response: { data: post[] }) => {
-				setPostData(response.data);
-			})
+			try{
+				axiosInstance.get(`${POSTS_URL}/posts`).then((response: { data: post[] }) => {
+					setPostData(response.data);
+				})
+			} catch (error) {console.error(error)}
 		}
 		getData();
 	},[user, isAuthenticated, isLoading]);
@@ -80,16 +81,18 @@ const Tab3: React.FC = () => {
 	},[postsData, forceRefresh]);
 
 	const updateState = async (postId: string, status: 'pending' | 'approved' | 'refused') => {
-		let posts = postsData;
-		const postIndex = postsData.findIndex((post) => post.id === postId);
-		if (postIndex !== -1) {
-			let postToUpdate = posts[postIndex];
-			postToUpdate.status = status;
-			const res = await axios.put(`${POSTS_URL}/posts/${postId}`, postToUpdate);
-			posts[postIndex] = postToUpdate;
-			setPostData(posts);
-			setForceRefresh(!forceRefresh);
-		}
+		try{
+			let posts = postsData;
+			const postIndex = postsData.findIndex((post) => post.id === postId);
+			if (postIndex !== -1) {
+				let postToUpdate = posts[postIndex];
+				postToUpdate.status = status;
+				const res = await axiosInstance.put(`${POSTS_URL}/posts/${postId}`, postToUpdate);
+				posts[postIndex] = postToUpdate;
+				setPostData(posts);
+				setForceRefresh(!forceRefresh);
+			}
+		} catch(error) {console.error(error)}
 	}
 
 	return (
@@ -125,4 +128,4 @@ const Tab3: React.FC = () => {
 	);
 };
 
-export default Tab3;
+export default Control;

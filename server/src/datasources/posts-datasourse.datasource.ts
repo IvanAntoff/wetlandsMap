@@ -2,21 +2,21 @@ import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
 
 const config = {
-  name: 'posts_datasourse',
-  connector: 'mongodb',
-  url: '',
-  host: '127.0.0.1',
-  port: 27017,
-  user: '',
-  password: '',
-  database: 'humedales_posts',
-  useNewUrlParser: true
+  name: process.env.DBNAME ?? 'posts_datasourse',
+  connector: process.env.DBCONNECTOR ?? 'mongodb',
+  url: process.env.DBURL ?? '',
+  host: process.env.DBHOST ??'127.0.0.1',
+  port: process.env.DBPORT ?? 27017,
+  user: process.env.DBUSER ?? '',
+  password: process.env.DBPASSWORD ?? '',
+  database: process.env.DBDATABASE ??'humedales_posts',
+  useNewUrlParser: process.env.DBUSENEWURLPARSER ?? true
 };
 
 // Observe application's life cycle to disconnect the datasource when
 // application is stopped. This allows the application to be shut down
 // gracefully. The `stop()` method is inherited from `juggler.DataSource`.
-// Learn more at https://loopback.io/doc/en/lb4/Life-cycle.html
+// Learn more at https://loopback.io/doc/en/DB4/Life-cycle.html
 @lifeCycleObserver('datasource')
 export class PostsDatasourseDataSource extends juggler.DataSource
   implements LifeCycleObserver {

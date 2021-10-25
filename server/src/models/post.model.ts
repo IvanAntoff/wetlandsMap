@@ -44,7 +44,7 @@ export class Post extends Entity {
     type: 'object',
     required: true,
   })
-  content: {title: string, description: string, files: File[]};
+  content: {title: string, description: string, files: any};
 
   constructor(data?: Partial<Post>) {
     super(data);
