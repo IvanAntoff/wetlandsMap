@@ -1,8 +1,9 @@
 const axios = require('axios');
 export const axiosInstance = axios.create({
-    withCredentials: true,
+    withCredentials: false,
     headers: {
-      "Access-Control-Allow-Origin": "https://humedalesdigitalescuencadelgualeguaychu.com",
-      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": false,
+      "Sec-Fetch-Site": "cross-site"
     },
 });
