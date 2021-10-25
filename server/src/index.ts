@@ -13,6 +13,7 @@ export async function main(options: ApplicationConfig = {}) {
   console.log(`Try`,process.env.NODE_ENV === "development");
   console.log(`Try`,process.env.NODE_ENV === "production");
   console.log(`Try`,process.env.APIEXPLORER, process.env.HOST);
+  console.log(`cert`,!!fs.readFileSync('cert.pem'),!!fs.readFileSync('./cert.pem'))
   return app;
 }
 
