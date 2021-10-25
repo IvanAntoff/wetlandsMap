@@ -20,7 +20,7 @@ if (require.main === module) {
   const config = {
     rest: {
       apiExplorer: {
-        disabled: process.env.NODE_ENV === "production" ? true : false,
+        disabled: process.env.APIEXPLORER ?? false,
       },
       cors: {
         origin: '*',
