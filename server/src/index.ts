@@ -9,7 +9,7 @@ export async function main(options: ApplicationConfig = {}) {
 
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
-  console.log(`Env mod`,process.env.NODE_ENV);
+  console.log(`Env mod prod:`,process.env.NODE_ENV === 'production');
   console.log(`Try`,process.env.APIEXPLORER, process.env.HOST);
   return app;
 }
@@ -22,8 +22,13 @@ if (require.main === module) {
         disabled: process.env.APIEXPLORER ?? false,
       },
       cors: {
-        origin: ['https://humedalesdigitalescuencadelgualeguaychu.com', 'https://api.humedalesdigitalescuencadelgualeguaychu.com', 'http://68.233.231.176', 'http://68.233.231.176:3001/'],
+        mode: 'cors',
+        referrerPolicy: 'origin',
+        origin: ['*'],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        preflightContinue: false,
         optionsSuccessStatus: 204,
+        maxAge: 86400,
       },
       port: +(process.env.PORT ?? 3001),
       host: process.env.HOST,
