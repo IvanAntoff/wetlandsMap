@@ -87,7 +87,7 @@ const Control: React.FC = () => {
 			if (postIndex !== -1) {
 				let postToUpdate = posts[postIndex];
 				postToUpdate.status = status;
-				const res = await axiosInstance.patch(`${POSTS_URL}/posts/${postId}`, {
+				const res = await axiosInstance.patch(`${POSTS_URL}/posts`, {
 					status: status
 				})
 				console.log(res)
