@@ -11,7 +11,6 @@ export async function main(options: ApplicationConfig = {}) {
   console.log(`Server is running at ${url}`);
   console.log(`Env mod`,process.env.NODE_ENV);
   console.log(`Try`,process.env.APIEXPLORER, process.env.HOST);
-  console.log(`cert`,!!fs.readFileSync('cert.pem'),!!fs.readFileSync('./cert.pem'))
   return app;
 }
 
@@ -24,11 +23,8 @@ if (require.main === module) {
       },
       cors: {
         origin: ['https://humedalesdigitalescuencadelgualeguaychu.com', 'https://api.humedalesdigitalescuencadelgualeguaychu.com', 'http://68.233.231.176', 'http://68.233.231.176:3001/'],
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        preflightContinue: false,
+        preflightContinue: true,
         optionsSuccessStatus: 204,
-        maxAge: 86400,
-        credentials: false,
       },
       port: +(process.env.PORT ?? 3001),
       host: process.env.HOST,
