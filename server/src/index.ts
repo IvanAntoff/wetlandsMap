@@ -31,7 +31,7 @@ if (require.main === module) {
       port: +(process.env.PORT ?? 3001),
       host: process.env.HOST,
       // // Enable HTTPS
-      protocol: 'https',
+      // protocol: 'https',
       // key: fs.readFileSync('key.pem'),
       // cert: fs.readFileSync('cert.pem'),
       // The `gracePeriodForClose` provides a graceful close for http/https
