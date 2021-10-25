@@ -1,0 +1,18 @@
+.infobox-actions {
+    height: max-content !important;
+    min-height: 30px !important;
+}
+
+#missingCredential {
+    display: flex !important;
+    margin-top: calc(25%) !important;
+    background-color: transparent !important;
+}
+#missingCredential div {
+    background: transparent !important;
+    font-size: xx-small !important;
+    color: rgba(1, 1, 1, 0.1) !important;
+}
+#missingCredential div a{
+    display: none;
+}

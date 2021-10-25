@@ -1,3 +1,7 @@
+* {
+    scrollbar-width: thin;
+}
+
 @media (orientation: landscape) {
     .postModal {
         --min-width: 80vw;
@@ -19,4 +23,22 @@
     div.alert-wrapper {
         --min-width: 100vw;
     }
+}
+
+.fixHeight {
+    max-height: 80vh;
+    overflow: hidden;
+    height: 100%;
+}
+
+.scroll {
+    overflow-y: scroll;
+}
+
+.circular--square {
+    border-radius: 50%;
+}
+
+.background-color-primary {
+    background: var(--ion-color-primary);
 }

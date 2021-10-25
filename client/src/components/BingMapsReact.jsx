@@ -1,5 +1,7 @@
 // DEPENDENCIES
-import React, { useEffect, useRef, useCallback } from "react";
+import { IonLoading } from "@ionic/react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
+import './bingMap.css'
 
 export default function BingMapsReact({
   bingMapsKey,
@@ -8,33 +10,33 @@ export default function BingMapsReact({
   onMapReady,
   pushPins,
   pushPinsWithInfoboxes,
+  polygon,
+  infobox,
   viewOptions,
   width,
   mapEventsHandlers,
-  getLocationOnClick
+  getLocationOnClick,
 }) {
   // refs
   const mapContainer = useRef(null);
   const map = useRef(null);
   const onClickLocationSetter = useRef(null);
-
-  // onClickLocation handler
-  function addOnClickHanlder(map ,event, valueSetter) {
-    if (event.targetType === "map") {
-      let pixelClicked = new window.Microsoft.Maps.Point(event.getX(), event.getY());
-      let pixToLocation = map.tryPixelToLocation(pixelClicked);
-      valueSetter(pixToLocation);
-    }
-  }
-
+  const infoboxHandler = useRef(null);
+  const [loading, setLoading] = useState(true);
   // get location
   function getLocationClicked (map, valueSetter) {
     try{
       if (map && window.Microsoft && window.Microsoft.Maps && window.Microsoft.Maps.Events  && window.Microsoft.Maps.Events.addHandler && valueSetter) {
-        if (!onClickLocationSetter.current){
-          const aux = window.Microsoft.Maps.Events.addHandler(map, "click", function (e) {addOnClickHanlder(map, e, valueSetter)})
-          onClickLocationSetter.current = aux;
+        function addOnClickHanlder(map ,event, valueSetter) {
+          if (event.targetType === "map") {
+            let pixelClicked = new window.Microsoft.Maps.Point(event.getX(), event.getY());
+            let pixToLocation = map.tryPixelToLocation(pixelClicked);
+            valueSetter(pixToLocation);
+          }
         }
+        // onClickLocation handler
+        if (onClickLocationSetter.current) window.Microsoft.Maps.Events.removeHandler(onClickLocationSetter.current);
+        onClickLocationSetter.current = window.Microsoft.Maps.Events.addHandler(map, "click", function (e) {addOnClickHanlder(map, e, valueSetter)});
       };
     }
     catch (error) {
@@ -67,27 +69,53 @@ export default function BingMapsReact({
     }
   }
 
+  const resetInfoboxes = (map) => {
+    infoboxHandler.current.setOptions({visible: false});
+    infoboxHandler.current.setMap(null);
+    infoboxHandler.current.setMap(map);
+  }
+  // to fix actions visualizations problems just add this css and import. 
+  // .MicrosoftMap .Infobox .infobox-actions {
+  //   height: max-content;
+  // }
   // add pushpins with infoboxes
   const addPushpinsWithInfoboxes = useCallback(
-    (pushPinsToAdd, infobox, map, Maps) => {
+    (pushPinsToAdd, map, Maps) => {
       removePushpins(map, Maps);
       pushPinsToAdd.forEach((pushPin) => {
         if (pushPin === null) {
           return;
         }
         const newPin = new Maps.Pushpin(pushPin.center, pushPin.options);
+        let actions = [];
+        if (pushPin.metadata && pushPin.metadata.actions && Array.isArray(pushPin.metadata.actions)){
+          for (let i = 0; i < pushPin.metadata.actions.length; i++) {
+            const action = pushPin.metadata.actions[i];
+            if (action.label && action.eventHandler) actions.push(action)
+          }
+        }
         newPin.metadata = pushPin.metadata;
+        if (pushPin.metadata.visible === true) {
+          infoboxHandler.current.setOptions({
+            location: pushPin.center,
+            title: pushPin.metadata.title,
+            description: pushPin.metadata.description,
+            actions: actions,
+            showPointer: true,
+            showCloseButton: true,
+            visible: true,
+          });
+        }
         Maps.Events.addHandler(newPin, "mouseover", (e) => {
-          infobox.setOptions({
+          infoboxHandler.current.setOptions({
             location: e.target.getLocation(),
             title: e.target.metadata.title,
             description: e.target.metadata.description,
             visible: true,
-            htmlContent: pushPin.infoboxHtml,
           });
         });
         Maps.Events.addHandler(newPin, "mouseout", (e) => {
-          infobox.setOptions({
+          infoboxHandler.current.setOptions({
             visible: false,
           });
         });
@@ -107,6 +135,37 @@ export default function BingMapsReact({
       map.entities.push(newPin);
     });
   }
+
+    // add polygon unfinished
+    function addPolygon(polygonToAdd, map, Maps) {
+        try{
+          if (polygonToAdd === null) return;
+          const newPolygon = new Maps.Polygon([polygonToAdd], {
+            fillColor: 'rgba(0, 255, 0, 0.5)',
+            strokeColor: 'red',
+            strokeThickness: 2
+          });
+          if(newPolygon && newPolygon[1]) map.entities.push(newPolygon);
+        }
+        catch (error) {
+          console.error('Error on polygon creation. Error: ',error);
+        }
+    }
+
+    // add infobox
+    function addInfobox(newinfobox) {
+      try{
+        if (newinfobox === null || !newinfobox.center || !newinfobox.title || !newinfobox.description) return;
+        infobox.setOptions(newinfobox.center, {
+          title: newinfobox.title,
+          description: newinfobox.description
+        });
+      }
+      catch (error) {
+        console.error('Error on polygon creation. Error: ',error);
+      }
+    }
+  
 
   // set view options
   function setMapViewOptions(map, viewOptions, Maps) {
@@ -145,14 +204,42 @@ export default function BingMapsReact({
   // make map, set options, add pins
   const makeMap = useCallback(() => {
     const { Maps } = window.Microsoft;
-
     // only make a new map if one doesn't already exist
     if (!map.current) {
       map.current = new Maps.Map(mapContainer.current, {
-        credentials: bingMapsKey,
+        showLogo: false,
+        showTrafficButton: false,
       });
+      setLoading(false);
+      onMapReady && onMapReady();
     }
+  },[]);
 
+  useEffect(() => {
+    if(map.current) return;
+    setLoading(true);
+    window.makeMap = makeMap;
+    const scriptTag = document.createElement("script");
+    scriptTag.setAttribute("type", "text/javascript");
+    scriptTag.async = true;
+    scriptTag.defer = true;
+    scriptTag.setAttribute(
+      "src",
+      `https://www.bing.com/api/maps/mapcontrol?callback=makeMap&key=${bingMapsKey}`
+    );
+    document.body.appendChild(scriptTag);
+  }, [makeMap]);
+
+  useEffect(() => {
+    if(!map.current) return;
+    setLoading(true);
+    const { Maps } = window.Microsoft;
+    if(!infoboxHandler.current) {
+      infoboxHandler.current = new Maps.Infobox(map.current.getCenter(), {
+        visible: false,
+      });
+      infoboxHandler.current.setMap(map.current);
+    }
     if (mapEventsHandlers) {
       addEventsHandlers(map.current, mapEventsHandlers);
     }
@@ -177,19 +264,20 @@ export default function BingMapsReact({
 
     // add infoboxes, if any
     if (pushPinsWithInfoboxes) {
-      const infobox = new Maps.Infobox(map.current.getCenter(), {
-        visible: false,
-      });
-      infobox.setMap(map.current);
-      addPushpinsWithInfoboxes(
-        pushPinsWithInfoboxes,
-        infobox,
-        map.current,
-        Maps
-      );
+      resetInfoboxes(map.current);
+      addPushpinsWithInfoboxes(pushPinsWithInfoboxes, map.current, Maps);
     }
-    onMapReady && onMapReady();
-  }, [
+
+    // add polygons, if any
+    if (polygon) addPolygon(pushPins, map.current, Maps);
+    // add infobox, if any
+    if (infobox) {
+      resetInfoboxes(map.current);
+      addInfobox(infobox, map.current, Maps);
+    }
+    setLoading(false);
+  },[
+    map,
     addPushpinsWithInfoboxes,
     bingMapsKey,
     mapOptions,
@@ -197,28 +285,25 @@ export default function BingMapsReact({
     pushPins,
     pushPinsWithInfoboxes,
     viewOptions,
-    getLocationOnClick
-  ]);
-
-  useEffect(() => {
-    if (window.Microsoft && window.Microsoft.Maps) {
-      makeMap();
-    } else {
-      const scriptTag = document.createElement("script");
-      scriptTag.setAttribute("type", "text/javascript");
-      scriptTag.setAttribute(
-        "src",
-        `https://www.bing.com/api/maps/mapcontrol?callback=makeMap`
-      );
-      scriptTag.async = true;
-      scriptTag.defer = true;
-      document.body.appendChild(scriptTag);
-      window.makeMap = makeMap;
-    }
-  }, [makeMap]);
+    getLocationOnClick,
+    height,
+    pushPins.length,
+    pushPinsWithInfoboxes.length,
+    polygon,
+    infobox,
+    width,
+    mapEventsHandlers,
+  ])
 
   return (
-    <div ref={mapContainer} style={{ height: height, width: width }}></div>
+      <div ref={mapContainer} style={loading == true ? { height: '0px', width: '0px' } : { height: height, width: width }}>
+      <IonLoading
+        isOpen={loading}
+        message={'Actualizando mapa...'}
+        keyboardClose={false}
+        backdropDismiss={false}
+        />
+      </div>
   );
 }
 BingMapsReact.defaultProps = {
@@ -226,10 +311,12 @@ BingMapsReact.defaultProps = {
   mapOptions: null,
   height: "100%",
   onMapReady: null,
-  pushPins: null,
-  pushPinsWithInfoboxes: null,
+  pushPins: [],
+  pushPinsWithInfoboxes: [],
   viewOptions: null,
   width: "100%",
   mapEventsHandlers: null,
-  getLocationOnClick: null
+  getLocationOnClick: null,
+  polygon: null,
+  infobox: null
 };
