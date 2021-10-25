@@ -31,7 +31,7 @@ if (require.main === module) {
         credentials: true,
       },
       port: +(process.env.PORT ?? 3001),
-      host: "api.humedalesdigitalescuencadelgualeguaychu.com",
+      host: "humedalesdigitalescuencadelgualeguaychu.com",
       // // Enable HTTPS
       // protocol: 'https',
       // key: fs.readFileSync('key.pem'),
