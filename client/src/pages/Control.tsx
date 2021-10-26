@@ -1,4 +1,4 @@
-import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
 import { post } from '../interfaces/interfaces';
@@ -13,6 +13,7 @@ const Control: React.FC = () => {
 	const [ approveds, setApproveds ] = useState<JSX.Element[]>([]);
 	const [ refuseds, setRefuseds ] = useState<JSX.Element[]>([]);
 	const [ forceRefresh, setForceRefresh ] = useState<boolean>(false);
+	const [ alert, setAlert ] = useState<{show: boolean,header: string,subtitle: string,message: string}>({show: false,header: '',subtitle: '',message: ''})
 	const { user, isAuthenticated, isLoading } = useAuth0();
 	const history = useHistory();
 
@@ -90,7 +91,7 @@ const Control: React.FC = () => {
 				const res = await axiosInstance.patch(`${POSTS_URL}/posts/${postId}`, {
 					status: status
 				})
-				if (!res || !res.data || !res.data.status || res.data.status !== 200) return;
+				if (!res || !res.data || !res.data.status || (res.data.status !== 200 && res.data.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
 				posts[postIndex] = postToUpdate;
 				setPostData(posts);
 				setForceRefresh(!forceRefresh);
@@ -98,6 +99,20 @@ const Control: React.FC = () => {
 		} catch(error) {console.error(error)}
 	}
 
+	const showAlert = (message: string, header: string = 'Atencion!',subtitle: string = '') => {
+		if (!message || typeof(header) !== 'string' || typeof(subtitle) !== 'string') return;
+		const auxAlert = {
+			show: true,
+			header: header,
+			subtitle: subtitle,
+			message: message
+		}
+		return setAlert(auxAlert);
+	}
+
+	const closeAlert = () => {
+		return setAlert({show: false,header: '',subtitle: '',message: ''});
+	}
 	return (
 		<IonPage>
 			<IonHeader>
@@ -106,6 +121,14 @@ const Control: React.FC = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent color={'light'} fullscreen>
+				<IonAlert
+					isOpen={alert.show}
+					onDidDismiss={() => closeAlert()}
+					header={alert.header}
+					subHeader={alert.subtitle}
+					message={alert.message}
+					buttons={['OK']}
+				/>
 				{	(!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) ?  
 					<IonTitle>Inicie sesion como administrador</IonTitle>
 					:
