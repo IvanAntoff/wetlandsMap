@@ -1,13 +1,31 @@
-import { IonCol, IonContent, IonGrid, IonHeader, IonItem, IonPage, IonRow, IonText, IonTitle, IonToolbar, IonImg, IonThumbnail, IonItemDivider, IonLabel } from '@ionic/react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { IonCol, IonContent, IonGrid, IonHeader, IonItem, IonPage, IonRow, IonText, IonTitle, IonToolbar, IonImg, IonThumbnail, IonItemDivider, IonLabel, IonButton, IonButtons } from '@ionic/react';
+import LoginButton from '../components/LoginButton';
+import LogoutButton from '../components/LogoutButton';
 
 const Tab2: React.FC = () => {
+    const { user, isAuthenticated } = useAuth0();
+
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar color="primary">
-                    <IonTitle>Humedales Digitales</IonTitle>
-                </IonToolbar>
-            </IonHeader>
+			<IonHeader>
+				<IonToolbar color={'primary'}>
+					<IonTitle>Humedales digitales</IonTitle>
+					{!isAuthenticated || !user ? 
+						<IonButtons slot='end'>
+							<LoginButton />
+						</IonButtons>
+						:
+						<IonButtons slot='end'>
+							<IonButton>
+								<p>{user?.nickname ? user.nickname : 'Desconocido'}</p>
+								<img className="circular--square" src={user?.picture ? user.picture : ''} alt={user?.name ? user?.name : 'unknowimg'} width="35" height="35" />
+							</IonButton>
+							<LogoutButton />
+						</IonButtons>
+					}
+				</IonToolbar>
+			</IonHeader>
             <IonContent fullscreen color="light">
                 <IonGrid className={'ion-no-margin ion-no-padding'}>
                     <IonRow className={'ion-justify-content-center ion-align-items-center '}>

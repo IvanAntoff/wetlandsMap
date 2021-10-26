@@ -280,7 +280,7 @@ const Map: React.FC = () => {
 								}}
 								getLocationOnClick={(value:bingMapPosition) => getClickedLocation(value)}
 							/>
-							<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} >
+							<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} onDidDismiss={() => editModeOFF()}>
 								<WetlandForm location={onClickPosition ? onClickPosition : {latitude: 0, longitude:0}}
 									categories={categories} 
 								/>
