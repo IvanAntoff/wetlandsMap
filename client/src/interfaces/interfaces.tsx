@@ -33,7 +33,13 @@ export interface post {
     id: string,
     status: 'pending' | 'refused' | 'approved',
     category: postCategory,
-    data: optionalWetland | optionalThreat | optionalInitiative | optionalsArt | optionalInvestigation,
+    data: {
+        wetland?: optionalWetland, 
+        threath?: optionalThreat,
+        initiative?: optionalInitiative,
+        art?: optionalsArt,
+        Investigation?: optionalInvestigation
+    },
     content: {
         title: string,
         description: string,

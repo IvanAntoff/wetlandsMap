@@ -148,7 +148,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             <>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Actividades desarrolladas en zonas aledañas:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.outskirts")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.wetland.outskirts")} >
                         {
                         outskirtArray.map((outskirt, index) => {
                             return (<IonSelectOption value={outskirt} key={`IonSelectOption-${index}-outskirt-${outskirt}`}>{outskirt}</IonSelectOption>)
@@ -161,7 +161,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Color del agua:</IonLabel>
-                    <IonSelect placeholder={"Indique el color observado."} className={'alert-xl'} {...register("data.color")} >
+                    <IonSelect placeholder={"Indique el color observado."} className={'alert-xl'} {...register("data.wetland.color")} >
                         {
                         colorArray.map((colorArray, index) => {
                             return (<IonSelectOption value={colorArray} key={`IonSelectOption-${index}-colorArray-${colorArray}`}>{colorArray}</IonSelectOption>)
@@ -171,7 +171,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Presencia de olor en el agua:</IonLabel>
-                    <IonSelect placeholder={"Indique si noto la presencia de olor en el agua."} className={'alert-xl'} {...register("data.smell")} >
+                    <IonSelect placeholder={"Indique si noto la presencia de olor en el agua."} className={'alert-xl'} {...register("data.wetland.smell")} >
                         {
                         smellArray.map((smell, index) => {
                             return (<IonSelectOption value={smell} key={`IonSelectOption-${index}-smell-${smell}`}>{smell}</IonSelectOption>)
@@ -181,7 +181,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Presencia de flora:</IonLabel>
-                    <IonSelect placeholder={"Indique la flora observada."} multiple className={'alert-xl'} {...register("data.flora")} >
+                    <IonSelect placeholder={"Indique la flora observada."} multiple className={'alert-xl'} {...register("data.wetland.flora")} >
                         {
                         floraArray.map((flora, index) => {
                             return (<IonSelectOption value={flora} key={`IonSelectOption-${index}-flora-${flora}`}>{flora}</IonSelectOption>)
@@ -191,7 +191,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Presencia de fauna:</IonLabel>
-                    <IonSelect placeholder={"Indique la fauna observada."} multiple className={'alert-xl'} {...register("data.wildlife")} >
+                    <IonSelect placeholder={"Indique la fauna observada."} multiple className={'alert-xl'} {...register("data.wetland.wildlife")} >
                         {
                         wildlifeArray.map((wildlife, index) => {
                             return (<IonSelectOption value={wildlife} key={`IonSelectOption-${index}-wildlife-${wildlife}`}>{wildlife}</IonSelectOption>)
@@ -201,7 +201,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Estado de márgenes de ribera:</IonLabel>
-                    <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("data.margins")} >
+                    <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("data.wetland.margins")} >
                         {
                         marginsArray.map((margins, index) => {
                             return (<IonSelectOption value={margins} key={`IonSelectOption-${index}-margins-${margins}`}>{margins}</IonSelectOption>)
@@ -211,7 +211,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Morfología de la costa:</IonLabel>
-                    <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("data.morfology")} >
+                    <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("data.wetland.morfology")} >
                         {
                         morfologyArray.map((morfology, index) => {
                             return (<IonSelectOption value={morfology} key={`IonSelectOption-${index}-morfology-${morfology}`}>{morfology}</IonSelectOption>)
@@ -221,7 +221,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Historia:</IonLabel>
-                    <IonTextarea placeholder={"Relate, de conocerse, la historia del sitio."} {...register("data.history")} ></IonTextarea>
+                    <IonTextarea placeholder={"Relate, de conocerse, la historia del sitio."} {...register("data.wetland.history")} ></IonTextarea>
                 </IonItem>
             </>
         )
@@ -232,7 +232,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             <>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de origen de la amenaza/impacto ambiental:</IonLabel>
-                    <IonSelect placeholder={"De conocerla, indique el origen de la amenaza."} className={'alert-xl'} {...register("data.origin")} >
+                    <IonSelect placeholder={"De conocerla, indique el origen de la amenaza."} className={'alert-xl'} {...register("data.threath")} >
                         {
                         originArray.map((origin, index) => {
                             return (<IonSelectOption value={origin} key={`IonSelectOption-${index}-origin-${origin}`}>{origin}</IonSelectOption>)
@@ -242,7 +242,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Fuente de generación:</IonLabel>
-                    <IonSelect placeholder={"Indique que genera la contaminacion/amenaza."} className={'alert-xl'} {...register("data.source")} >
+                    <IonSelect placeholder={"Indique que genera la contaminacion/amenaza."} className={'alert-xl'} {...register("data.threath.source")} >
                         {
                         sourceArray.map((source, index) => {
                             return (<IonSelectOption value={source} key={`IonSelectOption-${index}-source-${source}`}>{source}</IonSelectOption>)
@@ -255,7 +255,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Olor:</IonLabel>
-                    <IonSelect placeholder={"Indique si noto presencia de olor/es."} className={'alert-xl'} {...register("data.aspect.smell")} >
+                    <IonSelect placeholder={"Indique si noto presencia de olor/es."} className={'alert-xl'} {...register("data.threath.aspect.smell")} >
                         {
                         smellArray.map((smell, index) => {
                             return (<IonSelectOption value={smell} key={`IonSelectOption-${index}-smell-${smell}`}>{smell}</IonSelectOption>)
@@ -265,7 +265,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Color :</IonLabel>
-                    <IonSelect placeholder={"Indique el color del agua."} className={'alert-xl'} {...register("data.aspect.color")} >
+                    <IonSelect placeholder={"Indique el color del agua."} className={'alert-xl'} {...register("data.threath.aspect.color")} >
                         {
                         colorArray.map((color, index) => {
                             return (<IonSelectOption value={color} key={`IonSelectOption-${index}-color-${color}`}>{color}</IonSelectOption>)
@@ -278,7 +278,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Materia orgánica en la superficie:</IonLabel>
-                    <IonSelect placeholder={"Indique si notó materia flotando."} className={'alert-xl'} {...register("data.surface.matter")} >
+                    <IonSelect placeholder={"Indique si notó materia flotando."} className={'alert-xl'} {...register("data.threath.surface.matter")} >
                         {
                         hasArray.map((has, index) => {
                             return (<IonSelectOption value={has} key={`IonSelectOption-${index}-has-${has}`}>{has}</IonSelectOption>)
@@ -288,11 +288,11 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Describa la materia flotante presenciada:</IonLabel>
-                    <IonTextarea placeholder={"Describa, si corresponde, lo presenciado."} {...register("data.surface.matterDescrition")} minlength={200} maxlength={1000} spellCheck={true} ></IonTextarea>
+                    <IonTextarea placeholder={"Describa, si corresponde, lo presenciado."} {...register("data.threath.surface.matterDescrition")} minlength={200} maxlength={1000} spellCheck={true} ></IonTextarea>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Espumas en la superficie:</IonLabel>
-                    <IonSelect placeholder={"Indique si notó espuma flotando."} className={'alert-xl'} {...register("data.surface.foam")} >
+                    <IonSelect placeholder={"Indique si notó espuma flotando."} className={'alert-xl'} {...register("data.threath.surface.foam")} >
                         {
                         hasArray.map((has, index) => {
                             return (<IonSelectOption value={has} key={`IonSelectOption-${index}-foam-${has}`}>{has}</IonSelectOption>)
@@ -302,7 +302,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Algas en la superficie:</IonLabel>
-                    <IonSelect placeholder={"Indique si notó algas flotando."} className={'alert-xl'} {...register("data.surface.seaweed")} >
+                    <IonSelect placeholder={"Indique si notó algas flotando."} className={'alert-xl'} {...register("data.threath.surface.seaweed")} >
                         {
                         hasArray.map((has, index) => {
                             return (<IonSelectOption value={has} key={`IonSelectOption-${index}-algas-${has}`}>{has}</IonSelectOption>)
@@ -315,7 +315,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Análisis de muestras de agua:</IonLabel>
-                    <IonSelect placeholder={"Existen análisis de muestras de agua."} className={'alert-xl'} {...register("data.documentation.waterAnalysis")} >
+                    <IonSelect placeholder={"Existen análisis de muestras de agua."} className={'alert-xl'} {...register("data.threath.documentation.waterAnalysis")} >
                         {
                         booleanEnumArray.map((Enum, index) => {
                             return (<IonSelectOption value={Enum} key={`IonSelectOption-${index}-analysis-${Enum}`}>{Enum}</IonSelectOption>)
@@ -325,7 +325,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de análisis:</IonLabel>
-                    <IonSelect placeholder={"Existen análisis de muestras de agua."} className={'alert-xl'} {...register("data.documentation.waterAnalysisType")} >
+                    <IonSelect placeholder={"Existen análisis de muestras de agua."} className={'alert-xl'} {...register("data.threath.documentation.waterAnalysisType")} >
                         {
                         waterAnalysisTypeArray.map((waterAnalysisRes, index) => {
                             return (<IonSelectOption value={waterAnalysisRes} key={`IonSelectOption-${waterAnalysisRes}-waterAnalysisType-${index}`}>{waterAnalysisRes}</IonSelectOption>)
@@ -335,7 +335,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Resultados de los estudios:</IonLabel>
-                    <IonSelect placeholder={"Conoce los resultados de los estudios?."} className={'alert-xl'} {...register("data.documentation.waterAnalysisResults")} >
+                    <IonSelect placeholder={"Conoce los resultados de los estudios?."} className={'alert-xl'} {...register("data.threath.documentation.waterAnalysisResults")} >
                         {
                         waterAnalysisResultsArray.map((waterAnalysisResults, index) => {
                             return (<IonSelectOption value={waterAnalysisResults} key={`IonSelectOption-${waterAnalysisResults}-waterAnalysisResults-${index}`}>{waterAnalysisResults}</IonSelectOption>)
@@ -345,7 +345,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Estudios de impacto ambiental:</IonLabel>
-                    <IonSelect placeholder={"Existen estudios sobre el impacto ambieltal?."} className={'alert-xl'} {...register("data.documentation.environmentalImpactReport")} >
+                    <IonSelect placeholder={"Existen estudios sobre el impacto ambieltal?."} className={'alert-xl'} {...register("data.threath.documentation.environmentalImpactReport")} >
                         {
                         booleanEnumArray.map((environmentalImpactReport, index) => {
                             return (<IonSelectOption value={environmentalImpactReport} key={`IonSelectOption-${environmentalImpactReport}-environmentalImpactReport-${index}`}>{environmentalImpactReport}</IonSelectOption>)
@@ -355,7 +355,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Informe técnico ambiental:</IonLabel>
-                    <IonSelect placeholder={"Existen informes técnicos ambientales?."} className={'alert-xl'} {...register("data.documentation.environmentalTechnicalReport")} >
+                    <IonSelect placeholder={"Existen informes técnicos ambientales?."} className={'alert-xl'} {...register("data.threath.documentation.environmentalTechnicalReport")} >
                         {
                         booleanEnumArray.map((environmentalTechnicalReport, index) => {
                             return (<IonSelectOption value={environmentalTechnicalReport} key={`IonSelectOption-${environmentalTechnicalReport}-environmentalTechnicalReport-${index}`}>{environmentalTechnicalReport}</IonSelectOption>)
@@ -365,7 +365,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Adjunta imágenes/videos:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.documentation.images")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.threath.documentation.images")} >
                         {
                         booleanEnumArray.map((images, index) => {
                             return (<IonSelectOption value={images} key={`IonSelectOption-${images}-images-${index}`}>{images}</IonSelectOption>)
@@ -382,7 +382,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             <>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de iniciativa sustentable:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.initiativeType")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.initiative.initiativeType")} >
                         {
                         initiativeTypeArray.map((initiativeType, index) => {
                             return (<IonSelectOption value={initiativeType} key={`IonSelectOption-${initiativeType}-initiativeType-${index}`}>{initiativeType}</IonSelectOption>)
@@ -392,7 +392,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Organizador/es de la iniciativa sustentable:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.organizator")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.initiative.organizator")} >
                         {
                         organizatorArray.map((organizator, index) => {
                             return (<IonSelectOption value={organizator} key={`IonSelectOption-${organizator}-organizator-${index}`}>{organizator}</IonSelectOption>)
@@ -402,7 +402,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Participantes de la iniciativa sustentable:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.initiativeParticipants")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.initiative.initiativeParticipants")} >
                         {
                         participantsArray.map((participants, index) => {
                             return (<IonSelectOption value={participants} key={`IonSelectOption-${participants}-participants-${index}`}>{participants}</IonSelectOption>)
@@ -412,7 +412,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Objetivo de la iniciativa sustentable:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.objetive")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.initiative.objetive")} >
                         {
                         initiativeObjetiveArray.map((objetive, index) => {
                             return (<IonSelectOption value={objetive} key={`IonSelectOption-${objetive}-objetive-${index}`}>{objetive}</IonSelectOption>)
@@ -429,7 +429,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             <>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de expresión artística:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.artType")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.art.artType")} >
                         {
                         artTypeArray.map((artType, index) => {
                             return (<IonSelectOption value={artType} key={`IonSelectOption-${artType}-artType-${index}`}>{artType}</IonSelectOption>)
@@ -446,7 +446,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             <>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Instituciones participantes del proyecto de investigación:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.investigationParticipants")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.Investigation.investigationParticipants")} >
                         {
                         participantsArray.map((investigationParticipants, index) => {
                             return (<IonSelectOption value={investigationParticipants} key={`IonSelectOption-${investigationParticipants}-investigationParticipants-${index}`}>{investigationParticipants}</IonSelectOption>)
@@ -456,7 +456,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Estado actual del proyecto de investigación:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.state")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.Investigation.state")} >
                         {
                         resultStateArray.map((state, index) => {
                             return (<IonSelectOption value={state} key={`IonSelectOption-${state}-state-${index}`}>{state}</IonSelectOption>)
@@ -466,7 +466,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de resultados obtenidos:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.resultType")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.Investigation.resultType")} >
                         {
                         resultTypeArray.map((resultType, index) => {
                             return (<IonSelectOption value={resultType} key={`IonSelectOption-${resultType}-resultType-${index}`}>{resultType}</IonSelectOption>)
@@ -476,7 +476,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Estado de publicación/comunicación de resultados obtenidos:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.publications")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.Investigation.publications")} >
                         {
                         publicationsArray.map((publications, index) => {
                             return (<IonSelectOption value={publications} key={`IonSelectOption-${publications}-publications-${index}`}>{publications}</IonSelectOption>)

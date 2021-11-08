@@ -12,6 +12,8 @@ import { postFilters, categories } from '../enums/data';
 import { API_KEY_BINGMAPS, POSTS_URL } from '../apiKeys';
 import ReactBingmaps from "../components/BingMapsReact";
 import { axiosInstance } from '../axiosConf';
+import { PostReader } from '../components/PostReader';
+import { reduceText, toCapitalizeCase } from '../utils/sharedFn';
 
 const Map: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
@@ -26,6 +28,8 @@ const Map: React.FC = () => {
 	const [ loading, setLoading ] = useState<boolean>(false);
 	const [ infoMarkerIndex, setInfoMarkerIndex ] = useState<number>(-1);
 	const [ appliedFilters, setAppliedFilters ]	= useState<string[]>([]);
+	const [ selectedPost, setSelectedPost ] = useState<post | undefined>(undefined);
+	const [ showPostModal, setShowPostModal ] = useState<boolean>(false);
 	const editModeActive = useRef<boolean>(false);
 	const { user, isAuthenticated } = useAuth0();
 
@@ -42,7 +46,7 @@ const Map: React.FC = () => {
 						if (post.status === 'approved') auxMarkers.push({
 							metadata: {
 								title: post.content.title,
-								description: `${post.content?.description.slice(0,75)}...`,
+								description: `${post.content?.description.substr(0,75)}...`,
 							},
 							center: {latitude: parseFloat(post.ubication.latitude),longitude: parseFloat(post.ubication.longitude)},
 						});
@@ -58,6 +62,16 @@ const Map: React.FC = () => {
 		}
 		getData();
 	},[postsData.length]);
+
+	const showPost = (post: post) => {
+		if (!post) return;
+		setSelectedPost(post);
+		setShowPostModal(true);
+	}
+	const closePost = () => {
+		setSelectedPost(undefined);
+		setShowPostModal(false);
+	}
 
 	const getPostPosition = (id:string) => {
 		const mapPosition = postsData.find((post) => post.id === (id));
@@ -166,8 +180,8 @@ const Map: React.FC = () => {
 						auxPosts.push(post);
 						if (post.status === 'approved') auxMarkers.push({
 							metadata: {
-								title: post.content.title,
-								description: `${post.content?.description.slice(0,75)}...`,
+								title: toCapitalizeCase(reduceText(post.content.title, 50)),
+								description: reduceText(post.content?.description),
 							},
 							center: {latitude: parseFloat(post.ubication.latitude),longitude: parseFloat(post.ubication.longitude)},
 						});
@@ -238,16 +252,10 @@ const Map: React.FC = () => {
 										<PostCard
 											key={`PostCard-content-index${index}'id'${post.id}`}
 											index={index}
-											id={post.id}
-											status={post.status}
-											category={post.category}
-											data={post.data}
-											content={post.content}
-											ubication={post.ubication}
-											keyword={post.keyword}
+											post={post}
 											buttons={[
 												{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post.id)}, icon: 'pin'},
-												{label: 'Ver publicacion', onClick: ()=> {console.log(post.id)}, icon: 'pin'}											
+												{label: 'Ver publicacion', onClick: ()=> showPost(post), icon: 'pin'}											
 											]}
 										/>
 									)
@@ -288,6 +296,9 @@ const Map: React.FC = () => {
 						</IonCol>
 					</IonRow>
 				</IonGrid>
+				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-50vw"}>
+					<PostReader post={selectedPost} mode={'complete'} />
+				</IonModal>
 				<IonAlert
 					isOpen={showAlert}
 					onDidDismiss={() => setShowAlert(false)}

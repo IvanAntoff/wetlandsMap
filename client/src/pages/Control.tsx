@@ -1,4 +1,4 @@
-import { IonAlert, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonCol, IonContent, IonGrid, IonHeader, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
 import { post } from '../interfaces/interfaces';
@@ -6,6 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
 import { POSTS_URL, wetlandusers } from '../apiKeys';
 import { axiosInstance } from '../axiosConf';
+import { PostReader } from '../components/PostReader';
 
 const Control: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
@@ -14,6 +15,8 @@ const Control: React.FC = () => {
 	const [ refuseds, setRefuseds ] = useState<JSX.Element[]>([]);
 	const [ forceRefresh, setForceRefresh ] = useState<boolean>(false);
 	const [ alert, setAlert ] = useState<{show: boolean,header: string,subtitle: string,message: string}>({show: false,header: '',subtitle: '',message: ''})
+	const [ selectedPost, setSelectedPost ] = useState<post | undefined>(undefined);
+	const [ showPostModal, setShowPostModal ] = useState<boolean>(false);
 	const { user, isAuthenticated, isLoading } = useAuth0();
 	const history = useHistory();
 
@@ -42,19 +45,19 @@ const Control: React.FC = () => {
 					cardButtons = [
 						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, 'approved')},
 						{label: 'Rechazar', color: 'danger', onClick: () => updateState(post.id, 'refused')},
-						{label: 'Ver publicacion', onClick: () => console.log(post)},
+						{label: 'Ver publicacion', onClick: () => showPost(post)},
 					];
 				break;
 				case 'approved':
 					cardButtons = [
 						{label: 'Rechazar', color: 'danger', onClick: () => updateState(post.id, 'refused')},
-						{label: 'Ver publicacion', onClick: () => console.log(post)},
+						{label: 'Ver publicacion', onClick: () => showPost(post)},
 					]											
 				break;
 				case 'refused':
 					cardButtons = [
 						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, 'approved')},
-						{label: 'Ver publicacion', onClick: () => console.log(post)},
+						{label: 'Ver publicacion', onClick: () => showPost(post)},
 					]											
 				break;
 			}
@@ -62,14 +65,8 @@ const Control: React.FC = () => {
 				<PostCard
 					key={`PostCard-content-index${index}'id'${post.id}`}
 					index={index}
-					id={post.id}
-					status={post.status}
-					category={post.category}
-					data={post.data}
-					content={post.content}
-					ubication={post.ubication}
-					keyword={post.keyword}
-					buttons={cardButtons}												
+					post={post}
+					buttons={cardButtons}																			
 				/>
 			)
 			if (post.status === 'pending') auxPendings.push(card);
@@ -80,6 +77,16 @@ const Control: React.FC = () => {
 		setApproveds(auxApproveds);
 		setRefuseds(auxRefuseds);
 	},[postsData, forceRefresh]);
+
+	const showPost = (post: post) => {
+		if (!post) return;
+		setSelectedPost(post);
+		setShowPostModal(true);
+	}
+	const closePost = () => {
+		setSelectedPost(undefined);
+		setShowPostModal(false);
+	}
 
 	const updateState = async (postId: string, status: 'pending' | 'approved' | 'refused') => {
 		try{
@@ -149,6 +156,9 @@ const Control: React.FC = () => {
 						</IonRow>
 					</IonGrid>
 				}
+				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()}>
+					<PostReader post={selectedPost} mode={'complete'} />
+				</IonModal>
 			</IonContent>
 		</IonPage>
 	);
