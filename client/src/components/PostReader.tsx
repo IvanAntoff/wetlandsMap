@@ -174,7 +174,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 <IonRow>
                     <IonCol size={"12"}>
                         <IonToolbar color={'primary'}>
-                            <IonTitle className={"ion-text-center"} ><h1><b>{props.post.content.title}</b></h1></IonTitle>
+                            <IonTitle className={"ion-text-center"} ><h1 className={'ion-text-wrap'}><b>{toCapitalizeCase(props.post.content.title)}</b></h1></IonTitle>
                             <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Categoria:</b> {getCatergoryName(props.post.category)}</IonTitle>
                         </IonToolbar>
                     </IonCol>
