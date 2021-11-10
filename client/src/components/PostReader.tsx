@@ -1,6 +1,6 @@
-import { IonCol, IonGrid, IonItem, IonLabel, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react"
+import { IonButton, IonButtons, IonCol, IonGrid, IonItem, IonLabel, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react"
 import { categories } from "../enums/data";
-import { hasType, post, postCategory } from "../interfaces/interfaces"
+import { post, postCategory } from "../interfaces/interfaces"
 import { toCapitalizeCase } from "../utils/sharedFn";
 
 interface PostReader {
@@ -142,8 +142,8 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
-        if (props.post.data?.Investigation) {
-            const data = props.post.data.Investigation;
+        if (props.post.data?.investigation) {
+            const data = props.post.data.investigation;
             return(
                 <IonRow>
                     <IonCol size={"12"}>
@@ -180,6 +180,9 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                     </IonCol>
                 </IonRow>
                 <IonRow>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Informacion general</b></h2></IonLabel></IonItem>
+                    </IonCol>
                     <IonCol size={"4"}>
                         <IonItem lines={"none"}>
                             <IonLabel><b>Tipo:</b> {toCapitalizeCase(props.post?.content?.genericData?.category) || 'Desconocido'}</IonLabel>
@@ -207,7 +210,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
                 <IonRow className={'ion-margin-vertical'}>
                     <IonCol size={"12"}>
-                        <IonItem lines={"full"} color={'primary'}><IonLabel><h2><b>Descripcion:</b></h2></IonLabel></IonItem>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Descripcion</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"} className={'ion-padding'}>
                         <IonText className={'ion-padding ion-margin-vertical'} >{props?.post?.content?.description || 'La publicacion no incluye descripcion.'}</IonText>
@@ -218,6 +221,21 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                     getData()
                     : null
                 }
+                <IonRow className={'ion-margin-vertical'}>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Opciones</b></h2></IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"} className={'ion-padding'}>
+                        <IonButtons className={'ion-justify-content-evenly'}>
+                            <IonButton color={'success'} disabled={true} fill={'outline'}>
+                                Descargar Excel
+                            </IonButton>
+                            <IonButton color={'danger'} disabled={true} fill={'outline'}>
+                                Descargar PDF
+                            </IonButton>
+                        </IonButtons>
+                    </IonCol>
+                </IonRow>
             </IonGrid>
             :null
         }

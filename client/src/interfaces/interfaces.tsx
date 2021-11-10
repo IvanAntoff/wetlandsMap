@@ -38,7 +38,7 @@ export interface post {
         threath?: optionalThreat,
         initiative?: optionalInitiative,
         art?: optionalsArt,
-        Investigation?: optionalInvestigation
+        investigation?: optionalInvestigation
     },
     content: {
         title: string,
