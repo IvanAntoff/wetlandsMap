@@ -45,8 +45,8 @@ const Map: React.FC = () => {
 						const post = posts[i];
 						if (post.status === 'approved') auxMarkers.push({
 							metadata: {
-								title: post.content.title,
-								description: `${post.content?.description.substr(0,75)}...`,
+								title: toCapitalizeCase(reduceText(post.content.title)),
+								description: toCapitalizeCase(reduceText(post.content?.description)),
 							},
 							center: {latitude: parseFloat(post.ubication.latitude),longitude: parseFloat(post.ubication.longitude)},
 						});
