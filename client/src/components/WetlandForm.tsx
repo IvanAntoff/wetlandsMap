@@ -446,7 +446,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             <>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Instituciones participantes del proyecto de investigación:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.Investigation.investigationParticipants")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.investigation.investigationParticipants")} >
                         {
                         participantsArray.map((investigationParticipants, index) => {
                             return (<IonSelectOption value={investigationParticipants} key={`IonSelectOption-${investigationParticipants}-investigationParticipants-${index}`}>{investigationParticipants}</IonSelectOption>)
@@ -456,7 +456,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Estado actual del proyecto de investigación:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.Investigation.state")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.investigation.state")} >
                         {
                         resultStateArray.map((state, index) => {
                             return (<IonSelectOption value={state} key={`IonSelectOption-${state}-state-${index}`}>{state}</IonSelectOption>)
@@ -466,7 +466,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Tipo de resultados obtenidos:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.Investigation.resultType")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.investigation.resultType")} >
                         {
                         resultTypeArray.map((resultType, index) => {
                             return (<IonSelectOption value={resultType} key={`IonSelectOption-${resultType}-resultType-${index}`}>{resultType}</IonSelectOption>)
@@ -476,7 +476,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
                     <IonLabel position={'floating'}>Estado de publicación/comunicación de resultados obtenidos:</IonLabel>
-                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.Investigation.publications")} >
+                    <IonSelect placeholder={""} className={'alert-xl'} {...register("data.investigation.publications")} >
                         {
                         publicationsArray.map((publications, index) => {
                             return (<IonSelectOption value={publications} key={`IonSelectOption-${publications}-publications-${index}`}>{publications}</IonSelectOption>)
