@@ -1,4 +1,4 @@
-import { IonAlert, IonCol, IonContent, IonGrid, IonHeader, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonCol, IonContent, IonGrid, IonModal, IonPage, IonRow, IonTitle } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
 import { post } from '../interfaces/interfaces';
@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { POSTS_URL, wetlandusers } from '../apiKeys';
 import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
+import { Header } from '../components/Header';
 
 const Control: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
@@ -122,11 +123,7 @@ const Control: React.FC = () => {
 	}
 	return (
 		<IonPage>
-			<IonHeader>
-				<IonToolbar color={'primary'}>
-					<IonTitle>Gestión de centenido</IonTitle>
-				</IonToolbar>
-			</IonHeader>
+            <Header login={{includeLogin: true, user: user}}/>
 			<IonContent color={'light'} fullscreen>
 				<IonAlert
 					isOpen={alert.show}

@@ -1,12 +1,10 @@
-import { IonContent, IonGrid, IonHeader, IonPage, IonTitle, IonToolbar, IonRow, IonCol, IonFab, IonFabButton, IonIcon, IonLoading, IonModal, IonButtons, IonAlert, IonButton } from '@ionic/react';
+import { IonContent, IonGrid, IonPage, IonRow, IonCol, IonFab, IonFabButton, IonIcon, IonLoading, IonModal, IonAlert } from '@ionic/react';
 import { add, arrowUndoCircleOutline } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
 import { GenericFilters } from '../components/GenericFilters';
 import PostCard from '../components/PostCard';
 import { WetlandForm } from '../components/WetlandForm';
 import { bingMapPosition, marker, post } from '../interfaces/interfaces';
-import LoginButton from '../components/LoginButton';
-import LogoutButton from '../components/LogoutButton';
 import { useAuth0 } from "@auth0/auth0-react";
 import { postFilters, categories } from '../enums/data';
 import { API_KEY_BINGMAPS, POSTS_URL } from '../apiKeys';
@@ -14,6 +12,7 @@ import ReactBingmaps from "../components/BingMapsReact";
 import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
 import { reduceText, toCapitalizeCase } from '../utils/sharedFn';
+import { Header } from '../components/Header';
 
 const Map: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
@@ -215,24 +214,7 @@ const Map: React.FC = () => {
 
 	return (
 		<IonPage >
-			<IonHeader>
-				<IonToolbar color={'primary'}>
-					<IonTitle>Humedales digitales</IonTitle>
-					{!isAuthenticated || !user ? 
-						<IonButtons slot='end'>
-							<LoginButton />
-						</IonButtons>
-						:
-						<IonButtons slot='end'>
-							<IonButton>
-								<p>{user?.nickname ? user.nickname : 'Desconocido'}</p>
-								<img className="circular--square" src={user?.picture ? user.picture : ''} alt={user?.name ? user?.name : 'unknowimg'} width="35" height="35" />
-							</IonButton>
-							<LogoutButton />
-						</IonButtons>
-					}
-				</IonToolbar>
-			</IonHeader>
+            <Header login={{includeLogin: true, user: user}}/>
 			<IonContent color={'light'} fullscreen>
 			<IonLoading
 				isOpen={loading}
