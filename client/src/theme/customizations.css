@@ -51,3 +51,21 @@
 .background-color-primary {
     background: var(--ion-color-primary);
 }
+
+.slider-item {
+    max-height: 300px;
+    max-width: 90vw;
+    margin-bottom: 5px;
+}
+
+.slider-item ion-img {
+    max-height: 300px;
+    height: 100%;
+    width: fit-content;
+}
+
+.slider-item ion-img img {
+    max-height: 300px;
+    height: 100%;
+    width: fit-content;
+}

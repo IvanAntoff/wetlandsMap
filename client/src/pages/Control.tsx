@@ -15,7 +15,7 @@ const Control: React.FC = () => {
 	const [ approveds, setApproveds ] = useState<JSX.Element[]>([]);
 	const [ refuseds, setRefuseds ] = useState<JSX.Element[]>([]);
 	const [ forceRefresh, setForceRefresh ] = useState<boolean>(false);
-	const [ alert, setAlert ] = useState<{show: boolean,header: string,subtitle: string,message: string}>({show: false,header: '',subtitle: '',message: ''})
+	const [ alert, setAlert ] = useState<{show: boolean,header: string,subtitle: string,message: string, buttons: {text: string, handler?: () => void}[]}>({show: false,header: '',subtitle: '',message: '', buttons: [{text: 'OK'}]})
 	const [ selectedPost, setSelectedPost ] = useState<post | undefined>(undefined);
 	const [ showPostModal, setShowPostModal ] = useState<boolean>(false);
 	const { user, isAuthenticated, isLoading } = useAuth0();
@@ -59,6 +59,7 @@ const Control: React.FC = () => {
 					cardButtons = [
 						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, 'approved')},
 						{label: 'Ver publicacion', onClick: () => showPost(post)},
+						{label: 'Eliminar', color: 'danger', onClick: () => showRemoveAlert(post.id)},
 					]											
 				break;
 			}
@@ -99,27 +100,61 @@ const Control: React.FC = () => {
 				const res = await axiosInstance.patch(`${POSTS_URL}/posts/${postId}`, {
 					status: status
 				})
-				if (!res || !res.data || !res.data.status || (res.data.status !== 200 && res.data.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
+				if (!res || !res.status || (res.status !== 200 && res.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
 				posts[postIndex] = postToUpdate;
 				setPostData(posts);
 				setForceRefresh(!forceRefresh);
 			}
-		} catch(error) {console.error(error)}
+		} catch(error) {
+			console.error(error);
+			return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
+		}
 	}
 
-	const showAlert = (message: string, header: string = 'Atencion!',subtitle: string = '') => {
+	const removePost = async (postId: string) => {
+		try{
+			let posts = postsData;
+			const postIndex = postsData.findIndex((post) => post.id === postId);
+			if (postIndex !== -1) {
+				const res = await axiosInstance.delete(`${POSTS_URL}/posts/${postId}`)
+				console.log('res: ',res, res.status)
+				if (!res || !res.status || (res.status !== 200 && res.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
+				posts.splice(postIndex,1);
+				setPostData(posts);
+				setForceRefresh(!forceRefresh);
+			}
+		} catch(error) {
+			console.error(error);
+			return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
+		}
+	}
+
+	const showRemoveAlert = (postId: string) => {
+		showAlert(
+			'Esta a punto de eliminar una publicacion!',
+			'ALERTA!',
+			'¿Esta seguro de continuar?',
+			[
+				{text: 'Cancelar', handler: () => closeAlert()},
+				{text: 'Eliminar', handler: () => removePost(postId)}
+			]
+		)
+	}
+
+	const showAlert = (message: string, header: string = 'Atencion!',subtitle: string = '', buttons: {text: string, handler?: () => void}[] = [{text: 'OK!'}]) => {
 		if (!message || typeof(header) !== 'string' || typeof(subtitle) !== 'string') return;
 		const auxAlert = {
 			show: true,
 			header: header,
 			subtitle: subtitle,
-			message: message
+			message: message,
+			buttons: buttons
 		}
 		return setAlert(auxAlert);
 	}
 
 	const closeAlert = () => {
-		return setAlert({show: false,header: '',subtitle: '',message: ''});
+		return setAlert({show: false,header: '',subtitle: '',message: '',buttons: [{text: 'OK!'}]});
 	}
 	return (
 		<IonPage>
@@ -131,7 +166,7 @@ const Control: React.FC = () => {
 					header={alert.header}
 					subHeader={alert.subtitle}
 					message={alert.message}
-					buttons={['OK']}
+					buttons={alert.buttons}
 				/>
 				{	(!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) ?  
 					<IonTitle>Inicie sesion como administrador</IonTitle>

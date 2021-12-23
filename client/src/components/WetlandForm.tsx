@@ -18,6 +18,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const [ errorMessage, setErrorMessage ] = useState<string>('Error desconocido.');
     const [ errorMessageColor, setErrorMessageColor ] = useState<string>('warning');
     const [ disableSubmit, setDisableSubmit ] = useState<boolean>(false);
+    const [ uploadedFiles, setUploadedFiles ] = useState<string[]>([]);
     const { register, getValues ,handleSubmit } = useForm<post>();
     const FIRSTSTEP = 1;
     const LASTSTEP = 5;
@@ -26,24 +27,14 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         try {
             setDisableSubmit(true);
             let post:post = data;
-            // if (post.content.files) {
-            //     const auxFiles: string[] = [];
-            //     for (let i = 0; i < post.content.files.length; i++) {
-            //         const file = post.content.files[i];
-            //         const fileStr = JSON.stringify(file);
-            //         if (fileStr) auxFiles.push(fileStr);
-            //     }
-            //     post.content = {...post.content};
-            // }
+            if (uploadedFiles && uploadedFiles.length > 0) post.content.files = uploadedFiles;
             post.status = "pending";
             post.ubication = {latitude: props.location.latitude.toString(), longitude: props.location.longitude.toString()};
-            // console.log('post:',post, props.location)
             axiosInstance.post(`${POSTS_URL}/posts`, {
                 ...post,
                 status: "pending",
             })
             .then((response: axiosResp) => {
-                // console.log('res:',response)
                 if (response && response.status === 200) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
             })
             .catch((error: any) => {
@@ -58,6 +49,21 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     });
 
     const onSubmitError = (errors:any, e:any) => console.error(errors, e);
+
+    const uploadFiles = async (filesEv: FileList | null,reset: boolean = false) => {
+        let files: string[] = [];
+        if (reset === false) files = uploadedFiles;
+        if (!filesEv || filesEv.length < 1) return;
+        for (let i = 0; i < filesEv.length; i++) {
+            if ((filesEv[i].size) && ((filesEv[i].size/1024) > 15000)){
+                showError('Los archivos cuyo peso sea mayor a 15MB seran omitidos.');
+                continue;
+            } 
+            const strFile = await filesEv[i].text();
+            files.push(strFile);
+        }
+        setUploadedFiles(files);
+    }
 
     const showIfStepIs = (stepToCheck: number) : boolean => {
         if (stepToCheck !== step ) return true;
@@ -595,7 +601,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         <IonItem hidden={showIfStepIs(3)}>
                             <IonLabel position={'stacked'} style={{width: '100%', maxWidth: '100%'}}>Imagenes/fotos:</IonLabel>
                             <div style={{display: 'flex', width: '100%', padding: '10px'}}>
-                                <input type="file" multiple accept={`${imgFiles}`} {...register("content.files")}  style={{display: 'flex'}}/>
+                                <input type="file" multiple accept={`${imgFiles}`} disabled={true} onChange={(e) => uploadFiles(e?.target?.files, true)} style={{display: 'flex'}}/>
                             </div>
                         </IonItem>
                         { getOptionesByType() }

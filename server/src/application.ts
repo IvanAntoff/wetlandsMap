@@ -9,6 +9,7 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import { RestBindings } from '@loopback/rest';
 
 export {ApplicationConfig};
 
@@ -20,10 +21,10 @@ export class ApiMap extends BootMixin(
 
     // Set up the custom sequence
     this.sequence(MySequence);
-
+    // Max file size
+    this.bind(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({limit: '200mb'})
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
-
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({
       path: '/explorer',

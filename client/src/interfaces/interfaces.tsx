@@ -43,7 +43,7 @@ export interface post {
     content: {
         title: string,
         description: string,
-        files: File[],
+        files: string[],
         genericData: {
             category: wetlandCategoryTypes,
             zone: wetlandZonesTypes,
