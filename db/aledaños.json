@@ -1,0 +1,28 @@
+{
+    "_id" : ObjectId("61d177fdf079daaf420599cd"),
+    "name" : "Desconoce"
+}
+{
+    "_id" : ObjectId("61d177fdf079daaf420599d0"),
+    "name" : "Industrial"
+}
+{
+    "_id" : ObjectId("61d177fdf079daaf420599d3"),
+    "name" : "Residencial"
+}
+{
+    "_id" : ObjectId("61d177fdf079daaf420599d6"),
+    "name" : " Agropecuaria"
+}
+{
+    "_id" : ObjectId("61d177fdf079daaf420599d9"),
+    "name" : "De preservación / Reserva natural"
+}
+{
+    "_id" : ObjectId("61d177fdf079daaf420599dc"),
+    "name" : "Ecoturismo"
+}
+{
+    "_id" : ObjectId("61d177fdf079daaf420599df"),
+    "name" : "Otra"
+}

@@ -1,0 +1,38 @@
+{
+    "_id" : ObjectId("61d179bef079daaf42059a1b"),
+    "name" : "Anfibios"
+}
+{
+    "_id" : ObjectId("61d179bef079daaf42059a1e"),
+    "name" : "Peces"
+}
+{
+    "_id" : ObjectId("61d179bef079daaf42059a21"),
+    "name" : "Reptiles"
+}
+{
+    "_id" : ObjectId("61d179bef079daaf42059a24"),
+    "name" : "Aves"
+}
+{
+    "_id" : ObjectId("61d179bef079daaf42059a27"),
+    "name" : "Mamíferos"
+}
+
+/* 6 */
+{
+    "_id" : ObjectId("61d179bef079daaf42059a2a"),
+    "name" : "Insectos"
+}
+{
+    "_id" : ObjectId("61d179bef079daaf42059a2d"),
+    "name" : "Macroinvertebrados"
+}
+{
+    "_id" : ObjectId("61d179bef079daaf42059a30"),
+    "name" : "Otra"
+}
+{
+    "_id" : ObjectId("61d179bef079daaf42059a33"),
+    "name" : "No se observa"
+}

@@ -1,0 +1,40 @@
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b48"),
+    "name" : "Basural no controlado - A cielo abierto"
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b4b"),
+    "name" : "Relleno sanitario"
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b4e"),
+    "name" : "Actividad industrial "
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b51"),
+    "name" : "Actividad agrícola"
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b54"),
+    "name" : "Actividad ganadera"
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b57"),
+    "name" : "Alteración de márgenes del humedal "
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b5a"),
+    "name" : "Emprendimiento inmobiliario"
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b5d"),
+    "name" : "Asentamientos urbanos "
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b60"),
+    "name" : "Desconocido"
+}
+{
+    "_id" : ObjectId("61d17dc1f079daaf42059b63"),
+    "name" : "Otra"
+}

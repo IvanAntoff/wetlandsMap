@@ -1,0 +1,16 @@
+{
+    "_id" : ObjectId("61d19321f079daaf42059f3f"),
+    "name" : "ZONA RURAL"
+}
+{
+    "_id" : ObjectId("61d19321f079daaf42059f42"),
+    "name" : "ZONA PERIURBANA"
+}
+{
+    "_id" : ObjectId("61d19321f079daaf42059f45"),
+    "name" : "ZONA URBANA"
+}
+{
+    "_id" : ObjectId("61d19321f079daaf42059f48"),
+    "name" : "OTRO"
+}

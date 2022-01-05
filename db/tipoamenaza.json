@@ -1,0 +1,28 @@
+{
+    "_id" : ObjectId("61d17ca0f079daaf42059ad5"),
+    "name" : "Orgánica"
+}
+{
+    "_id" : ObjectId("61d17ca0f079daaf42059ad8"),
+    "name" : "Química"
+}
+{
+    "_id" : ObjectId("61d17ca0f079daaf42059adb"),
+    "name" : "Microbiológica "
+}
+{
+    "_id" : ObjectId("61d17ca0f079daaf42059ade"),
+    "name" : "Alteración de paisaje "
+}
+{
+    "_id" : ObjectId("61d17ca0f079daaf42059ae1"),
+    "name" : "Alteración de márgenes de ribera "
+}
+{
+    "_id" : ObjectId("61d17ca0f079daaf42059ae4"),
+    "name" : "Otra"
+}
+{
+    "_id" : ObjectId("61d17ca0f079daaf42059ae7"),
+    "name" : "Desconocido"
+}

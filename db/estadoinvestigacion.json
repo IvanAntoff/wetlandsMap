@@ -1,0 +1,12 @@
+{
+    "_id" : ObjectId("61d19073f079daaf42059e63"),
+    "name" : "Pendiente"
+}
+{
+    "_id" : ObjectId("61d19073f079daaf42059e66"),
+    "name" : "En ejecución"
+}
+{
+    "_id" : ObjectId("61d19073f079daaf42059e69"),
+    "name" : "Finalizado"
+}

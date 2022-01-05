@@ -1,0 +1,36 @@
+{
+    "_id" : ObjectId("61d18c80f079daaf42059da4"),
+    "name" : "Producciones artísticas"
+}
+{
+    "_id" : ObjectId("61d18c80f079daaf42059da7"),
+    "name" : "Fotos"
+}
+{
+    "_id" : ObjectId("61d18c80f079daaf42059daa"),
+    "name" : "Audiovisuales"
+}
+{
+    "_id" : ObjectId("61d18c80f079daaf42059dad"),
+    "name" : "Redacciones"
+}
+{
+    "_id" : ObjectId("61d18c80f079daaf42059db0"),
+    "name" : "Documentos"
+}
+{
+    "_id" : ObjectId("61d18c80f079daaf42059db3"),
+    "name" : "Canciones"
+}
+{
+    "_id" : ObjectId("61d18c80f079daaf42059db6"),
+    "name" : "Poemas"
+}
+{
+    "_id" : ObjectId("61d18c80f079daaf42059db9"),
+    "name" : "Dibujos - Pinturas"
+}
+{
+    "_id" : ObjectId("61d18c80f079daaf42059dbc"),
+    "name" : "Otra"
+}

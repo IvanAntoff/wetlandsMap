@@ -1,0 +1,24 @@
+{
+    "_id" : ObjectId("61d175def079daaf42059953"),
+    "name" : "Rio"
+}
+{
+    "_id" : ObjectId("61d175def079daaf42059956"),
+    "name" : "Laguna natural"
+}
+{
+    "_id" : ObjectId("61d175def079daaf42059959"),
+    "name" : "Laguna artifical"
+}
+{
+    "_id" : ObjectId("61d175def079daaf4205995c"),
+    "name" : "Cañada"
+}
+{
+    "_id" : ObjectId("61d175def079daaf4205995f"),
+    "name" : "Arroyo"
+}
+{
+    "_id" : ObjectId("61d175def079daaf42059962"),
+    "name" : "Desconocido"
+}

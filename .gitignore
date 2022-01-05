@@ -8,3 +8,4 @@ server/key.pem
 server/src/dbConf.ts
 server/src/datasources/posts-datasourse.datasource.ts
 server/src/datasources/posts-datasourse.datasource.ts
+* /node_modules

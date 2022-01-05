@@ -1,0 +1,20 @@
+{
+    "_id" : ObjectId("61d19167f079daaf42059eb6"),
+    "name" : "No publicados"
+}
+{
+    "_id" : ObjectId("61d19167f079daaf42059eb9"),
+    "name" : "Revistas científicas"
+}
+{
+    "_id" : ObjectId("61d19167f079daaf42059ebc"),
+    "name" : "Congresos"
+}
+{
+    "_id" : ObjectId("61d19167f079daaf42059ebf"),
+    "name" : "Reuniones científicas"
+}
+{
+    "_id" : ObjectId("61d19167f079daaf42059ec2"),
+    "name" : "Otros"
+}

@@ -1,0 +1,12 @@
+{
+    "_id" : ObjectId("61d186b7f079daaf42059cb0"),
+    "name" : "Proyecto"
+}
+{
+    "_id" : ObjectId("61d186b7f079daaf42059cb3"),
+    "name" : "Actividad"
+}
+{
+    "_id" : ObjectId("61d186b7f079daaf42059cb6"),
+    "name" : "Otro"
+}

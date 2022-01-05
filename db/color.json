@@ -1,0 +1,16 @@
+{
+    "_id" : ObjectId("61d176def079daaf4205998e"),
+    "name" : "Ámbar"
+}
+{
+    "_id" : ObjectId("61d176def079daaf42059991"),
+    "name" : "Marrón"
+}
+{
+    "_id" : ObjectId("61d176def079daaf42059994"),
+    "name" : "Verde"
+}
+{
+    "_id" : ObjectId("61d176def079daaf42059997"),
+    "name" : "Otro"
+}

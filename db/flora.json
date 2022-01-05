@@ -1,0 +1,16 @@
+{
+    "_id" : ObjectId("61d1788ef079daaf420599f4"),
+    "name" : "Acuática"
+}
+{
+    "_id" : ObjectId("61d1788ef079daaf420599f7"),
+    "name" : "Terrestre"
+}
+{
+    "_id" : ObjectId("61d1788ef079daaf420599fa"),
+    "name" : "Mixta"
+}
+{
+    "_id" : ObjectId("61d1788ef079daaf420599fd"),
+    "name" : "No se observa"
+}
