@@ -1,7 +1,7 @@
 import { BadGatewayException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Enum, typeEnum } from 'src/interfaces/enum.interface';
+import { Enum, Enums, typeEnum } from 'src/interfaces/enum.interface';
 
 @Injectable()
 export class EnumsService {
@@ -16,7 +16,7 @@ export class EnumsService {
         @InjectModel('margenes') private margen: Model <Enum>,
         @InjectModel('morfologias') private morfologia: Model <Enum>,
         @InjectModel('objetivoiniciativas') private objetivoiniciativa: Model <Enum>,
-        @InjectModel('origenamenazas') private origenamenaza: Model <Enum>,
+        @InjectModel('origenes') private origenes: Model <Enum>,
         @InjectModel('participantes') private participantes: Model <Enum>,
         @InjectModel('publicaciones') private publicacion: Model <Enum>,
         @InjectModel('resultadoanalises') private resultadoanalises: Model <Enum>,
@@ -29,9 +29,9 @@ export class EnumsService {
         @InjectModel('zonas') private zona: Model <Enum>,
     ) {}
 
-    public async enumFindAll(type: typeEnum): Promise <Enum[]> {
+    public async enumFindAll(type: typeEnum): Promise <Enum[] | Enums> {
         if (!type) new BadGatewayException('type not include');
-        let response = [];
+        let response: Enum[] | Enums = [];
         switch(type) {
             case 'aledaños':
                 response = await this.aledaños.find();
@@ -63,8 +63,8 @@ export class EnumsService {
             case 'objetivoiniciativas':
                 response = await this.objetivoiniciativa.find();
                 break
-            case 'origenamenazas':
-                response = await this.origenamenaza.find();
+            case 'origenes':
+                response = await this.origenes.find();
                 break
             case 'participantes':
                 response = await this.participantes.find();
@@ -97,27 +97,29 @@ export class EnumsService {
                 response = await this.zona.find();
                 break
             case 'todos':
-                response = await this.aledaños.find();
-                response = response.concat(await this.color.find());
-                response = response.concat(await this.departamento.find());
-                response = response.concat(await this.estadoinvestigacion.find());
-                response = response.concat(await this.fauna.find());
-                response = response.concat(await this.flora.find());
-                response = response.concat(await this.fuenteamenaza.find());
-                response = response.concat(await this.margen.find());
-                response = response.concat(await this.morfologia.find());
-                response = response.concat(await this.objetivoiniciativa.find());
-                response = response.concat(await this.origenamenaza.find());
-                response = response.concat(await this.participantes.find());
-                response = response.concat(await this.publicacion.find());
-                response = response.concat(await this.resultadoanalises.find());
-                response = response.concat(await this.resultadoinvestigacion.find());
-                response = response.concat(await this.tipoamenaza.find());
-                response = response.concat(await this.tipoanalises.find());
-                response = response.concat(await this.tipoarte.find());
-                response = response.concat(await this.tipohumedal.find());
-                response = response.concat(await this.tipoiniciativa.find());
-                response = response.concat(await this.zona.find());
+                response = {
+                    aledaños: await this.aledaños.find(),
+                    colores: await this.color.find(),
+                    departamentos: await this.departamento.find(),
+                    estadoinvestigaciones: await this.estadoinvestigacion.find(),
+                    faunas: await this.fauna.find(),
+                    floras: await this.flora.find(),
+                    fuenteamenazas: await this.fuenteamenaza.find(),
+                    margenes: await this.margen.find(),
+                    morfologias: await this.morfologia.find(),
+                    objetivoiniciativas: await this.objetivoiniciativa.find(),
+                    origenes: await this.origenes.find(),
+                    publicaciones: await this.publicacion.find(),
+                    participantes: await this.participantes.find(),
+                    resultadoanalises: await this.resultadoanalises.find(),
+                    resultadoinvestigaciones: await this.resultadoinvestigacion.find(),
+                    tipoamenazas: await this.tipoamenaza.find(),
+                    tipoanalises: await this.tipoanalises.find(),
+                    tipoartes: await this.tipoarte.find(),
+                    tipohumedales: await this.tipohumedal.find(),
+                    tipoiniciativas: await this.tipoiniciativa.find(),
+                    zonas: await this.zona.find()
+                }
                 break;
         }
         return response;
@@ -157,8 +159,8 @@ export class EnumsService {
             case 'objetivoiniciativas':
                 response = await this.objetivoiniciativa.findById(id);
                 break
-            case 'origenamenazas':
-                response = await this.origenamenaza.findById(id);
+            case 'origenes':
+                response = await this.origenes.findById(id);
                 break
             case 'participantes':
                 response = await this.participantes.findById(id);
@@ -233,8 +235,8 @@ export class EnumsService {
             case 'objetivoiniciativas':
                 response = await this.objetivoiniciativa.create();
                 break
-            case 'origenamenazas':
-                response = await this.origenamenaza.create();
+            case 'origenes':
+                response = await this.origenes.create();
                 break
             case 'participantes':
                 response = await this.participantes.create();

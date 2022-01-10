@@ -17,7 +17,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       {name: 'margenes', schema: EnumSchema},
       {name: 'morfologias', schema: EnumSchema},
       {name: 'objetivoiniciativas', schema: EnumSchema},
-      {name: 'origenamenazas', schema: EnumSchema},
+      {name: 'origenes', schema: EnumSchema},
       {name: 'participantes', schema: EnumSchema},
       {name: 'publicaciones', schema: EnumSchema},
       {name: 'resultadoanalises', schema: EnumSchema},

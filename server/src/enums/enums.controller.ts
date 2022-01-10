@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { Enum, typeEnum } from 'src/interfaces/enum.interface';
+import { Enum, Enums, typeEnum } from 'src/interfaces/enum.interface';
 import { EnumsService } from './enums.service';
 
 @Controller('enums')
@@ -9,7 +9,7 @@ export class EnumsController {
     ) {}
 
     @Get()
-    public findAll(@Query('type') type: typeEnum): Promise<Enum[]> {
+    public findAll(@Query('type') type: typeEnum): Promise<Enum[] | Enums> {
         try {
             if (!type) type = 'todos';
             return this.enumsService.enumFindAll(type);
