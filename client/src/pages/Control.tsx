@@ -1,13 +1,13 @@
 import { IonAlert, IonCol, IonContent, IonGrid, IonModal, IonPage, IonRow, IonTitle } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
-import { post } from '../interfaces/interfaces';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
 import { POSTS_URL, wetlandusers } from '../apiKeys';
 import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
 import { Header } from '../components/Header';
+import { ESTADO, post } from '../interfaces/posts.interface';
 
 const Control: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
@@ -41,23 +41,23 @@ const Control: React.FC = () => {
 			const post = postsData[index];
 			let cardButtons: { label?: string, size?: "small" | "large" | "default", onClick: Function, 
 			color?: string,icon?: string }[] = [];
-			switch (post.status){
+			switch (post.estado){
 				case 'pending':
 					cardButtons = [
-						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, 'approved')},
-						{label: 'Rechazar', color: 'danger', onClick: () => updateState(post.id, 'refused')},
+						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, ESTADO.aprobado)},
+						{label: 'Rechazar', color: 'danger', onClick: () => updateState(post.id, ESTADO.rechazado)},
 						{label: 'Ver publicacion', onClick: () => showPost(post)},
 					];
 				break;
 				case 'approved':
 					cardButtons = [
-						{label: 'Rechazar', color: 'danger', onClick: () => updateState(post.id, 'refused')},
+						{label: 'Rechazar', color: 'danger', onClick: () => updateState(post.id, ESTADO.rechazado)},
 						{label: 'Ver publicacion', onClick: () => showPost(post)},
 					]											
 				break;
 				case 'refused':
 					cardButtons = [
-						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, 'approved')},
+						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, ESTADO.aprobado)},
 						{label: 'Ver publicacion', onClick: () => showPost(post)},
 						{label: 'Eliminar', color: 'danger', onClick: () => showRemoveAlert(post.id)},
 					]											
@@ -71,9 +71,9 @@ const Control: React.FC = () => {
 					buttons={cardButtons}																			
 				/>
 			)
-			if (post.status === 'pending') auxPendings.push(card);
-			else if (post.status === 'approved') auxApproveds.push(card);
-			else if (post.status === 'refused') auxRefuseds.push(card);
+			if (post.estado === ESTADO.pendiente) auxPendings.push(card);
+			else if (post.estado === ESTADO.aprobado) auxApproveds.push(card);
+			else if (post.estado === ESTADO.rechazado) auxRefuseds.push(card);
 		}
 		setPendings(auxPendings);
 		setApproveds(auxApproveds);
@@ -90,13 +90,13 @@ const Control: React.FC = () => {
 		setShowPostModal(false);
 	}
 
-	const updateState = async (postId: string, status: 'pending' | 'approved' | 'refused') => {
+	const updateState = async (postId: string, status: ESTADO) => {
 		try{
 			let posts = postsData;
 			const postIndex = postsData.findIndex((post) => post.id === postId);
 			if (postIndex !== -1) {
 				let postToUpdate = posts[postIndex];
-				postToUpdate.status = status;
+				postToUpdate.estado = status;
 				const res = await axiosInstance.patch(`${POSTS_URL}/posts/${postId}`, {
 					status: status
 				})

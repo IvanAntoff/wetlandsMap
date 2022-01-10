@@ -1,5 +1,5 @@
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText } from "@ionic/react";
-import { post } from "../interfaces/interfaces";
+import { post } from "../interfaces/posts.interface";
 import { reduceText, toCapitalizeCase } from "../utils/sharedFn";
 interface postCard {
     index: number,
@@ -16,12 +16,12 @@ const PostCard: React.FC<postCard> = (props: postCard) => {
     return (
         <IonCard color={''}>
             <IonCardHeader className="ion-margin-no">
-                <IonCardTitle>{toCapitalizeCase(props.post?.content?.title) || 'Titulo no disponible.' }</IonCardTitle>
-                <IonCardSubtitle><b>Ubicacion:</b>&nbsp;{props?.post?.content?.genericData?.location || 'Desconocida'}</IonCardSubtitle>
+                <IonCardTitle>{toCapitalizeCase(props.post?.titulo) || 'Titulo no disponible.' }</IonCardTitle>
+                <IonCardSubtitle><b>Ubicacion:</b>&nbsp;{props?.post?.departamento || 'Desconocida'}</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent >
                 <IonText>
-                    {reduceText(props.post?.content?.description) || 'Descripcion no disponible.'}
+                    {reduceText(props.post?.descripcion) || 'Descripcion no disponible.'}
                 </IonText>
                 { props.buttons && props.buttons.length > 0 ? 
                     <IonItem lines={"none"} >
