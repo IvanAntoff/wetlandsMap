@@ -23,7 +23,7 @@ export interface post {
         humedal?: Humedal, 
         amenaza?: Amenaza,
         iniciativa?: Iniciativa,
-        art?: Arte,
+        arte?: Arte,
         investigation?: Investigacion
     }
 }

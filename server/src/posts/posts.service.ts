@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { EnumsService } from 'src/enums/enums.service';
 import { FilesService } from 'src/files/files.service';
-import { archivoVM, ESTADO, post, postVM } from 'src/interfaces/posts.interface';
+import { archivoVM, CATEGORIA, ESTADO, post, postVM } from 'src/interfaces/posts.interface';
 
 @Injectable()
 export class PostsService {
@@ -27,7 +27,7 @@ export class PostsService {
                     tipo: enums.tipohumedales.find((item) => item._id.toString() === posts[i].tipo)?.name || 'Desconocido',
                     zona: enums.zonas.find((item) => item._id.toString() === posts[i].zona)?.name || 'Desconocido',
                 }
-                if(post?.datos?.amenaza) post.datos.amenaza = {
+                if(post.categoria === CATEGORIA.amenaza && post?.datos?.amenaza) post.datos.amenaza = {
                     ...post.datos.amenaza,
                     fuente: enums.fuenteamenazas.find((item) => item._id.toString() === post.datos.amenaza.fuente)?.name || 'Desconocida',
                     origen:  enums.origenes.find((item) => item._id.toString() === post.datos.amenaza.origen)?.name || 'Desconocido',
@@ -36,7 +36,7 @@ export class PostsService {
                     resultadoanalises: post.datos.amenaza?.resultadoanalises ? enums.resultadoanalises.find((item) => item._id.toString() === post.datos.amenaza.resultadoanalises)?.name || 'Desconocido' : null,
                     tipoanalises: post.datos.amenaza?.tipoanalises ? enums.tipoanalises.find((item) => item._id.toString() === post.datos.amenaza.tipoanalises)?.name || 'Desconocido' : null,
                 }
-                else if(post.datos?.humedal) post.datos.humedal = {
+                else if(post.categoria === CATEGORIA.humedal && post.datos?.humedal) post.datos.humedal = {
                     ...post.datos.humedal,
                     aledaños: enums.aledaños.find((item) => item._id.toString() === post.datos.humedal.aledaños)?.name || 'Desconocido',
                     color: post.datos.humedal?.color ? enums.colores.find((item) => item._id.toString() === post.datos.humedal.color)?.name || 'Desconocido' : null,
@@ -45,16 +45,16 @@ export class PostsService {
                     margen: post.datos.humedal?.margen ? enums.margenes.find((item) => item._id.toString() === post.datos.humedal.margen)?.name || 'Desconocido' : null,
                     morfologia: post.datos.humedal?.morfologia ? enums.morfologias.find((item) => item._id.toString() === post.datos.humedal.morfologia)?.name || 'Desconocido' : null,
                 }
-                else if(post.datos?.art) post.datos.art = {
-                    tipo: enums.tipoartes.find((item) => item._id.toString() === post.datos.art.tipo)?.name || 'Desconocido',
-                    participantes: enums.participantes.find((item) => item._id.toString() === post.datos.art.participantes)?.name || 'Desconocido',
+                else if(post.categoria === CATEGORIA.arte && post.datos?.arte) post.datos.arte = {
+                    tipo: enums.tipoartes.find((item) => item._id.toString() === post.datos.arte.tipo)?.name || 'Desconocido',
+                    participantes: enums.participantes.find((item) => item._id.toString() === post.datos.arte.participantes)?.name || 'Desconocido',
                 }
-                else if(post.datos?.iniciativa) post.datos.iniciativa = {
+                else if(post.categoria === CATEGORIA.iniciativa && post.datos?.iniciativa) post.datos.iniciativa = {
                     objetivo: enums.objetivoiniciativas.find((item) => item._id.toString() === post.datos.iniciativa.objetivo)?.name || 'Desconocido',
                     participantes: enums.participantes.find((item) => item._id.toString() === post.datos.iniciativa.participantes)?.name || 'Desconocido',
                     tipo: enums.tipoiniciativas.find((item) => item._id.toString() === post.datos.iniciativa.participantes)?.name || 'Desconocido',
                 }
-                else if(post.datos?.investigation) post.datos.investigation = {
+                else if(post.categoria === CATEGORIA.investigacion && post.datos?.investigation) post.datos.investigation = {
                     ...post.datos.investigation,
                     participantes: enums.participantes.find((item) => item._id.toString() === post.datos.investigation.participantes)?.name || 'Desconocido',
                     estado: post.datos.investigation?.estado ? enums.estadoinvestigaciones.find((item) => item._id.toString() === post.datos.investigation.estado)?.name || 'Desconocido' : null,

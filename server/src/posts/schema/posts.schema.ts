@@ -47,7 +47,7 @@ export const PostSchema = new Schema ({
             participantes: {type: String},
             objetivo: {type: String},
         },
-        art: {
+        arte: {
             tipo: {type: String},
             participantes: {type: String}
         },

@@ -23,7 +23,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
 
     const getData = () => {
         if (!props.post || !props.post.datos) return null;
-        if (props.post.datos?.humedal) {
+        if (props.post.categoria === CATEGORIA.humedal && props.post.datos?.humedal) {
             const data = props.post.datos.humedal;
             return (
                 <IonRow>
@@ -57,61 +57,63 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
-        if (props.post.datos?.amenaza) {
+        if (props.post.categoria === CATEGORIA.amenaza && props.post.datos?.amenaza) {
             const data = props.post.datos.amenaza;
-            <IonRow>
-                <IonCol size={"12"}>
-                    <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Informacion adicional</b></h2></IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"12"}>
-                    <IonItem lines={"none"}><IonLabel><b>Origen de la amenaza/impacto ambienta: </b>{data?.origen || 'Origen desconocido'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"12"}>
-                    <IonItem lines={"none"}><IonLabel><b>Fuente de generación: </b>{data?.fuente || 'Desconocida'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"12"}>
-                    <IonItem lines={"none"}><IonLabel><b>Tipo de amenaza/impacto ambienta: </b>{data?.tipo || 'Desconocido'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"12"}>
-                    <IonItem lines={"none"}><IonLabel><h2><b>Presencia de elementos flotantes</b></h2></IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"4"}>
-                    <IonItem lines={"none"}><IonLabel><b>Materia orgánica: </b>{booleanText(data?.materia) || 'Desconocido'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"4"}>
-                    <IonItem lines={"none"}><IonLabel><b>Espuma: </b>{booleanText(data?.espuma) || 'Desconocido'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"4"}>
-                    <IonItem lines={"none"}><IonLabel><b>Algas: </b>{booleanText(data?.algas) || 'Desconocido'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"12"}>
-                    <IonItem lines={"none"}><IonLabel><b>Descripcion de materia: </b></IonLabel></IonItem>
-                    <IonText>{data?.materiadescripcion || 'No posee descripcion'}</IonText>
-                </IonCol>
-                <IonCol size={"6"}>
-                    <IonItem lines={"none"}><IonLabel><b>Olor: </b>{booleanText(data?.olor) || 'Desconocido'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"12"}>
-                    <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Documentación que acredite amenaza/impacto ambiental</b></h2></IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"12"}>
-                    <IonItem lines={"none"}><IonLabel><b>Análisis de muestras de agua: </b>{booleanText(data?.analisis) || 'No incluye'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"6"}>
-                    <IonItem lines={"none"}><IonLabel><b>Tipo de análisis: </b>{data?.tipoanalises || 'Desconocido'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"6"}>
-                    <IonItem lines={"none"}><IonLabel><b>Resultados: </b>{data.resultadoanalises || 'Desconocido'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"6"}>
-                    <IonItem lines={"none"}><IonLabel><b>Estudios de impacto ambienta: </b>{booleanText(data?.estudioambiental) || 'No incluye'}</IonLabel></IonItem>
-                </IonCol>
-                <IonCol size={"6"}>
-                    <IonItem lines={"none"}><IonLabel><b>Informe técnico ambiental: </b>{booleanText(data?.informetecnico) || 'No incluye'}</IonLabel></IonItem>
-                </IonCol>
-            </IonRow>
+            return (
+                <IonRow>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Informacion adicional</b></h2></IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel><b>Origen de la amenaza/impacto ambienta: </b>{data?.origen || 'Origen desconocido'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel><b>Fuente de generación: </b>{data?.fuente || 'Desconocida'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel><b>Tipo de amenaza/impacto ambienta: </b>{data?.tipo || 'Desconocido'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel><h2><b>Presencia de elementos flotantes</b></h2></IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"4"}>
+                        <IonItem lines={"none"}><IonLabel><b>Materia orgánica: </b>{booleanText(data?.materia) || 'Desconocido'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"4"}>
+                        <IonItem lines={"none"}><IonLabel><b>Espuma: </b>{booleanText(data?.espuma) || 'Desconocido'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"4"}>
+                        <IonItem lines={"none"}><IonLabel><b>Algas: </b>{booleanText(data?.algas) || 'Desconocido'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel><b>Descripcion de materia: </b></IonLabel></IonItem>
+                        <IonText>{data?.materiadescripcion || 'No posee descripcion'}</IonText>
+                    </IonCol>
+                    <IonCol size={"6"}>
+                        <IonItem lines={"none"}><IonLabel><b>Olor: </b>{booleanText(data?.olor) || 'Desconocido'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Documentación que acredite amenaza/impacto ambiental</b></h2></IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel><b>Análisis de muestras de agua: </b>{booleanText(data?.analisis) || 'No incluye'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"6"}>
+                        <IonItem lines={"none"}><IonLabel><b>Tipo de análisis: </b>{data?.tipoanalises || 'Desconocido'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"6"}>
+                        <IonItem lines={"none"}><IonLabel><b>Resultados: </b>{data.resultadoanalises || 'Desconocido'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"6"}>
+                        <IonItem lines={"none"}><IonLabel><b>Estudios de impacto ambienta: </b>{booleanText(data?.estudioambiental) || 'No incluye'}</IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"6"}>
+                        <IonItem lines={"none"}><IonLabel><b>Informe técnico ambiental: </b>{booleanText(data?.informetecnico) || 'No incluye'}</IonLabel></IonItem>
+                    </IonCol>
+                </IonRow>
+            )
         }
-        if (props.post.datos?.iniciativa) {
+        if (props.post.categoria === CATEGORIA.iniciativa && props.post.datos?.iniciativa) {
             const data = props.post.datos.iniciativa;
             return(
                 <IonRow>
@@ -133,7 +135,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
-        if (props.post.datos?.arte) {
+        if (props.post.categoria === CATEGORIA.arte && props.post.datos?.arte) {
             const data = props.post.datos.arte;
             return(
                 <IonRow>
@@ -149,7 +151,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
-        if (props.post.datos?.investigacion) {
+        if (props.post.categoria === CATEGORIA.investigacion && props.post.datos?.investigacion) {
             const data = props.post.datos?.investigacion;
             return(
                 <IonRow>
@@ -171,6 +173,13 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
+        return (
+            <IonRow>
+                <IonCol size={"12"}>
+                    <IonItem lines={"none"}><IonLabel><b>Error al obtener los datos</b></IonLabel></IonItem>
+                </IonCol>
+            </IonRow>
+        )
     }
 
     const getFiles = () => {
