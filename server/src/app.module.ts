@@ -8,7 +8,7 @@ import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/humedales_posts'),
+    MongooseModule.forRoot(process.env.MONGO_URL || 'mongodb://localhost/humedales_posts'),
     EnumsModule,
     PostsModule,
     FilesModule
