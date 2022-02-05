@@ -1,0 +1,24 @@
+{
+    "_id" : ObjectId("61d18883f079daaf42059d28"),
+    "name" : "Mejorar"
+}
+{
+    "_id" : ObjectId("61d18883f079daaf42059d2b"),
+    "name" : "Preservar"
+}
+{
+    "_id" : ObjectId("61d18883f079daaf42059d2e"),
+    "name" : "Restaurar"
+}
+{
+    "_id" : ObjectId("61d18883f079daaf42059d31"),
+    "name" : "Puesta en valor"
+}
+{
+    "_id" : ObjectId("61d18883f079daaf42059d34"),
+    "name" : "Otro"
+}
+{
+    "_id" : ObjectId("61d18883f079daaf42059d37"),
+    "name" : "Desconocido"
+}

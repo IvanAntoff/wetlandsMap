@@ -4,18 +4,21 @@ import { useEffect, useRef, useState } from 'react';
 import { GenericFilters } from '../components/GenericFilters';
 import PostCard from '../components/PostCard';
 import { WetlandForm } from '../components/WetlandForm';
-import { bingMapPosition, marker, post } from '../interfaces/interfaces';
+import { bingMapPosition, marker } from '../interfaces/interfaces';
 import { useAuth0 } from "@auth0/auth0-react";
-import { postFilters, categories } from '../enums/data';
+import { postFilters } from '../enums/data';
 import { API_KEY_BINGMAPS, POSTS_URL } from '../apiKeys';
 import ReactBingmaps from "../components/BingMapsReact";
 import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
 import { reduceText, toCapitalizeCase } from '../utils/sharedFn';
 import { Header } from '../components/Header';
+import { categorias, ESTADO, post } from '../interfaces/posts.interface';
+import { Enums } from '../interfaces/enum.interface';
 
 const Map: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
+	const [ enumsData, setEnumsData ] = useState<Enums>();
 	const [ mapCenter, setMapCenter ] = useState<{ latitude: number, longitude: number }>( { latitude: -32.4790999, longitude: -58.2339789 } )
 	const [ markers, setMarkers ] = useState<marker[]>([]);
 	const [ onClickPosition, setOnClickPosition ] = useState<bingMapPosition>()
@@ -36,18 +39,20 @@ const Map: React.FC = () => {
 		const getData = async () =>{
 			startLoading();
 			try {
-				const response = await axiosInstance.get(`${POSTS_URL}/posts`)
-				if (!response || !response.data || !Array.isArray(response.data)) return;
+				const enums = await axiosInstance.get(`${POSTS_URL}/enums`);
+				if (enums && enums.data && !enumsData) setEnumsData(enums.data);
+				const response = await axiosInstance.get(`${POSTS_URL}/posts`);
+				if (!Array.isArray(response?.data)) return;
 					const auxMarkers: marker[] = [];
-					const posts = response.data.filter((item:post) => item.status === 'approved')
+					const posts = response.data.filter((item:post) => item.estado === ESTADO.aprobado);
 					for (let i = 0; i < posts.length; i++) {
-						const post = posts[i];
-						if (post.status === 'approved') auxMarkers.push({
+						const post:post = posts[i];
+						if (post.estado === ESTADO.aprobado) auxMarkers.push({
 							metadata: {
-								title: toCapitalizeCase(reduceText(post.content.title)),
-								description: toCapitalizeCase(reduceText(post.content?.description)),
+								title: toCapitalizeCase(reduceText(post.titulo)),
+								description: toCapitalizeCase(reduceText(post?.descripcion)),
 							},
-							center: {latitude: parseFloat(post.ubication.latitude),longitude: parseFloat(post.ubication.longitude)},
+							center: {latitude: parseFloat(post.coordenadas.latitude),longitude: parseFloat(post.coordenadas.longitude)},
 						});
 					setMarkers(auxMarkers);
 					setPostData(posts);
@@ -73,9 +78,9 @@ const Map: React.FC = () => {
 	}
 
 	const getPostPosition = (id:string) => {
-		const mapPosition = postsData.find((post) => post.id === (id));
+		const mapPosition = postsData.find((post) => post._id === (id));
 		if (mapPosition) {
-			setMapCenter({latitude: parseFloat(mapPosition.ubication.latitude), longitude: parseFloat(mapPosition.ubication.longitude)})
+			setMapCenter({latitude: parseFloat(mapPosition.coordenadas.latitude), longitude: parseFloat(mapPosition.coordenadas.longitude)})
 			setZoom(10)
 		}
 	}
@@ -171,18 +176,18 @@ const Map: React.FC = () => {
 				for (let j = 0; j < filters.length; j++) {
 					const filter = filters[j];
 					if (
-						post.category.includes(filter) ||
-						post.content.description.includes(filter) ||
-						post.content.title.includes(filter) ||
-						post.keyword.some(item => item.toLowerCase() === filter.toLowerCase())
+						post.categoria.includes(filter) ||
+						post.descripcion.includes(filter) ||
+						post.titulo.includes(filter) ||
+						post.keyword.some((item:string) => item.toLowerCase() === filter.toLowerCase())
 					) {
 						auxPosts.push(post);
-						if (post.status === 'approved') auxMarkers.push({
+						if (post.estado === 'approved') auxMarkers.push({
 							metadata: {
-								title: toCapitalizeCase(reduceText(post.content.title, 50)),
-								description: reduceText(post.content?.description),
+								title: toCapitalizeCase(reduceText(post.titulo, 50)),
+								description: reduceText(post.descripcion),
 							},
-							center: {latitude: parseFloat(post.ubication.latitude),longitude: parseFloat(post.ubication.longitude)},
+							center: {latitude: parseFloat(post.coordenadas.latitude),longitude: parseFloat(post.coordenadas.longitude)},
 						});
 						break;
 					}
@@ -230,13 +235,13 @@ const Map: React.FC = () => {
 							{
 								postsData.length > 0 ? 
 								filterData(appliedFilters).filteredPosts.map((post, index)=>{
-									if(post.status === 'approved') return(
+									if(post.estado === 'approved') return(
 										<PostCard
-											key={`PostCard-content-index${index}'id'${post.id}`}
+											key={`PostCard-content-index${index}'id'${post._id}`}
 											index={index}
 											post={post}
 											buttons={[
-												{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post.id)}, icon: 'pin'},
+												{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post._id)}, icon: 'pin'},
 												{label: 'Ver publicacion', onClick: ()=> showPost(post), icon: 'pin'}											
 											]}
 										/>
@@ -271,9 +276,12 @@ const Map: React.FC = () => {
 								getLocationOnClick={(value:bingMapPosition) => getClickedLocation(value)}
 							/>
 							<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} onDidDismiss={() => editModeOFF()}>
-								<WetlandForm location={onClickPosition ? onClickPosition : {latitude: 0, longitude:0}}
-									categories={categories} 
-								/>
+								{
+									enumsData ? 
+									<WetlandForm location={onClickPosition ? onClickPosition : { latitude: 0, longitude: 0 }} enums={enumsData} />
+									:
+									<h1>Cargando...</h1>
+								}
 							</IonModal>
 						</IonCol>
 					</IonRow>

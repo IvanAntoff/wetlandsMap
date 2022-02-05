@@ -1,0 +1,12 @@
+{
+    "_id" : ObjectId("61d18296f079daaf42059bd6"),
+    "name" : "Calidad del agua buena"
+}
+{
+    "_id" : ObjectId("61d18296f079daaf42059bd9"),
+    "name" : "Calidad del agua regular"
+}
+{
+    "_id" : ObjectId("61d18296f079daaf42059bdc"),
+    "name" : "Calidad del agua mala"
+}

@@ -1,0 +1,20 @@
+{
+    "_id" : ObjectId("61d181adf079daaf42059ba7"),
+    "name" : "Físico-químico"
+}
+{
+    "_id" : ObjectId("61d181adf079daaf42059baa"),
+    "name" : "Microbiológico"
+}
+{
+    "_id" : ObjectId("61d181adf079daaf42059bad"),
+    "name" : "Biológico"
+}
+{
+    "_id" : ObjectId("61d181adf079daaf42059bb0"),
+    "name" : "Bioensayos"
+}
+{
+    "_id" : ObjectId("61d181adf079daaf42059bb3"),
+    "name" : "Otra"
+}

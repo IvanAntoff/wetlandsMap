@@ -1,0 +1,24 @@
+{
+    "_id" : ObjectId("61d17ac6f079daaf42059a78"),
+    "name" : "Barranca"
+}
+{
+    "_id" : ObjectId("61d17ac6f079daaf42059a7b"),
+    "name" : "Bosque"
+}
+{
+    "_id" : ObjectId("61d17ac6f079daaf42059a7e"),
+    "name" : "nativo"
+}
+{
+    "_id" : ObjectId("61d17ac6f079daaf42059a81"),
+    "name" : "Pastizal"
+}
+{
+    "_id" : ObjectId("61d17ac6f079daaf42059a84"),
+    "name" : "Cultivo"
+}
+{
+    "_id" : ObjectId("61d17ac6f079daaf42059a87"),
+    "name" : "Mixta"
+}

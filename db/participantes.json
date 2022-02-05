@@ -1,0 +1,36 @@
+{
+    "_id" : ObjectId("61d187dbf079daaf42059ce3"),
+    "name" : "Persona individual"
+}
+{
+    "_id" : ObjectId("61d187dbf079daaf42059ce6"),
+    "name" : "Vecinos"
+}
+{
+    "_id" : ObjectId("61d187dbf079daaf42059ce9"),
+    "name" : "Organización - Comisiones vecinales"
+}
+{
+    "_id" : ObjectId("61d187dbf079daaf42059cec"),
+    "name" : "ONG"
+}
+{
+    "_id" : ObjectId("61d187dbf079daaf42059cef"),
+    "name" : "Municipio"
+}
+{
+    "_id" : ObjectId("61d187dbf079daaf42059cf2"),
+    "name" : "Establecimiento educativo de nivel primario o secundario"
+}
+{
+    "_id" : ObjectId("61d187dbf079daaf42059cf5"),
+    "name" : "Institución universitaria"
+}
+{
+    "_id" : ObjectId("61d187dbf079daaf42059cf8"),
+    "name" : "Centro-Instituto de investigación"
+}
+{
+    "_id" : ObjectId("61d187dbf079daaf42059cfb"),
+    "name" : "Otro"
+}

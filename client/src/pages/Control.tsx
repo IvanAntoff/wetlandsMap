@@ -1,22 +1,20 @@
 import { IonAlert, IonCol, IonContent, IonGrid, IonModal, IonPage, IonRow, IonTitle } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
-import { post } from '../interfaces/interfaces';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
 import { POSTS_URL, wetlandusers } from '../apiKeys';
 import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
 import { Header } from '../components/Header';
+import { ESTADO, groupedPosts, postVM } from '../interfaces/posts.interface';
 
 const Control: React.FC = () => {
-	const [ postsData, setPostData ] = useState<post[]>([]);
-	const [ pendings, setPendings ] = useState<JSX.Element[]>([]);
-	const [ approveds, setApproveds ] = useState<JSX.Element[]>([]);
-	const [ refuseds, setRefuseds ] = useState<JSX.Element[]>([]);
-	const [ forceRefresh, setForceRefresh ] = useState<boolean>(false);
+	const [ pendings, setPendings ] = useState<postVM[]>([]);
+	const [ approveds, setApproveds ] = useState<postVM[]>([]);
+	const [ refuseds, setRefuseds ] = useState<postVM[]>([]);
 	const [ alert, setAlert ] = useState<{show: boolean,header: string,subtitle: string,message: string, buttons: {text: string, handler?: () => void}[]}>({show: false,header: '',subtitle: '',message: '', buttons: [{text: 'OK'}]})
-	const [ selectedPost, setSelectedPost ] = useState<post | undefined>(undefined);
+	const [ selectedPost, setSelectedPost ] = useState<postVM | undefined>(undefined);
 	const [ showPostModal, setShowPostModal ] = useState<boolean>(false);
 	const { user, isAuthenticated, isLoading } = useAuth0();
 	const history = useHistory();
@@ -25,62 +23,19 @@ const Control: React.FC = () => {
 		if (!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) return history.goBack();
 		const getData = () =>{
 			try{
-				axiosInstance.get(`${POSTS_URL}/posts`).then((response: { data: post[] }) => {
-					setPostData(response.data);
+				axiosInstance.get(`${POSTS_URL}/posts?group=true`)
+				.then((response: { data: groupedPosts }) => {
+					if(!response || !response?.data) return;
+					if(Array.isArray(response.data.aprobados)) setApproveds(response.data.aprobados);
+					if(Array.isArray(response.data.aprobados)) setPendings(response.data.pendientes);
+					if(Array.isArray(response.data.rechazados)) setRefuseds(response.data.rechazados);
 				})
 			} catch (error) {console.error(error)}
 		}
 		getData();
 	},[user, isAuthenticated, isLoading]);
 
-	useEffect(()=>{
-		let auxPendings = [];
-		let auxApproveds = [];
-		let auxRefuseds = [];
-		for (let index = 0; index < postsData.length; index++) {
-			const post = postsData[index];
-			let cardButtons: { label?: string, size?: "small" | "large" | "default", onClick: Function, 
-			color?: string,icon?: string }[] = [];
-			switch (post.status){
-				case 'pending':
-					cardButtons = [
-						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, 'approved')},
-						{label: 'Rechazar', color: 'danger', onClick: () => updateState(post.id, 'refused')},
-						{label: 'Ver publicacion', onClick: () => showPost(post)},
-					];
-				break;
-				case 'approved':
-					cardButtons = [
-						{label: 'Rechazar', color: 'danger', onClick: () => updateState(post.id, 'refused')},
-						{label: 'Ver publicacion', onClick: () => showPost(post)},
-					]											
-				break;
-				case 'refused':
-					cardButtons = [
-						{label: 'Aprobar', color: 'success', onClick: () => updateState(post.id, 'approved')},
-						{label: 'Ver publicacion', onClick: () => showPost(post)},
-						{label: 'Eliminar', color: 'danger', onClick: () => showRemoveAlert(post.id)},
-					]											
-				break;
-			}
-			const card = (
-				<PostCard
-					key={`PostCard-content-index${index}'id'${post.id}`}
-					index={index}
-					post={post}
-					buttons={cardButtons}																			
-				/>
-			)
-			if (post.status === 'pending') auxPendings.push(card);
-			else if (post.status === 'approved') auxApproveds.push(card);
-			else if (post.status === 'refused') auxRefuseds.push(card);
-		}
-		setPendings(auxPendings);
-		setApproveds(auxApproveds);
-		setRefuseds(auxRefuseds);
-	},[postsData, forceRefresh]);
-
-	const showPost = (post: post) => {
+	const showPost = (post: postVM) => {
 		if (!post) return;
 		setSelectedPost(post);
 		setShowPostModal(true);
@@ -90,20 +45,50 @@ const Control: React.FC = () => {
 		setShowPostModal(false);
 	}
 
-	const updateState = async (postId: string, status: 'pending' | 'approved' | 'refused') => {
+	const updateState = async (postId: string, actualState: ESTADO, newState: ESTADO) => {
 		try{
-			let posts = postsData;
-			const postIndex = postsData.findIndex((post) => post.id === postId);
-			if (postIndex !== -1) {
-				let postToUpdate = posts[postIndex];
-				postToUpdate.status = status;
-				const res = await axiosInstance.patch(`${POSTS_URL}/posts/${postId}`, {
-					status: status
-				})
-				if (!res || !res.status || (res.status !== 200 && res.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
-				posts[postIndex] = postToUpdate;
-				setPostData(posts);
-				setForceRefresh(!forceRefresh);
+			let postToUpdate = null;
+			let postIndex: number = -1;
+			let auxPosts: postVM[] = [];
+			switch (actualState) {
+				case ESTADO.aprobado:
+					postIndex = approveds.findIndex((item) => item._id === postId);
+					if (postIndex === -1) return;
+					postToUpdate = approveds[postIndex];
+					auxPosts = approveds;
+					auxPosts.splice(postIndex, 1);
+					setApproveds([...auxPosts]);
+					break;
+				case ESTADO.pendiente:
+					postIndex = pendings.findIndex((item) => item._id === postId);
+					if (postIndex === -1) return;
+					postToUpdate = pendings[postIndex];
+					auxPosts = pendings;
+					auxPosts.splice(postIndex, 1);
+					setPendings([...auxPosts]);
+					break;
+				case ESTADO.rechazado:
+					postIndex = refuseds.findIndex((item) => item._id === postId);
+					if (postIndex === -1) return;
+					postToUpdate = refuseds[postIndex];
+					auxPosts = refuseds;
+					auxPosts.splice(postIndex, 1);
+					setRefuseds([...auxPosts]);
+					break;
+			}
+			postToUpdate.estado = newState;
+			const res = await axiosInstance.post(`${POSTS_URL}/posts/changeState`, {
+				id: postId,
+				estado: newState
+			});
+			if (!res || !res.status || (res.status !== 201 && res.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
+			switch(newState) {
+				case ESTADO.aprobado:
+					return setApproveds([...approveds, postToUpdate]);
+				case ESTADO.rechazado:
+					return setRefuseds([...refuseds, postToUpdate]);
+				case ESTADO.pendiente:
+					return setPendings([...pendings, postToUpdate]);
 			}
 		} catch(error) {
 			console.error(error);
@@ -113,16 +98,13 @@ const Control: React.FC = () => {
 
 	const removePost = async (postId: string) => {
 		try{
-			let posts = postsData;
-			const postIndex = postsData.findIndex((post) => post.id === postId);
-			if (postIndex !== -1) {
-				const res = await axiosInstance.delete(`${POSTS_URL}/posts/${postId}`)
-				console.log('res: ',res, res.status)
+			const postIndex = refuseds.findIndex((post) => post._id === postId);
+			if (postIndex < 0) return; 
+				const res = await axiosInstance.delete(`${POSTS_URL}/posts/deletePost/${postId}`);
 				if (!res || !res.status || (res.status !== 200 && res.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
-				posts.splice(postIndex,1);
-				setPostData(posts);
-				setForceRefresh(!forceRefresh);
-			}
+				const auxPosts = refuseds;
+				auxPosts.splice(postIndex,1);
+				setRefuseds([...auxPosts])
 		} catch(error) {
 			console.error(error);
 			return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
@@ -175,15 +157,47 @@ const Control: React.FC = () => {
 						<IonRow className={'fixHeight'}>
 							<IonCol size="4" className={'fixHeight scroll'}>
 								<h3 className={'ion-text-center'}>Pendientes</h3>
-								{ pendings }
+								{
+									pendings.map((item, i) => 
+										<PostCard key={`PostCard-content-index${i}'id'${item._id}`}
+											index={i} post={item}
+											buttons={[
+												{label: 'Aprobar', color: 'success', onClick: () => updateState(item._id, ESTADO.pendiente, ESTADO.aprobado)},
+												{label: 'Rechazar', color: 'danger', onClick: () => updateState(item._id, ESTADO.pendiente, ESTADO.rechazado)},
+												{label: 'Ver publicacion', onClick: () => showPost(item)},
+											]}																			
+										/>
+									)
+								}
 							</IonCol>
 							<IonCol size="4" className={'fixHeight scroll'}>
 								<h3 className={'ion-text-center'}>Aprobados</h3>
-								{ approveds }
+								{
+									approveds.map((item, i) => 
+									<PostCard key={`PostCard-content-index${i}'id'${item._id}`}
+										index={i} post={item}
+										buttons={[
+											{label: 'Rechazar', color: 'danger', onClick: () => updateState(item._id, ESTADO.aprobado, ESTADO.rechazado)},
+											{label: 'Ver publicacion', onClick: () => showPost(item)},
+										]}																			
+									/>
+								)
+								}
 							</IonCol>
 							<IonCol size="4" className={'fixHeight scroll'}>
 								<h3 className={'ion-text-center'}>Rechazados</h3>
-								{ refuseds }
+								{
+									refuseds.map((item, i) => 
+										<PostCard key={`PostCard-content-index${i}'id'${item._id}`}
+											index={i} post={item}
+											buttons={[
+												{label: 'Aprobar', color: 'success', onClick: () => updateState(item._id, ESTADO.rechazado, ESTADO.aprobado)},
+												{label: 'Ver publicacion', onClick: () => showPost(item)},
+												{label: 'Eliminar', color: 'danger', onClick: () => showRemoveAlert(item._id)},
+											]}																			
+										/>
+									) 
+								}
 							</IonCol>
 						</IonRow>
 					</IonGrid>
