@@ -34,91 +34,91 @@ export class EnumsService {
         let response: Enum[] | Enums = [];
         switch(type) {
             case 'aledaños':
-                response = await this.aledaños.find();
+                response = await this.aledaños.find().lean();
                 break
             case 'colores':
-                response = await this.color.find();
+                response = await this.color.find().lean();
                 break
             case 'departamentos':
-                response = await this.departamento.find();
+                response = await this.departamento.find().lean();
                 break
             case 'estadoinvestigaciones':
-                response = await this.estadoinvestigacion.find();
+                response = await this.estadoinvestigacion.find().lean();
                 break
             case 'faunas':
-                response = await this.fauna.find();
+                response = await this.fauna.find().lean();
                 break
             case 'floras':
-                response = await this.flora.find();
+                response = await this.flora.find().lean();
                 break
             case 'fuenteamenazas':
-                response = await this.fuenteamenaza.find();
+                response = await this.fuenteamenaza.find().lean();
                 break
             case 'margenes':
-                response = await this.margen.find();
+                response = await this.margen.find().lean();
                 break
             case 'morfologias':
-                response = await this.morfologia.find();
+                response = await this.morfologia.find().lean();
                 break
             case 'objetivoiniciativas':
-                response = await this.objetivoiniciativa.find();
+                response = await this.objetivoiniciativa.find().lean();
                 break
             case 'origenes':
-                response = await this.origenes.find();
+                response = await this.origenes.find().lean();
                 break
             case 'participantes':
-                response = await this.participantes.find();
+                response = await this.participantes.find().lean();
                 break
             case 'publicaciones':
-                response = await this.publicacion.find();
+                response = await this.publicacion.find().lean();
                 break
             case 'resultadoanalises':
-                response = await this.resultadoanalises.find();
+                response = await this.resultadoanalises.find().lean();
                 break
             case 'resultadoinvestigaciones':
-                response = await this.resultadoinvestigacion.find();
+                response = await this.resultadoinvestigacion.find().lean();
                 break
             case 'tipoamenazas':
-                response = await this.tipoamenaza.find();
+                response = await this.tipoamenaza.find().lean();
                 break
             case 'tipoanalises':
-                response = await this.tipoanalises.find();
+                response = await this.tipoanalises.find().lean();
                 break
             case 'tipoartes':
-                response = await this.tipoarte.find();
+                response = await this.tipoarte.find().lean();
                 break
             case 'tipohumedales':
-                response = await this.tipohumedal.find();
+                response = await this.tipohumedal.find().lean();
                 break
             case 'tipoiniciativas':
-                response = await this.tipoiniciativa.find();
+                response = await this.tipoiniciativa.find().lean();
                 break
             case 'zonas':
-                response = await this.zona.find();
+                response = await this.zona.find().lean();
                 break
             case 'todos':
                 response = {
-                    aledaños: await this.aledaños.find(),
-                    colores: await this.color.find(),
-                    departamentos: await this.departamento.find(),
-                    estadoinvestigaciones: await this.estadoinvestigacion.find(),
-                    faunas: await this.fauna.find(),
-                    floras: await this.flora.find(),
-                    fuenteamenazas: await this.fuenteamenaza.find(),
-                    margenes: await this.margen.find(),
-                    morfologias: await this.morfologia.find(),
-                    objetivoiniciativas: await this.objetivoiniciativa.find(),
-                    origenes: await this.origenes.find(),
-                    publicaciones: await this.publicacion.find(),
-                    participantes: await this.participantes.find(),
-                    resultadoanalises: await this.resultadoanalises.find(),
-                    resultadoinvestigaciones: await this.resultadoinvestigacion.find(),
-                    tipoamenazas: await this.tipoamenaza.find(),
-                    tipoanalises: await this.tipoanalises.find(),
-                    tipoartes: await this.tipoarte.find(),
-                    tipohumedales: await this.tipohumedal.find(),
-                    tipoiniciativas: await this.tipoiniciativa.find(),
-                    zonas: await this.zona.find()
+                    aledaños: await this.aledaños.find().lean(),
+                    colores: await this.color.find().lean(),
+                    departamentos: await this.departamento.find().lean(),
+                    estadoinvestigaciones: await this.estadoinvestigacion.find().lean(),
+                    faunas: await this.fauna.find().lean(),
+                    floras: await this.flora.find().lean(),
+                    fuenteamenazas: await this.fuenteamenaza.find().lean(),
+                    margenes: await this.margen.find().lean(),
+                    morfologias: await this.morfologia.find().lean(),
+                    objetivoiniciativas: await this.objetivoiniciativa.find().lean(),
+                    origenes: await this.origenes.find().lean(),
+                    publicaciones: await this.publicacion.find().lean(),
+                    participantes: await this.participantes.find().lean(),
+                    resultadoanalises: await this.resultadoanalises.find().lean(),
+                    resultadoinvestigaciones: await this.resultadoinvestigacion.find().lean(),
+                    tipoamenazas: await this.tipoamenaza.find().lean(),
+                    tipoanalises: await this.tipoanalises.find().lean(),
+                    tipoartes: await this.tipoarte.find().lean(),
+                    tipohumedales: await this.tipohumedal.find().lean(),
+                    tipoiniciativas: await this.tipoiniciativa.find().lean(),
+                    zonas: await this.zona.find().lean()
                 }
                 break;
         }

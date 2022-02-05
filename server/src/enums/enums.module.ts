@@ -31,6 +31,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     ])
   ],
   providers: [EnumsService],
-  controllers: [EnumsController]
+  controllers: [EnumsController],
+  exports: [EnumsService]
 })
 export class EnumsModule {}

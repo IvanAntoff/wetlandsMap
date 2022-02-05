@@ -4,12 +4,14 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EnumsModule } from './enums/enums.module';
 import { PostsModule } from './posts/posts.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/humedales_posts'),
     EnumsModule,
-    PostsModule
+    PostsModule,
+    FilesModule
   ],
   controllers: [
     AppController,

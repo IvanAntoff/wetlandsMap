@@ -78,7 +78,7 @@ const Map: React.FC = () => {
 	}
 
 	const getPostPosition = (id:string) => {
-		const mapPosition = postsData.find((post) => post.id === (id));
+		const mapPosition = postsData.find((post) => post._id === (id));
 		if (mapPosition) {
 			setMapCenter({latitude: parseFloat(mapPosition.coordenadas.latitude), longitude: parseFloat(mapPosition.coordenadas.longitude)})
 			setZoom(10)
@@ -237,11 +237,11 @@ const Map: React.FC = () => {
 								filterData(appliedFilters).filteredPosts.map((post, index)=>{
 									if(post.estado === 'approved') return(
 										<PostCard
-											key={`PostCard-content-index${index}'id'${post.id}`}
+											key={`PostCard-content-index${index}'id'${post._id}`}
 											index={index}
 											post={post}
 											buttons={[
-												{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post.id)}, icon: 'pin'},
+												{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post._id)}, icon: 'pin'},
 												{label: 'Ver publicacion', onClick: ()=> showPost(post), icon: 'pin'}											
 											]}
 										/>

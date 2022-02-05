@@ -1,10 +1,10 @@
-import { IonButton, IonButtons, IonCol, IonGrid, IonItem, IonLabel, IonRow, IonText, IonThumbnail, IonTitle, IonToolbar } from "@ionic/react"
-import { categorias } from "../enums/data";
-import { CATEGORIA, post } from "../interfaces/posts.interface";
+import { IonButton, IonButtons, IonCol, IonGrid, IonImg, IonItem, IonLabel, IonRow, IonText, IonThumbnail, IonTitle, IonToolbar } from "@ionic/react"
+import { categorias, imgFiles } from "../enums/data";
+import { CATEGORIA, postVM } from "../interfaces/posts.interface";
 import { toCapitalizeCase } from "../utils/sharedFn";
 
 interface PostReader {
-    post: post | undefined,
+    post: postVM | undefined,
     mode: 'complete' | 'public'
 }
 
@@ -15,46 +15,6 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
         if (boolean) return 'Presencia';
         return 'Ausencia';
     }
-    // const [imgList, setImgList] = useState<JSX.Element[]>([]);
-
-    // useEffect(() => {
-    //     const getFiles = () => {
-    //         const strFiles: string[] = props.post?.content?.files || [];
-    //         const files:Blob[] = [];
-    //         try {
-    //             console.log(files)
-    //             for (let i = 0; i < strFiles.length; i++) {
-    //                 let type = "";
-    //                 if (strFiles.includes('PNG')) type = ""
-    //                 const blob = new Blob([strFiles[i]],{type: 'image/png'});
-    //                 if (!blob) continue;
-    //                 console.log('blob: ',blob)
-    //                 files.push(blob);
-    //             }
-    //             console.log(1)
-    //             const imgs: JSX.Element[] = [];
-    //             // console.log(files) 
-    //             console.log(2)
-    //             console.log('files ',files)
-    //             for (let i = 0; i < files.length; i++) {
-    //                 console.log(3)
-    //                 const file = files[i];
-    //                 const url = URL.createObjectURL(file)
-    //                 console.log(4, url)
-    //                 if (file?.type.includes('image') && typeof(url) === 'string') imgs.push (
-    //                     <IonThumbnail><img src={url}></img></IonThumbnail>
-    //                 )
-    //             }
-    //             return imgs;
-    //         } catch (error) {
-    //             console.error(error)
-    //             return ([<IonText className={'ion-text-center'}>Error al obtener los archivos.</IonText>])
-    //         }
-    //     }
-    //     const auxImgs = getFiles();
-    //     console.log(auxImgs)
-    //     if (auxImgs && Array.isArray(auxImgs)) setImgList(auxImgs);
-    // }, [props])
 
     const getCatergoryName = (type: CATEGORIA) :string => {
         let label = categorias.find((item) => item.value === type)?.name || 'Desconocido';
@@ -213,6 +173,29 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
         }
     }
 
+    const getFiles = () => {
+        if(!props.post || !props.post.files || !Array.isArray(props.post.files) || props.post?.files.length === 0) return null;
+        const files = props.post.files.filter((item) => item.url)
+
+        return (
+            <IonRow className={'ion-margin-vertical'}>
+                <IonCol size={"12"}>
+                    <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Archivos</b></h2></IonLabel></IonItem>
+                </IonCol>
+                <IonCol size={"12"} className={'ion-padding'}>
+                    {
+                        files.map((item,i) => {
+                            if(imgFiles.includes(item.mimetype)) {
+                                return <IonImg src={item.url} key={`ionImg-${item.filename}-${i}`}></IonImg>
+                            }
+                            return null;
+                        })
+                    }
+                </IonCol>
+            </IonRow>
+        )
+    } 
+
     return(
         <>
         {
@@ -268,18 +251,11 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                     getData()
                     : null
                 }
-                {/* {
-                    Array.isArray(props?.post?.content?.files) && props.post.content.files.length > 0 ?
-                    <IonRow className={'ion-margin-vertical'}>
-                        <IonCol size={"12"}>
-                            <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Archivos</b></h2></IonLabel></IonItem>
-                        </IonCol>
-                        <IonCol size={"12"} className={'ion-padding'}>
-                            { imgList.map((item) => item) }
-                        </IonCol>
-                    </IonRow>
+                {
+                    Array.isArray(props?.post?.files) && props.post.files.length > 0 ?
+                    getFiles()
                     :null
-                } */}
+                }
                 <IonRow className={'ion-margin-vertical'}>
                     <IonCol size={"12"}>
                         <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel><h2><b>Opciones</b></h2></IonLabel></IonItem>

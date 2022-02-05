@@ -1,11 +1,11 @@
-import { IonButton, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonProgressBar, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea } from "@ionic/react";
+import { IonButton, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonLoading, IonProgressBar, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea } from "@ionic/react";
 import * as React from "react";
 import { useState } from "react";
 import { SubmitHandler, UnpackNestedValue, useForm } from "react-hook-form";
 import { axiosResp, bingMapPosition } from "../interfaces/interfaces";
 import { POSTS_URL } from "../apiKeys";
 import { axiosInstance } from "../axiosConf";
-import { basicEnum, CATEGORIA, categorias, ESTADO, post } from "../interfaces/posts.interface";
+import { archivo, CATEGORIA, categorias, ESTADO, post } from "../interfaces/posts.interface";
 import { Enums } from "../interfaces/enum.interface";
 import { booleanEnums, imgFiles } from "../enums/data";
 
@@ -20,16 +20,31 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const [ errorMessage, setErrorMessage ] = useState<string>('Error desconocido.');
     const [ errorMessageColor, setErrorMessageColor ] = useState<string>('warning');
     const [ disableSubmit, setDisableSubmit ] = useState<boolean>(false);
-    const [ uploadedFiles, setUploadedFiles ] = useState<string[]>([]);
+    const [ disableFilesUpload, setDisableFilesUpload ] = useState<boolean>(false);
+    const [ uploadedFiles, setUploadedFiles ] = useState<archivo[]>([]);
+    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ loadingMessage, setLoadingMessage ] = useState<string>('');
+
     const { register, getValues ,handleSubmit } = useForm<post>();
     const FIRSTSTEP = 1;
     const LASTSTEP = 5;
 
+    const startLoad = (message: string) => {
+        setLoadingMessage(message)
+        setLoading(true);
+    }
+
+    const stoptLoad = () => {
+        setLoading(false);
+        setLoadingMessage('')
+    }
+
     const onSubmit:SubmitHandler<post> = ((data: UnpackNestedValue<post>, event?: React.BaseSyntheticEvent) => {
         try {
+            startLoad('Enviando publicacion...');
             setDisableSubmit(true);
             let post:post = data;
-            // if (uploadedFiles && uploadedFiles.length > 0) post.content.files = uploadedFiles;
+            if (uploadedFiles && uploadedFiles.length > 0) post.files = uploadedFiles;
             post.estado = ESTADO.pendiente;
             post.coordenadas = {
                 latitude: props.location.latitude.toString(),
@@ -37,32 +52,57 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             };
             axiosInstance.post(`${POSTS_URL}/posts`, {...post})
             .then((response: axiosResp) => {
+                stoptLoad();
                 if (response && response.status === 200) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
             })
             .catch((error: any) => {
                 console.error(error);
+                stoptLoad();
                 showError('Algo salio mal al realizar la publicacion, intentelo mas tarde.');
             });
         }
         catch(error){
+            stoptLoad();
             console.error(error)
             showError('Algo salio mal al realizar la publicacion, intentelo mas tarde.');
         }
     });
 
-    const uploadFiles = async (filesEv: FileList | null,reset: boolean = false) => {
-        let files: string[] = [];
-        if (reset === false) files = uploadedFiles;
+    const uploadFiles = async (filesEv: FileList | null) => {
+        startLoad('Subiendo archivos...');
+        setDisableFilesUpload(true);
+        const body = new FormData()
+        let filesToUpload = 0;
         if (!filesEv || filesEv.length < 1) return;
         for (let i = 0; i < filesEv.length; i++) {
             if ((filesEv[i].size) && ((filesEv[i].size/1024) > 15000)){
                 showError('Los archivos cuyo peso sea mayor a 15MB seran omitidos.');
                 continue;
-            } 
-            const strFile = await filesEv[i].text();
-            files.push(strFile);
+            }
+            // const strFile = await filesEv[i].text();
+            // files.push(filesEv[i]);
+            body.append("files[]", filesEv[i]);
+            filesToUpload = filesToUpload + 1;
         }
-        setUploadedFiles(files);
+        if(filesToUpload === 0) {
+            setDisableFilesUpload(false);
+            stoptLoad();
+            return showSuccess('Ningun archivo ha sido subido.');
+        }
+        axiosInstance.post(`${POSTS_URL}/files/uploadMultiple`, body)
+        .then((response: axiosResp) => {
+            stoptLoad();
+            if (Array.isArray(response?.data) && response?.status === 201) {
+                setUploadedFiles(response.data);
+                showSuccess(`Un total de ${filesToUpload} fueron subidos con exito! Puede continuar.`)
+            };
+        })
+        .catch((error: any) => {
+            console.error(error);
+            setDisableFilesUpload(false);
+            stoptLoad();
+            showError('Algo salio mal al realizarcarga de archivos, intentelo mas tarde.');
+        });
     }
 
     const showIfStepIs = (stepToCheck: number) : boolean => {
@@ -211,7 +251,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonLabel position={'floating'}>Morfología de la costa:</IonLabel>
                     <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("datos.humedal.morfologia")} >
                         {
-                        props.enums.margenes.map((item, index) => {
+                        props.enums.morfologias.map((item, index) => {
                             return (<IonSelectOption value={item._id} key={`IonSelectOption-${index}-morfology-${item._id}`}>{item.name}</IonSelectOption>)
                         })
                         }
@@ -499,7 +539,6 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const getOptionesByType = () => {
         const category = getValues("categoria")
         if (!category) return;
-        console.log(category)
         switch (category) {
             case CATEGORIA.humedal: 
                 return optionalsWetland();
@@ -516,6 +555,11 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
 
     return (
     <>
+        <IonLoading
+            isOpen={loading}
+            showBackdrop={true}
+            message={loadingMessage || 'Cargando...'}
+        />
         <IonProgressBar value={step / LASTSTEP} buffer={step / LASTSTEP}></IonProgressBar>
         <IonText className={"ion-text-center"}><h1>{getTitle()}</h1></IonText>
         <IonProgressBar value={step / LASTSTEP} buffer={step / LASTSTEP}></IonProgressBar>
@@ -527,7 +571,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonButton>        
                 </IonCol>
                 <IonCol size={"8"} className={"ion-nowrap nowarp"}>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} encType={"multipart/form-data"} method={"POST"}>
                         {/*  Paso 1: Seleccionar categoria/tipo de post a cargar */}
                         {/* Categorias */}
                         <IonItem hidden={showIfStepIs(1)}>
@@ -563,7 +607,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         </IonItem>
                         <IonItem hidden={showIfStepIs(2)}>
                             <IonLabel position={'stacked'}>Ubicación del humedal:</IonLabel>
-                            <IonSelect placeholder={"Ubicación del humedal:"} className={'alert-xl'} {...register("departamento")} >
+                            <IonSelect placeholder={"Ubicación del humedal:"} className={'alert-xl'} {...register("zona")} >
                                 {
                                 props.enums.zonas.map((item, index) => {
                                     return (<IonSelectOption value={item._id} key={`IonSelectOption-${index}-wetlandZones-${item._id}`}>{item.name}</IonSelectOption>)
@@ -573,7 +617,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         </IonItem>
                         <IonItem hidden={showIfStepIs(2)}>
                             <IonLabel position={'stacked'}>Departamento en el que se encuentra:</IonLabel>
-                            <IonSelect placeholder={"Ubicación del humedal:"} className={'alert-xl'} {...register("zona")} >
+                            <IonSelect placeholder={"Ubicación del humedal:"} className={'alert-xl'} {...register("departamento")} >
                                 {
                                 props.enums.departamentos.map((item, index) => {
                                     return (<IonSelectOption value={item._id} key={`IonSelectOption-${index}-wetlandLocation-${item._id}`}>{item.name}</IonSelectOption>)
@@ -602,7 +646,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                         <IonItem hidden={showIfStepIs(3)}>
                             <IonLabel position={'stacked'} style={{width: '100%', maxWidth: '100%'}}>Imagenes/fotos:</IonLabel>
                             <div style={{display: 'flex', width: '100%', padding: '10px'}}>
-                                <input type="file" multiple accept={`${imgFiles}`} disabled={true} onChange={(e) => uploadFiles(e?.target?.files, true)} style={{display: 'flex'}}/>
+                                <input type="file" multiple accept={`${imgFiles}`} disabled={disableFilesUpload} onChange={(e) => uploadFiles(e?.target?.files)} style={{display: 'flex'}}/>
                             </div>
                         </IonItem>
                         { getOptionesByType() }

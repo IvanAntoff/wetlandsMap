@@ -1,3 +1,4 @@
+* /node_modules
 client/build
 client/src/apiKeys.tsx
 client/node_modules
@@ -8,4 +9,4 @@ server/key.pem
 server/src/dbConf.ts
 server/src/datasources/posts-datasourse.datasource.ts
 server/src/datasources/posts-datasourse.datasource.ts
-* /node_modules
+uploads/

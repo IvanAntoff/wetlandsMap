@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { ESTADO, groupedPosts, Posts } from 'src/interfaces/posts.interface';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { ESTADO, groupedPosts, post } from 'src/interfaces/posts.interface';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -9,9 +9,9 @@ export class PostsController {
     ) {}
 
     @Get()
-    public async findAll(@Query('group') group: boolean): Promise<Posts[] | groupedPosts> {
+    public async findAll(@Query('group') group: boolean, @Query('normalize') normalize: boolean): Promise<post[] | groupedPosts> {
         try {
-            const posts = await this.postsService.findAll();
+            const posts = await this.postsService.findAll(normalize);
             if (group) {
                 const groupedPosts: groupedPosts = {
                     aprobados: posts.filter((post) => post.estado === ESTADO.aprobado),
@@ -28,9 +28,9 @@ export class PostsController {
     }
 
     @Get(':id')
-    public async findOne(@Param('id') id: string): Promise<Posts> {
+    public async findOne(@Param('id') id: string, @Query('normalize') normalize: boolean): Promise<post> {
         try {
-            return await this.postsService.findOne(id);
+            return await this.postsService.findOne(id, normalize);
         }
         catch (error) {
             return error
@@ -38,7 +38,7 @@ export class PostsController {
     }
 
     @Post()
-    public create(@Body() newPost: Posts): Promise<Posts> {
+    public create(@Body() newPost: post): Promise<post> {
         try {
             return this.postsService.create(newPost)
         }
@@ -48,9 +48,19 @@ export class PostsController {
     }
 
     @Post('/changeState')
-    public changeState(@Body() body: {id: string, estado: ESTADO}): Promise<Posts> {
+    public changeState(@Body() body: {id: string, estado: ESTADO}): Promise<post> {
         try {
             return this.postsService.changeState(body.id, body.estado)
+        }
+        catch (error) {
+            return error
+        }
+    }
+
+    @Delete('/deletePost/:id')
+    public deletePost(@Param('id') id: string): Promise<boolean> {
+        try {
+            return this.postsService.delete(id)
         }
         catch (error) {
             return error
