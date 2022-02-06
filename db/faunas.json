@@ -18,8 +18,6 @@
     "_id" : ObjectId("61d179bef079daaf42059a27"),
     "name" : "Mamíferos"
 }
-
-/* 6 */
 {
     "_id" : ObjectId("61d179bef079daaf42059a2a"),
     "name" : "Insectos"
