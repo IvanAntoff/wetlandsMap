@@ -16,8 +16,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(FILE_FOLDER,{prefix: '/uploads'});
   app.enableCors({
-    origin: ["https://humedalesdigitalescuencadelgualeguaychu.com/", /\.humedalesdigitalescuencadelgualeguaychu\.com$/, "http://humedalesdigitalescuencadelgualeguaychu.com/","68.233.231.176"],
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    origin: "*",
+    methods: "GET,HEAD,OPTIONS,POST,DELETE",
   });
   await app.listen(3001);
 }
