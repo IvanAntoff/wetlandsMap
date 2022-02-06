@@ -53,7 +53,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             axiosInstance.post(`${POSTS_URL}/posts`, {...post})
             .then((response: axiosResp) => {
                 stoptLoad();
-                if (response && response.status === 200) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
+                if (response && (response.status === 200 || response.status === 204)) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
             })
             .catch((error: any) => {
                 console.error(error);

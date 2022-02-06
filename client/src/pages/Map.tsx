@@ -267,7 +267,8 @@ const Map: React.FC = () => {
 								height={'100%'}
 								width={'100%'}
 								mapOptions={{
-									navigationBarMode: "square"
+									navigationBarMode: "square",
+									credentials: API_KEY_BINGMAPS,
 								}}
 								viewOptions={{
 									center: mapCenter,
