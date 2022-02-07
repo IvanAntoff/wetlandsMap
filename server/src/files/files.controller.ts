@@ -3,7 +3,6 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { archivo } from 'src/interfaces/posts.interface';
 import { FILE_FOLDER } from 'src/main';
-import { FilesService } from './files.service';
 
 @Controller('files')
 export class FilesController {

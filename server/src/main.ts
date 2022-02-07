@@ -13,13 +13,15 @@ console.log(`MONGO_URL: ${process.env.MONGO_URL || 'mongodb://localhost/humedale
 
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors({
-    "origin": "*",
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    "preflightContinue": false,
-    "optionsSuccessStatus": 204
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: {
+      "origin": "*",
+      "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      "preflightContinue": false,
+      "optionsSuccessStatus": 204
+    }
   });
+  // app.enableCors();
   app.useStaticAssets(FILE_FOLDER,{prefix: '/uploads'});
   await app.listen(3001);
 }
