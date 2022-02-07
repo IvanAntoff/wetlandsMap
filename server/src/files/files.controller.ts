@@ -1,17 +1,17 @@
-import { Controller, Get, NotFoundException, Param, Post, Response, StreamableFile, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { archivo } from 'src/interfaces/posts.interface';
+import { FILE_FOLDER } from 'src/main';
 import { FilesService } from './files.service';
 
 @Controller('files')
 export class FilesController {
   constructor(
-    private fileService: FilesService
   ){}
     @Post("uploadSingle")
     @UseInterceptors(FileInterceptor("file", {
-      storage: diskStorage({destination: './uploads',filename: (req,file, callback) => {
+      storage: diskStorage({destination: FILE_FOLDER,filename: (req,file, callback) => {
         const date = new Date;
         callback(null,  `${date.getDay()}${date.getMonth()}${date.getFullYear()}${file.fieldname}${file.originalname}`)
       }}),
@@ -31,7 +31,7 @@ export class FilesController {
   
     @Post("uploadMultiple")
     @UseInterceptors(FilesInterceptor("files[]", 15, {
-      storage: diskStorage({destination: './uploads'}),
+      storage: diskStorage({destination: FILE_FOLDER}),
     }))
     uploadMultiple(@UploadedFiles() files: Express.Multer.File[]) {
       try {

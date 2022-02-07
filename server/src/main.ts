@@ -18,6 +18,8 @@ async function bootstrap() {
   app.enableCors({
     origin: "*",
     methods: "GET,HEAD,OPTIONS,POST,DELETE",
+    preflightContinue: true,
+    allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization,authorization,X-Forwarded-for',
   });
   await app.listen(3001);
 }
