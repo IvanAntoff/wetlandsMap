@@ -1,6 +1,7 @@
 import { BadGatewayException, BadRequestException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { filter } from 'rxjs';
 import { EnumsService } from 'src/enums/enums.service';
 import { FilesService } from 'src/files/files.service';
 import { archivoVM, CATEGORIA, ESTADO, post, postVM } from 'src/interfaces/posts.interface';
@@ -80,9 +81,11 @@ export class PostsService {
         });
     }
 
-    public async findAll(normalize: boolean = true): Promise <post[]> {
+    public async findAll(normalize: boolean = true, filterByStates: ESTADO[] = []): Promise <post[]> {
         return new Promise(async (resolve) => {
-            const response: post[] = normalize ? await this.normalizePosts(await this.posts.find().lean()) : await this.posts.find().lean();
+            const filters: any = {};
+            if (Array.isArray(filterByStates) && filterByStates.length > 0) filters.estado = {"$in": filterByStates}
+            const response: post[] = normalize ? await this.normalizePosts(await this.posts.find(filters).lean()) : await this.posts.find(filters).lean();
             return resolve(response ? response : []);
         })
     }
@@ -99,6 +102,7 @@ export class PostsService {
     public async create(newPost: post): Promise <post> {
         return new Promise(async (resolve, rejects) => {
             if (!newPost) return rejects(new BadGatewayException('Name or type not include'));
+            newPost.fechacreacion = new Date;
             let response = await this.posts.create(newPost);
             return resolve(response ? newPost : null);
         });

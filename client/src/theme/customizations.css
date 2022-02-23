@@ -40,6 +40,10 @@
     height: 100%;
 }
 
+.fullHeight {
+    height: 100% !important;
+}
+
 .scroll {
     overflow-y: scroll;
 }

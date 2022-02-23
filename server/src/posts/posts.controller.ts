@@ -9,9 +9,15 @@ export class PostsController {
     ) {}
 
     @Get()
-    public async findAll(@Query('group') group: boolean, @Query('normalize') normalize: boolean): Promise<post[] | groupedPosts> {
+    public async findAll(
+        @Query('state') state: string, 
+        @Query('group') group: boolean, 
+        @Query('normalize') normalize: boolean
+    ): Promise<post[] | groupedPosts> {
         try {
-            const posts = await this.postsService.findAll(normalize);
+            let auxState = undefined;
+            if (state) auxState = state.split(',')
+            const posts = await this.postsService.findAll(normalize, auxState);
             if (group) {
                 const groupedPosts: groupedPosts = {
                     aprobados: posts.filter((post) => post.estado === ESTADO.aprobado),

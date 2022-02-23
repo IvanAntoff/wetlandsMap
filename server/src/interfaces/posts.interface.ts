@@ -26,6 +26,7 @@ export interface post {
         arte?: Arte,
         investigation?: Investigacion
     }
+    fechacreacion: Date;
 }
 
 export enum CATEGORIA {

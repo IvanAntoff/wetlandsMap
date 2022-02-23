@@ -1,20 +1,19 @@
 import { IonContent, IonGrid, IonPage, IonRow, IonCol, IonFab, IonFabButton, IonIcon, IonLoading, IonModal, IonAlert } from '@ionic/react';
 import { add, arrowUndoCircleOutline } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
-import { GenericFilters } from '../components/GenericFilters';
 import PostCard from '../components/PostCard';
 import { WetlandForm } from '../components/WetlandForm';
-import { bingMapPosition, marker } from '../interfaces/interfaces';
+import { bingMapPosition, genericFilter, marker } from '../interfaces/interfaces';
 import { useAuth0 } from "@auth0/auth0-react";
-import { postFilters } from '../enums/data';
 import { API_KEY_BINGMAPS, POSTS_URL } from '../apiKeys';
 import ReactBingmaps from "../components/BingMapsReact";
 import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
 import { reduceText, toCapitalizeCase } from '../utils/sharedFn';
 import { Header } from '../components/Header';
-import { categorias, ESTADO, post } from '../interfaces/posts.interface';
+import { ESTADO, post } from '../interfaces/posts.interface';
 import { Enums } from '../interfaces/enum.interface';
+import { FiltersPosts, getFiltersRes } from '../components/FiltersPosts';
 
 const Map: React.FC = () => {
 	const [ postsData, setPostData ] = useState<post[]>([]);
@@ -29,7 +28,7 @@ const Map: React.FC = () => {
 	const [ showAlert, setShowAlert ] =useState<boolean> (false);
 	const [ loading, setLoading ] = useState<boolean>(false);
 	const [ infoMarkerIndex, setInfoMarkerIndex ] = useState<number>(-1);
-	const [ appliedFilters, setAppliedFilters ]	= useState<string[]>([]);
+	const [ appliedFilters, setAppliedFilters ]	= useState<genericFilter[]>([]);
 	const [ selectedPost, setSelectedPost ] = useState<post | undefined>(undefined);
 	const [ showPostModal, setShowPostModal ] = useState<boolean>(false);
 	const editModeActive = useRef<boolean>(false);
@@ -41,22 +40,25 @@ const Map: React.FC = () => {
 			try {
 				const enums = await axiosInstance.get(`${POSTS_URL}/enums`);
 				if (enums && enums.data && !enumsData) setEnumsData(enums.data);
-				const response = await axiosInstance.get(`${POSTS_URL}/posts`);
+				const response = await axiosInstance.get(`${POSTS_URL}/posts?state=${ESTADO.aprobado}`);
 				if (!Array.isArray(response?.data)) return;
-					const auxMarkers: marker[] = [];
-					const posts = response.data.filter((item:post) => item.estado === ESTADO.aprobado);
-					for (let i = 0; i < posts.length; i++) {
-						const post:post = posts[i];
-						if (post.estado === ESTADO.aprobado) auxMarkers.push({
-							metadata: {
-								title: toCapitalizeCase(reduceText(post.titulo)),
-								description: toCapitalizeCase(reduceText(post?.descripcion)),
-							},
-							center: {latitude: parseFloat(post.coordenadas.latitude),longitude: parseFloat(post.coordenadas.longitude)},
-						});
-					setMarkers(auxMarkers);
-					setPostData(posts);
-				}
+				const auxMarkers: marker[] = [];
+				const posts = response.data;
+				posts.forEach(post => {
+					auxMarkers.push({
+						metadata: {
+							title: toCapitalizeCase(reduceText(post.titulo)),
+							description: toCapitalizeCase(reduceText(post?.descripcion)),
+							visible: false,
+							actions: [
+								{label: 'Ver publicacion', eventHandler: () => showPost(post)},
+							]
+						},
+						center: {latitude: parseFloat(post.coordenadas.latitude),longitude: parseFloat(post.coordenadas.longitude)},
+					});
+				});
+				setMarkers(auxMarkers);
+				setPostData(posts);
 				stopLoading();
 			}
 			catch (error){
@@ -66,6 +68,28 @@ const Map: React.FC = () => {
 		}
 		getData();
 	},[postsData.length]);
+
+	useEffect(() => {
+		const getUpdateMarkers = () => {
+			const markers: marker[]= [];
+			const posts: post[] = getFiltersRes(postsData, appliedFilters);
+			posts.forEach(post => {				
+				if (post.estado === ESTADO.aprobado) markers.push({
+					metadata: {
+						title: toCapitalizeCase(reduceText(post.titulo, 50)),
+						description: reduceText(post.descripcion),
+						visible: false,
+						actions: [
+							{label: 'Ver publicacion', eventHandler: () => showPost(post)},
+						]
+					},
+					center: {latitude: parseFloat(post.coordenadas.latitude),longitude: parseFloat(post.coordenadas.longitude)},
+				});
+			});
+			setMarkers(markers);
+		};
+		getUpdateMarkers();
+	},[appliedFilters]);
 
 	const showPost = (post: post) => {
 		if (!post) return;
@@ -165,105 +189,65 @@ const Map: React.FC = () => {
 		setLoading(false);
 	}
 
-	const filterData = (filters: string[]) => {
-		try{
-			const posts = postsData;
-			const auxPosts:post[] = [];
-			const auxMarkers: marker[]= [];
-			if (!filters || !Array.isArray(filters) || filters.length <= 0 || !posts || !Array.isArray(posts)) return {filteredPosts: posts, filteredMarkers: markers};
-			for (let i = 0; i < posts.length; i++) {
-				const post = posts[i];
-				for (let j = 0; j < filters.length; j++) {
-					const filter = filters[j];
-					if (
-						post.categoria.includes(filter) ||
-						post.descripcion.includes(filter) ||
-						post.titulo.includes(filter) ||
-						post.keyword.some((item:string) => item.toLowerCase() === filter.toLowerCase())
-					) {
-						auxPosts.push(post);
-						if (post.estado === 'approved') auxMarkers.push({
-							metadata: {
-								title: toCapitalizeCase(reduceText(post.titulo, 50)),
-								description: reduceText(post.descripcion),
-							},
-							center: {latitude: parseFloat(post.coordenadas.latitude),longitude: parseFloat(post.coordenadas.longitude)},
-						});
-						break;
-					}
-				}
-			}
-			return {filteredPosts: auxPosts, filteredMarkers: auxMarkers}
-		}
-		catch (e) {
-			console.error(e)
-			return {filteredPosts: postsData, filteredMarkers: markers};
-		}
-	}
-
-	const getMarkersByType = (markers: marker[], type: 'info' | 'normal'): marker[] => {
-        let infoMarkers: marker[] = []
-        let normalMarkers: marker[] = []
-        if (markers){
-            for (let i = 0; i < markers.length; i++) {
-                const newMarker = markers[i];
-                if (newMarker) {
-                    if(newMarker.metadata && newMarker.metadata.title) infoMarkers.push(newMarker);
-                    else normalMarkers.push(newMarker);
-                }
-            }
-        }
-        if (type === 'info') return infoMarkers;
-        return normalMarkers;
-    }
+	// const getMarkersByType = (markers: marker[], type: 'info' | 'normal'): marker[] => {
+    //     let infoMarkers: marker[] = []
+    //     let normalMarkers: marker[] = []
+    //     if (markers){
+    //         for (let i = 0; i < markers.length; i++) {
+    //             const newMarker = markers[i];
+    //             if (newMarker) {
+    //                 if(newMarker.metadata && newMarker.metadata.title) infoMarkers.push(newMarker);
+    //                 else normalMarkers.push(newMarker);
+    //             }
+    //         }
+    //     }
+    //     if (type === 'info') return infoMarkers;
+    //     return normalMarkers;
+    // }
 
 	return (
 		<IonPage >
             <Header login={{includeLogin: true, user: user}}/>
-			<IonContent color={'light'} fullscreen>
+			<IonContent color={'light'}>
 			<IonLoading
 				isOpen={loading}
 				showBackdrop={true}
 				message={'Cargando!'}
 				duration={5000}
 			/>
-				<IonGrid className={'fixHeight'}>
-					<IonRow className={'fixHeight'}>
+				<IonGrid className={'fullHeight'}>
+					<IonRow className={'fullHeight'}>
 						{	colsSize.postCol !== '0' ?
-							<IonCol size={colsSize.postCol} className={'fixHeight scroll'}>
-							<GenericFilters filters={postFilters} getFilters={(filters) => setAppliedFilters(filters.map(item => {return item.value}))}/>
-							{
-								postsData.length > 0 ? 
-								filterData(appliedFilters).filteredPosts.map((post, index)=>{
-									if(post.estado === 'approved') return(
-										<PostCard
-											key={`PostCard-content-index${index}'id'${post._id}`}
-											index={index}
-											post={post}
-											buttons={[
-												{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post._id)}, icon: 'pin'},
-												{label: 'Ver publicacion', onClick: ()=> showPost(post), icon: 'pin'}											
-											]}
-										/>
-									)
-									return null;
-								}) 
-								:
-								null
-							}
+							<IonCol sizeMd={colsSize.postCol} sizeSm={"12"} sizeXs={"12"} className={'scroll'}>
+								<FiltersPosts active={['Category', 'Keywords']} getAppliedFilters={(filters) => setAppliedFilters(filters)}/>
+								{
+									postsData.length > 0 ? 
+									getFiltersRes(postsData, appliedFilters).map((post, index)=>{
+										if(post.estado === 'approved') return(
+											<PostCard
+												key={`PostCard-content-index${index}'id'${post._id}`}
+												index={index}
+												post={post}
+												buttons={[
+													{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post._id)}, icon: 'pin'},
+													{label: 'Ver publicacion', onClick: ()=> showPost(post), icon: 'pin'}											
+												]}
+											/>
+										)
+										return null;
+									}) 
+									:
+									null
+								}
 							</IonCol>
 							:
 							null
 						}
-						<IonCol size={colsSize.mapCol}>
-							<IonFab horizontal={"end"} vertical={"bottom"}>
-								<IonFabButton color={"success"} onClick={() => editModeON()} hidden={!showFab.addFab} title={'Publicar nuevo punto!'}><IonIcon icon={add}></IonIcon></IonFabButton>
-								<IonFabButton color={"warning"} onClick={() => editModeOFF()} hidden={!showFab.cancelFab} title={'Cancelar carga'}><IonIcon icon={arrowUndoCircleOutline}></IonIcon></IonFabButton>
-							</IonFab>
+						<IonCol sizeMd={colsSize.mapCol} sizeSm={"12"} sizeXs={"12"} className={'fullHeight scroll'}>
 							<ReactBingmaps
 								bingMapsKey={API_KEY_BINGMAPS}
 								// pushPins={appliedFilters.length > 0 ? getMarkersByType(filterData(appliedFilters).filteredMarkers, 'normal') : getMarkersByType(markers, 'normal')}
-								pushPinsWithInfoboxes={appliedFilters.length > 0 ? filterData(appliedFilters).filteredMarkers : markers}
+								pushPinsWithInfoboxes={markers}
 								height={'100%'}
 								width={'100%'}
 								mapOptions={{
@@ -276,19 +260,23 @@ const Map: React.FC = () => {
 								}}
 								getLocationOnClick={(value:bingMapPosition) => getClickedLocation(value)}
 							/>
-							<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} onDidDismiss={() => editModeOFF()}>
-								{
-									enumsData ? 
-									<WetlandForm location={onClickPosition ? onClickPosition : { latitude: 0, longitude: 0 }} enums={enumsData} />
-									:
-									<h1>Cargando...</h1>
-								}
-							</IonModal>
+							<IonFab horizontal={"end"} vertical={"bottom"}>
+								<IonFabButton color={"success"} onClick={() => editModeON()} hidden={!showFab.addFab} title={'Publicar nuevo punto!'}><IonIcon icon={add}></IonIcon></IonFabButton>
+								<IonFabButton color={"warning"} onClick={() => editModeOFF()} hidden={!showFab.cancelFab} title={'Cancelar carga'}><IonIcon icon={arrowUndoCircleOutline}></IonIcon></IonFabButton>
+							</IonFab>
 						</IonCol>
 					</IonRow>
 				</IonGrid>
 				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-50vw"}>
 					<PostReader post={selectedPost} mode={'complete'} />
+				</IonModal>
+				<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} onDidDismiss={() => editModeOFF()}>
+					{
+						enumsData ? 
+						<WetlandForm location={onClickPosition ? onClickPosition : { latitude: 0, longitude: 0 }} enums={enumsData} />
+						:
+						<h1>Cargando...</h1>
+					}
 				</IonModal>
 				<IonAlert
 					isOpen={showAlert}

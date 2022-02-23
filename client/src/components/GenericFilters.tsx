@@ -8,7 +8,7 @@ interface Filters {
 }
 
 export const GenericFilters: React.FC <Filters> = (props:Filters) => {
-    const [appliedFilters, setAppliedFilters ] = useState<genericFilter[]>([]);
+    const [ appliedFilters, setAppliedFilters ] = useState<genericFilter[]>([]);
     const [ ionSelectValues, setIonSelectValues ] = useState<[][]>([])
 
     const updateFilter = (items: string[], type: string) => {

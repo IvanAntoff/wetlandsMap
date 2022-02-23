@@ -1,5 +1,5 @@
 import { User } from "@auth0/auth0-spa-js/dist/typings/global"
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonImg, IonThumbnail } from "@ionic/react"
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonImg, IonThumbnail, IonGrid, IonRow, IonCol, IonText } from "@ionic/react"
 import { useEffect, useState } from "react"
 import LoginButton from "./LoginButton"
 import LogoutButton from "./LogoutButton"
@@ -40,20 +40,27 @@ export const Header: React.FC<headerInterface> = (props: headerInterface) => {
     return (
     <IonHeader>
         <IonToolbar color={'primary'}>
-            <IonButtons slot={'start'}>
-                <IonButton>
-                    <IonImg src="/assets/imgs/header/logo.png" style={{height: '30px'}}/>
-                </IonButton>
-            </IonButtons>
-            <IonTitle>Humedales digitales</IonTitle>
-            <IonTitle size={'small'}><b>Cuenca del río Gualeguaychú</b></IonTitle>
-            <IonButtons slot='end'>
-                {   showLogIn === true ? 
-                    getLogInButton(user)
-                    :
-                    null
-                }
-            </IonButtons>
+            <IonGrid>
+                <IonRow className={'ion-justify-content-between ion-align-items-center'}>
+                    <IonCol sizeMd="3" sizeSm="12" sizeXs="12">
+                        <IonImg src="/assets/imgs/header/logo.png" style={{height: '32px'}}/>
+                    </IonCol>
+                    <IonCol sizeMd="4" sizeSm="12" sizeXs="12" className={'ion-justify-content-center ion-text-center ion-align-items-center'}>
+                        <IonTitle>Humedales digitales</IonTitle>
+                        <IonText><b>Cuenca del río Gualeguaychú</b></IonText>
+                    </IonCol>
+                    <IonCol sizeMd="3"sizeSm="12" sizeXs="12" className={'ion-justify-content-center ion-text-center ion-align-items-center'}>
+                        <IonButtons className={'ion-justify-content-center ion-text-center ion-align-items-center'}>
+                        {   
+                            showLogIn === true ? 
+                            getLogInButton(user)
+                            :
+                            null
+                        }
+                        </IonButtons>
+                    </IonCol>
+                </IonRow>
+            </IonGrid>
         </IonToolbar>
     </IonHeader>
     )

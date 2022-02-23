@@ -1,4 +1,5 @@
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText } from "@ionic/react";
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText } from "@ionic/react";
+import { useMemo, useState } from "react";
 import { post } from "../interfaces/posts.interface";
 import { reduceText, toCapitalizeCase } from "../utils/sharedFn";
 interface postCard {
@@ -10,21 +11,54 @@ interface postCard {
         onClick: Function,
         color?: string,
         icon?: string
-    }[]
+    }[],
+    check?: {
+        onCheck: (post: post) => void,
+        setUncheck?: boolean,
+        setCheck?: boolean
+    }
 }
 const PostCard: React.FC<postCard> = (props: postCard) => {
+    const [ checked, setChecked ] = useState<boolean>(false);
+
+    const checkCard = () => {
+        setChecked(!checked);
+        if (props.check?.onCheck) props.check?.onCheck(props.post);    
+    }
+
+    useMemo(() => {
+        setChecked(true);
+        if (props.check?.onCheck) props.check?.onCheck(props.post);    
+    },[props.check?.setCheck])
+
+    useMemo(() => {
+        setChecked(false);
+    },[props.check?.setUncheck])
+
     return (
-        <IonCard color={''}>
+        <IonCard color={checked === true ? 'light' : ''}>
             <IonCardHeader className="ion-margin-no">
-                <IonCardTitle>{toCapitalizeCase(props.post?.titulo) || 'Titulo no disponible.' }</IonCardTitle>
-                <IonCardSubtitle><b>Ubicacion:</b>&nbsp;{props?.post?.departamento || 'Desconocida'}</IonCardSubtitle>
+                <IonGrid className={"ion-no-padding"}>
+                    <IonRow>
+                        <IonCol className={"ion-no-padding"} size={props.check ? '11' : '12'}>
+                            <IonCardTitle>{toCapitalizeCase(props.post?.titulo) || 'Titulo no disponible.' }</IonCardTitle>
+                            <IonCardSubtitle><b>Ubicacion:</b>&nbsp;{props?.post?.departamento || 'Desconocida'}</IonCardSubtitle>
+                        </IonCol>
+                        {
+                            props.check &&
+                            <IonCol className={"ion-no-padding"} size={ '1'}>
+                                <IonCheckbox checked={checked} onIonChange={(e) => checkCard()}></IonCheckbox>
+                            </IonCol>
+                        }
+                    </IonRow>
+                </IonGrid>
             </IonCardHeader>
             <IonCardContent >
                 <IonText>
                     {reduceText(props.post?.descripcion) || 'Descripcion no disponible.'}
                 </IonText>
                 { props.buttons && props.buttons.length > 0 ? 
-                    <IonItem lines={"none"} >
+                    <IonItem lines={"none"} color={checked ? 'light' : ''}>
                         <IonButtons className={'ion-justify-content-between'}>
                             {props.buttons.map((button, index) => {
                                 return(
@@ -41,17 +75,6 @@ const PostCard: React.FC<postCard> = (props: postCard) => {
                     :
                     null
                 }
-                {/* { props.keyword && props.keyword.length > 0 ?
-                    <IonItem lines={"none"} >
-                        {props.keyword.map((keyword, index) => {
-                            return (
-                                <IonChip key={`PostCard-Chip-keyword-${index}`}>{keyword}</IonChip>
-                            )
-                        })}
-                    </IonItem>
-                    :
-                    null
-                } */}
             </IonCardContent>
         </IonCard>
     );

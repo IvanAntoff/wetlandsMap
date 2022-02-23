@@ -1,8 +1,8 @@
 import { IonButton, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonLoading, IonProgressBar, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea } from "@ionic/react";
 import * as React from "react";
 import { useState } from "react";
-import { SubmitHandler, UnpackNestedValue, useForm } from "react-hook-form";
-import { axiosResp, bingMapPosition } from "../interfaces/interfaces";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { bingMapPosition } from "../interfaces/interfaces";
 import { POSTS_URL } from "../apiKeys";
 import { axiosInstance } from "../axiosConf";
 import { archivo, CATEGORIA, categorias, ESTADO, post } from "../interfaces/posts.interface";
@@ -12,6 +12,7 @@ import { booleanEnums, imgFiles } from "../enums/data";
 interface wetlandFormProps{
     enums: Enums,
     location: bingMapPosition,
+    onSubmit?: () => void
 }
 
 export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
@@ -25,7 +26,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ loadingMessage, setLoadingMessage ] = useState<string>('');
 
-    const { register, getValues ,handleSubmit } = useForm<post>();
+    const { register, getValues ,handleSubmit, reset } = useForm<post>();
     const FIRSTSTEP = 1;
     const LASTSTEP = 5;
 
@@ -36,14 +37,22 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
 
     const stoptLoad = () => {
         setLoading(false);
-        setLoadingMessage('')
+        setLoadingMessage('');
     }
 
-    const onSubmit:SubmitHandler<post> = ((data: UnpackNestedValue<post>, event?: React.BaseSyntheticEvent) => {
+    const resetForm = () => {
+        reset();
+        setStep(1);
+        setUploadedFiles([]);
+        setDisableFilesUpload(false);
+        setDisableSubmit(false);
+    }
+
+    const onSubmit:SubmitHandler<post> = () => {
         try {
             startLoad('Enviando publicacion...');
             setDisableSubmit(true);
-            let post:post = data;
+            let post:post = getValues();
             if (uploadedFiles && uploadedFiles.length > 0) post.files = uploadedFiles;
             post.estado = ESTADO.pendiente;
             post.coordenadas = {
@@ -51,9 +60,13 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 longitude: props.location.longitude.toString()
             };
             axiosInstance.post(`${POSTS_URL}/posts`, {...post})
-            .then((response: axiosResp) => {
+            .then((response) => {
                 stoptLoad();
                 if (response && (response.status === 200 || response.status === 204)) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
+                setTimeout(()=> {
+                    resetForm();
+                    if(props.onSubmit) props.onSubmit();
+                }, 600)
             })
             .catch((error: any) => {
                 console.error(error);
@@ -66,7 +79,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             console.error(error)
             showError('Algo salio mal al realizar la publicacion, intentelo mas tarde.');
         }
-    });
+    };
 
     const uploadFiles = async (filesEv: FileList | null) => {
         startLoad('Subiendo archivos...');
@@ -79,8 +92,6 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 showError('Los archivos cuyo peso sea mayor a 15MB seran omitidos.');
                 continue;
             }
-            // const strFile = await filesEv[i].text();
-            // files.push(filesEv[i]);
             body.append("files[]", filesEv[i]);
             filesToUpload = filesToUpload + 1;
         }
@@ -90,7 +101,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             return showSuccess('Ningun archivo ha sido subido.');
         }
         axiosInstance.post(`${POSTS_URL}/files/uploadMultiple`, body)
-        .then((response: axiosResp) => {
+        .then((response) => {
             stoptLoad();
             if (Array.isArray(response?.data) && response?.status === 201) {
                 setUploadedFiles(response.data);
@@ -571,7 +582,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonButton>        
                 </IonCol>
                 <IonCol size={"8"} className={"ion-nowrap nowarp"}>
-                    <form onSubmit={handleSubmit(onSubmit)} encType={"multipart/form-data"} method={"POST"}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         {/*  Paso 1: Seleccionar categoria/tipo de post a cargar */}
                         {/* Categorias */}
                         <IonItem hidden={showIfStepIs(1)}>
@@ -659,7 +670,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                                     Ante inconvenientes o consultas, comunicarse al correo-e <a href={"mailto:fcyt_laboratorioibga@uader.edu.ar"} target={"_blank"}>fcyt_laboratorioibga@uader.edu.ar</a></h5><br/>
                             </IonText>
                         </IonItem>
-                        <IonButton type="submit" onClick={() => onSubmit(getValues())} expand='block' hidden={showIfStepIs(LASTSTEP)} disabled={disableSubmit}>Completar!</IonButton> 
+                        <IonButton onClick={handleSubmit(onSubmit)} expand='block' hidden={showIfStepIs(LASTSTEP)} disabled={disableSubmit}>Completar!</IonButton> 
                     </form>
                 </IonCol>
                 <IonCol size={"1"}>

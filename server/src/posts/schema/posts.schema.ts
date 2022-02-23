@@ -57,5 +57,6 @@ export const PostSchema = new Schema ({
             resultado: {type: String},
             publicacion: {type: String}
         }
-    }
+    },
+    fechacreacion: {type: Date}
 })

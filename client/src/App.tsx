@@ -9,7 +9,7 @@ import {
   IonTabs,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { home, mapOutline, newspaperOutline } from 'ionicons/icons';
+import { checkmarkDoneCircleOutline, documentAttachOutline, home, mapOutline } from 'ionicons/icons';
 import Map from './pages/Map';
 import Home from './pages/Home';
 import Control from './pages/Control';
@@ -36,11 +36,16 @@ import './theme/customizations.css'
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { wetlandusers } from './apiKeys';
+import Reports from './pages/Reports';
 
 const App: React.FC = () => {
   const { user, isAuthenticated } = useAuth0();
 	const useremail = user?.email;
 
+  const isAuthorized = () => {
+    if (!isAuthenticated || !useremail || !wetlandusers.includes(useremail)) return false;
+    return true;
+  }
   return (
   <IonApp>
     <IonReactRouter>
@@ -54,6 +59,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/control">
             <Control />
+          </Route>
+          <Route path="/reports">
+            <Reports />
           </Route>
           <Route exact path="/">
             <Home />
@@ -75,10 +83,17 @@ const App: React.FC = () => {
             <IonLabel>Mapa</IonLabel>
           </IonTabButton>
           {
-              !isAuthenticated || !useremail || !wetlandusers.includes(useremail)? null :
+            isAuthorized() &&
             <IonTabButton tab="Control" href="/control">
-              <IonIcon icon={newspaperOutline} />
-              <IonLabel>Gestion de publicaciones</IonLabel>
+              <IonIcon icon={checkmarkDoneCircleOutline} />
+              <IonLabel>Publicaciones</IonLabel>
+            </IonTabButton>
+          }
+          {
+            isAuthorized() &&
+            <IonTabButton tab="Reports" href="/reports">
+              <IonIcon icon={documentAttachOutline} />
+              <IonLabel>Reportes</IonLabel>
             </IonTabButton>
           }
         </IonTabBar>

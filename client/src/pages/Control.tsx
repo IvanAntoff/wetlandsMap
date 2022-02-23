@@ -1,4 +1,4 @@
-import { IonAlert, IonCol, IonContent, IonGrid, IonModal, IonPage, IonRow, IonTitle } from '@ionic/react';
+import { IonAlert, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonModal, IonPage, IonRow, IonTitle } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -8,8 +8,10 @@ import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
 import { Header } from '../components/Header';
 import { ESTADO, groupedPosts, postVM } from '../interfaces/posts.interface';
+import { refresh } from 'ionicons/icons';
 
 const Control: React.FC = () => {
+	const [reloadData, setReloadData] = useState<boolean>(true);
 	const [ pendings, setPendings ] = useState<postVM[]>([]);
 	const [ approveds, setApproveds ] = useState<postVM[]>([]);
 	const [ refuseds, setRefuseds ] = useState<postVM[]>([]);
@@ -18,22 +20,22 @@ const Control: React.FC = () => {
 	const [ showPostModal, setShowPostModal ] = useState<boolean>(false);
 	const { user, isAuthenticated, isLoading } = useAuth0();
 	const history = useHistory();
-
 	useEffect(()=>{
-		if (!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) return history.goBack();
+		if (!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) return history.push('/home');
 		const getData = () =>{
 			try{
 				axiosInstance.get(`${POSTS_URL}/posts?group=true`)
 				.then((response: { data: groupedPosts }) => {
 					if(!response || !response?.data) return;
+					setReloadData(false);
 					if(Array.isArray(response.data.aprobados)) setApproveds(response.data.aprobados);
 					if(Array.isArray(response.data.aprobados)) setPendings(response.data.pendientes);
 					if(Array.isArray(response.data.rechazados)) setRefuseds(response.data.rechazados);
 				})
 			} catch (error) {console.error(error)}
 		}
-		getData();
-	},[user, isAuthenticated, isLoading]);
+		if(reloadData) return getData();
+	},[user, isAuthenticated, isLoading, reloadData]);
 
 	const showPost = (post: postVM) => {
 		if (!post) return;
@@ -141,7 +143,7 @@ const Control: React.FC = () => {
 	return (
 		<IonPage>
             <Header login={{includeLogin: true, user: user}}/>
-			<IonContent color={'light'} fullscreen>
+			<IonContent color={'light'}>
 				<IonAlert
 					isOpen={alert.show}
 					onDidDismiss={() => closeAlert()}
@@ -153,9 +155,9 @@ const Control: React.FC = () => {
 				{	(!isAuthenticated || !user || !wetlandusers.some((item) => item === user?.email)) ?  
 					<IonTitle>Inicie sesion como administrador</IonTitle>
 					:
-					<IonGrid className={'fixHeight'}>
-						<IonRow className={'fixHeight'}>
-							<IonCol size="4" className={'fixHeight scroll'}>
+					<IonGrid className={'fullHeight'}>
+						<IonRow className={'fullHeight'}>
+							<IonCol size="4" className={'fullHeight scroll'}>
 								<h3 className={'ion-text-center'}>Pendientes</h3>
 								{
 									pendings.map((item, i) => 
@@ -170,7 +172,7 @@ const Control: React.FC = () => {
 									)
 								}
 							</IonCol>
-							<IonCol size="4" className={'fixHeight scroll'}>
+							<IonCol size="4" className={'fullHeight scroll'}>
 								<h3 className={'ion-text-center'}>Aprobados</h3>
 								{
 									approveds.map((item, i) => 
@@ -184,7 +186,7 @@ const Control: React.FC = () => {
 								)
 								}
 							</IonCol>
-							<IonCol size="4" className={'fixHeight scroll'}>
+							<IonCol size="4" className={'fullHeight scroll'}>
 								<h3 className={'ion-text-center'}>Rechazados</h3>
 								{
 									refuseds.map((item, i) => 
@@ -198,6 +200,11 @@ const Control: React.FC = () => {
 										/>
 									) 
 								}
+								<IonFab horizontal={"end"} vertical={"bottom"}>
+									<IonFabButton color={'success'} disabled={reloadData} onClick={() => setReloadData(true)}>
+										<IonIcon icon={refresh}/>
+ 									</IonFabButton>
+								</IonFab>
 							</IonCol>
 						</IonRow>
 					</IonGrid>

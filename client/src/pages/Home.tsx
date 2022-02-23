@@ -27,8 +27,8 @@ const Tab2: React.FC = () => {
                 <IonCol size={'12'} className={'ion-justify-content-evenly'}>
                     <IonSlides pager={true} options={sliderOpts}>
                     {
-                        files.map((file) => 
-                            <IonSlide className={'slider'}>
+                        files.map((file, i) => 
+                            <IonSlide className={'slider'} key={`IonSlide-${i}-name-${file}`}>
                                 <IonItem color={'primary'} lines={'none'} className={'slider-item'}>
                                     <IonImg src={`/assets/imgs/home/pictures/${file}.jpg`} key={`img-${file}`}/>
                                 </IonItem>
@@ -44,7 +44,7 @@ const Tab2: React.FC = () => {
     const queEsHumedalesDigitales = () => {
         return (
             <IonRow className={'ion-justify-content-center ion-align-items-center '}>
-                <IonCol className={'ion-nowrap ion-justify-content-center ion-align-items-center ion-margin-vertical'} size={'8'}>
+                <IonCol className={'ion-nowrap ion-justify-content-center ion-align-items-center ion-margin-vertical'}  sizeMd={"8"}sizeSm={"12"} sizeXs={"12"} >
                     <div color="light" className={'ion-nowrap ion-justify-content-evenly ion-align-items-center ion-text-center'} style={{width: '100%', display: 'flex'}}>
                         <IonThumbnail>
                             <IonImg src="/assets/imgs/home/5.png" />
@@ -85,12 +85,12 @@ const Tab2: React.FC = () => {
         }
         return (
             <IonRow className={'ion-margin-vertical'}>
-                <IonCol size={'6'}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem color={color.item} lines={'none'}>
                         <IonImg src="/assets/imgs/home/ibga-big.png" />
                     </IonItem>
                 </IonCol>
-                <IonCol size={'6'}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem color={color.item} lines={'inset'}>
                         <IonTitle color={color.text}><b>¿Quiénes Somos?</b></IonTitle>
                     </IonItem>
@@ -116,7 +116,7 @@ const Tab2: React.FC = () => {
         }
         return (
             <IonRow>
-                <IonCol className={'ion-margin-vertical'} size={'6'}>
+                <IonCol className={'ion-margin-vertical'} sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem color={color.item} lines={'inset'}>
                         <IonTitle color={color.text} ><b>Instituciones Participantes del Proyecto</b></IonTitle>
                     </IonItem>
@@ -160,7 +160,7 @@ const Tab2: React.FC = () => {
         }
         return(
             <IonRow className={'background-color-primary ion-margin-vertical'}>
-                <IonCol size={'6'}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem color={color.item} lines={'inset'}>
                         <IonTitle color={color.text}><b>¿Cómo Participar?</b></IonTitle>
                     </IonItem>
@@ -185,7 +185,7 @@ const Tab2: React.FC = () => {
         }
         return (
             <IonRow className={`ion-align-items-center ion-margin-vertical ${color.bg}`}>
-                <IonCol className={'ion-margin-vertical'}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
                     <IonItem color={color.item} lines={'inset'}>
                             <IonTitle color={color.text}><b>Agradecimientos</b></IonTitle>
                     </IonItem>
@@ -195,7 +195,7 @@ const Tab2: React.FC = () => {
                         </IonText>
                     </IonItem>
                 </IonCol>
-                <IonCol size={'4'} className={'ion-justify-content-center ion-align-items-center ion-margin-vertical'}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-justify-content-center ion-align-items-center ion-margin-vertical'}>
                     <IonItem color={color.item} lines={'none'}>
                         <IonImg src="/assets/imgs/home/logo_fbersa.png" />
                     </IonItem>
@@ -212,7 +212,7 @@ const Tab2: React.FC = () => {
         }
         return (
             <IonRow className={''}>
-                <IonCol size={'6'}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem lines={'inset'} color={color.item}>
                         <IonTitle color={color.text}><b>Contacto - Redes Sociales</b></IonTitle>
                     </IonItem>
@@ -233,7 +233,7 @@ const Tab2: React.FC = () => {
     return (
         <IonPage>
             <Header login={{includeLogin: true, user: user}}/>
-            <IonContent fullscreen color="light">
+            <IonContent color="light">
                 <IonGrid className={'ion-no-margin ion-no-padding'}>
                     { queEsHumedalesDigitales() }
                     { getImagesList() }
