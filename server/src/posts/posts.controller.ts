@@ -63,7 +63,7 @@ export class PostsController {
         }
     }
 
-    @Delete('/deletePost/:id')
+    @Post('/deletePost/:id')
     public deletePost(@Param('id') id: string): Promise<boolean> {
         try {
             return this.postsService.delete(id)

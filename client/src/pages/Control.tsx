@@ -99,11 +99,11 @@ const Control: React.FC = () => {
 	}
 
 	const removePost = async (postId: string) => {
-		try{
+		try {
 			const postIndex = refuseds.findIndex((post) => post._id === postId);
 			if (postIndex < 0) return; 
-				const res = await axiosInstance.delete(`${POSTS_URL}/posts/deletePost/${postId}`);
-				if (!res || !res.status || (res.status !== 200 && res.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
+				const res = await axiosInstance.post(`${POSTS_URL}/posts/deletePost/${postId}`);
+				if (!res || !res.status || (res.status !== 200 && res.status !== 201)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
 				const auxPosts = refuseds;
 				auxPosts.splice(postIndex,1);
 				setRefuseds([...auxPosts])
