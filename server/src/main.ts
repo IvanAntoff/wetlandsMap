@@ -15,7 +15,7 @@ console.log(`MONGO_URL: ${process.env.MONGO_URL || 'mongodb://localhost/humedale
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
-    origin: true,
+    origin: '*',
     methods: ['GET','HEAD','PUT','PATCH','POST','DELETE','OPTIONS'],
     optionsSuccessStatus: 204
   });
