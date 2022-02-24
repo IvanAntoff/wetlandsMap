@@ -1,7 +1,7 @@
 import { IonButton, IonButtons, IonCol, IonGrid, IonImg, IonItem, IonLabel, IonRow, IonText, IonThumbnail, IonTitle, IonToolbar } from "@ionic/react"
-import { categorias, imgFiles } from "../enums/data";
+import { imgFiles } from "../enums/data";
 import { CATEGORIA, postVM } from "../interfaces/posts.interface";
-import { toCapitalizeCase } from "../utils/sharedFn";
+import { booleanText, getCatergoryName, postToXLSX, toCapitalizeCase } from "../utils/sharedFn";
 
 interface PostReader {
     post: postVM | undefined,
@@ -9,18 +9,7 @@ interface PostReader {
 }
 
 export const PostReader: React.FC<PostReader> = (props: PostReader) => {
-
-    const  booleanText = (boolean: boolean | undefined) => {
-        if (typeof(boolean) !== 'boolean') return null;
-        if (boolean) return 'Presencia';
-        return 'Ausencia';
-    }
-
-    const getCatergoryName = (type: CATEGORIA) :string => {
-        let label = categorias.find((item) => item.value === type)?.name || 'Desconocido';
-        return label;
-    }
-
+    
     const getData = () => {
         if (!props.post || !props.post.datos) return null;
         if (props.post.categoria === CATEGORIA.humedal && props.post.datos?.humedal) {
@@ -271,7 +260,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                     </IonCol>
                     <IonCol size={"12"} className={'ion-padding'}>
                         <IonButtons className={'ion-justify-content-evenly'}>
-                            <IonButton color={'success'} disabled={true} fill={'outline'}>
+                            <IonButton color={'success'} onClick={() => {if (props.post) postToXLSX([props.post])}} fill={'outline'}>
                                 Descargar Excel
                             </IonButton>
                             <IonButton color={'danger'} disabled={true} fill={'outline'}>

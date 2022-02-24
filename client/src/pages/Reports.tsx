@@ -7,9 +7,10 @@ import { POSTS_URL, wetlandusers } from '../apiKeys';
 import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
 import { Header } from '../components/Header';
-import { ESTADO, groupedPosts, postVM } from '../interfaces/posts.interface';
+import { ESTADO, groupedPosts, post, postVM } from '../interfaces/posts.interface';
 import { genericFilter } from '../interfaces/interfaces';
 import { FiltersPosts, getFiltersRes } from '../components/FiltersPosts';
+import { postToXLSX } from '../utils/sharedFn';
 
 const Reports: React.FC = () => {
 	const [ posts, setPosts ] = useState<postVM[]>([]);
@@ -19,7 +20,7 @@ const Reports: React.FC = () => {
 	const [ showPostModal, setShowPostModal ] = useState<boolean>(false);
 	const { user, isAuthenticated, isLoading } = useAuth0();
 	const history = useHistory();
-	const checkedPosts = useRef<string[]>([]);
+	const checkedPosts = useRef<number[]>([]);
 	const [resetAll, setResetAll] = useState<boolean>(false);
 	const [checkAll, setCheckAll] = useState<boolean>(false);
 
@@ -65,21 +66,23 @@ const Reports: React.FC = () => {
 	}
 
 	const generateReport = async () => {
-		try{
-			if(!Array.isArray(checkedPosts?.current) || checkedPosts.current.length === 0) return showAlert('Debe seleccionar al menos una publicacion para generar reportes.', 'Error!', '');
-			const res = await axiosInstance.post(`${POSTS_URL}/posts/changeState`, checkedPosts.current);
-			if (!res || !res.status || (res.status !== 201 && res.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
-		} catch(error) {
+		if(!Array.isArray(checkedPosts?.current) || checkedPosts.current.length === 0) return showAlert('Debe seleccionar al menos una publicacion para generar reportes.', 'Error!', '');
+		try {
+			const auxPosts: post[] = [];
+			checkedPosts.current.forEach(index => {
+				if(posts[index]) auxPosts.push(posts[index]);
+			});
+			postToXLSX(auxPosts);
+		} catch (error) {
 			console.error(error);
 			return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
 		}
 	}
 
 	const generateReportComplete = async () => {
-		try{
-			const res = await axiosInstance.post(`${POSTS_URL}/posts/changeState`, []);
-			if (!res || !res.status || (res.status !== 201 && res.status !== 204)) return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
-		} catch(error) {
+		try {
+			postToXLSX(posts);
+		} catch (error) {
 			console.error(error);
 			return showAlert('No hemos logrado conectar con el servidor', 'Error al actualizar!', 'Intente en unos minutos.');
 		}
@@ -99,6 +102,14 @@ const Reports: React.FC = () => {
 
 	const closeAlert = () => {
 		return setAlert({show: false,header: '',subtitle: '',message: '',buttons: [{text: 'OK!'}]});
+	}
+
+	const storePostIndex = (id: string) => {
+		if(!id || !Array.isArray(posts)) return showAlert('Al parecer los datos no cohinciden', 'Error al seleccionar!', 'Pruebe refrescar la pagina.');
+		const postIndex = posts.findIndex((item) => item._id === id);
+		if(postIndex < 0) return showAlert('Al parecer los datos no cohinciden', 'Error al seleccionar!', 'Pruebe refrescar la pagina.');
+		if(checkedPosts.current.some((item) => item === postIndex)) return;
+		else(checkedPosts.current.push(postIndex));
 	}
 	return (
 		<IonPage>
@@ -137,10 +148,10 @@ const Reports: React.FC = () => {
 									<IonLabel className={'ion-text-center ion-margin-vertical'}>Generar reporte</IonLabel>
 								</IonItem>
 								<IonItem>
-									<IonButton onClick={generateReport} disabled expand={'block'} color={'success'} style={{width: '100%'}}>Solo seleccionados</IonButton>
+									<IonButton onClick={generateReport} expand={'block'} color={'success'} style={{width: '100%'}}>Solo seleccionados</IonButton>
 								</IonItem>
 								<IonItem>
-									<IonButton onClick={generateReportComplete} disabled expand={'block'} color={'success'} style={{width: '100%'}}>Historico</IonButton>
+									<IonButton onClick={generateReportComplete} expand={'block'} color={'success'} style={{width: '100%'}}>Historico</IonButton>
 								</IonItem>
 							</IonCol>
 							<IonCol sizeMd={"5"} sizeSm={"12"} sizeXs={"12"} className={'fixHeight scroll'}>
@@ -153,7 +164,7 @@ const Reports: React.FC = () => {
 												{label: 'Ver publicacion', onClick: () => showPost(item)},
 											]}
 											check={{
-												onCheck: (post) => console.log(post),
+												onCheck: (post) => storePostIndex(post._id),
 												setUncheck: resetAll,
 												setCheck: checkAll
 											}}

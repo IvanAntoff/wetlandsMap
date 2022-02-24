@@ -280,7 +280,17 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         return (
             <>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Tipo de origen de la amenaza/impacto ambiental:</IonLabel>
+                    <IonLabel position={'floating'}>* Tipo de amenaza:</IonLabel>
+                    <IonSelect placeholder={"Indique el tipo de la amenaza."} className={'alert-xl'} {...register("datos.amenaza.tipo")} >
+                        {
+                        props.enums.tipoamenazas.map((item, index) => {
+                            return (<IonSelectOption value={item._id} key={`IonSelectOption-${index}-origin-${item._id}`}>{item.name}</IonSelectOption>)
+                        })
+                        }
+                    </IonSelect>
+                </IonItem>
+                <IonItem hidden={showIfStepIs(4)}>
+                    <IonLabel position={'floating'}>* Tipo de origen de la amenaza/impacto ambiental:</IonLabel>
                     <IonSelect placeholder={"De conocerla, indique el origen de la amenaza."} className={'alert-xl'} {...register("datos.amenaza.origen")} >
                         {
                         props.enums.origenes.map((item, index) => {
@@ -290,7 +300,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Fuente de generación:</IonLabel>
+                    <IonLabel position={'floating'}>* Fuente de generación:</IonLabel>
                     <IonSelect placeholder={"Indique que genera la contaminacion/amenaza."} className={'alert-xl'} {...register("datos.amenaza.fuente")} >
                         {
                         props.enums.fuenteamenazas.map((item, index) => {
