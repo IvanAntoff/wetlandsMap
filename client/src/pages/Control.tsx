@@ -157,7 +157,7 @@ const Control: React.FC = () => {
 					:
 					<IonGrid className={'fullHeight'}>
 						<IonRow className={'fullHeight'}>
-							<IonCol size="4" className={'fullHeight scroll'}>
+							<IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"} className={'fullHeight scroll'}>
 								<h3 className={'ion-text-center'}>Pendientes</h3>
 								{
 									pendings.map((item, i) => 
@@ -172,7 +172,7 @@ const Control: React.FC = () => {
 									)
 								}
 							</IonCol>
-							<IonCol size="4" className={'fullHeight scroll'}>
+							<IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"} className={'fullHeight scroll'}>
 								<h3 className={'ion-text-center'}>Aprobados</h3>
 								{
 									approveds.map((item, i) => 
@@ -186,7 +186,7 @@ const Control: React.FC = () => {
 								)
 								}
 							</IonCol>
-							<IonCol size="4" className={'fullHeight scroll'}>
+							<IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"} className={'fullHeight scroll'}>
 								<h3 className={'ion-text-center'}>Rechazados</h3>
 								{
 									refuseds.map((item, i) => 
@@ -209,7 +209,7 @@ const Control: React.FC = () => {
 						</IonRow>
 					</IonGrid>
 				}
-				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()}>
+				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-70vw"}>
 					<PostReader post={selectedPost} mode={'complete'} />
 				</IonModal>
 			</IonContent>

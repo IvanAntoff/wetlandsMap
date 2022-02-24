@@ -267,7 +267,7 @@ const Map: React.FC = () => {
 						</IonCol>
 					</IonRow>
 				</IonGrid>
-				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-50vw"}>
+				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-70vw"}>
 					<PostReader post={selectedPost} mode={'complete'} />
 				</IonModal>
 				<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} onDidDismiss={() => editModeOFF()}>

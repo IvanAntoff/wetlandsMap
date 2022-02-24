@@ -127,7 +127,7 @@ const Reports: React.FC = () => {
 					<IonTitle className={'ion-text-center'}>Inicie sesion como administrador</IonTitle>
 					:
 					<IonGrid className={'fixHeight'}>
-						<IonRow className={'fixHeight'}>
+						<IonRow className={'fixHeight scroll'}>
 							<IonCol sizeMd={"5"} sizeSm={"12"} sizeXs={"12"}>
 								<h3 className='ion-text-center'>Filtros</h3>
 								<FiltersPosts active={['All']} getAppliedFilters={setAppliedFilters}/>
@@ -175,7 +175,7 @@ const Reports: React.FC = () => {
 						</IonRow>
 					</IonGrid>
 				}
-				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()}>
+				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-70vw"}>
 					<PostReader post={selectedPost} mode={'complete'} />
 				</IonModal>
 			</IonContent>
