@@ -12,12 +12,13 @@ export class PostsController {
     public async findAll(
         @Query('state') state: string, 
         @Query('group') group: boolean, 
-        @Query('normalize') normalize: boolean
+        @Query('normalize') normalize: boolean,
+        @Query('includecomments') includecomments: boolean
     ): Promise<post[] | groupedPosts> {
         try {
             let auxState = undefined;
             if (state) auxState = state.split(',')
-            const posts = await this.postsService.findAll(normalize, auxState);
+            const posts = await this.postsService.findAll(normalize, auxState, includecomments);
             if (group) {
                 const groupedPosts: groupedPosts = {
                     aprobados: posts.filter((post) => post.estado === ESTADO.aprobado),
@@ -34,9 +35,14 @@ export class PostsController {
     }
 
     @Get(':id')
-    public async findOne(@Param('id') id: string, @Query('normalize') normalize: boolean): Promise<post> {
+    public async findOne(
+        @Param('id') id: string, 
+        @Query('normalize') normalize: boolean,
+        @Query('includecomments') includecomments: boolean
+        
+    ): Promise<post> {
         try {
-            return await this.postsService.findOne(id, normalize);
+            return await this.postsService.findOne(id, normalize, includecomments);
         }
         catch (error) {
             return error

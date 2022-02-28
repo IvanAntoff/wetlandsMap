@@ -1,7 +1,7 @@
 import { BadGatewayException, BadRequestException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { filter } from 'rxjs';
+import { CommentsService } from 'src/comments/comments.service';
 import { EnumsService } from 'src/enums/enums.service';
 import { FilesService } from 'src/files/files.service';
 import { archivoVM, CATEGORIA, ESTADO, post, postVM } from 'src/interfaces/posts.interface';
@@ -11,22 +11,25 @@ export class PostsService {
     constructor(
         @InjectModel('posts') private posts: Model <post>,
         private enumsService: EnumsService,
-        private filesService: FilesService
+        private filesService: FilesService,
+        private commentsService: CommentsService
     ) {}
 
-    public normalizePosts(posts: post[]): Promise<postVM[]> {
+    public normalizePosts(posts: post[], includeComments: boolean): Promise<postVM[]> {
         return new Promise(async (resolve, reject) => {
             if (!Array.isArray(posts)) return reject(new BadRequestException('Posts not includes.'));
             const enums = await this.enumsService.enumFindAll('todos');
             if (!enums || Array.isArray(enums)) return reject(new InternalServerErrorException('Enums not founds.'));
             const normalizedPosts: postVM[] = [];
             for (let i = 0; i < posts.length; i++) {
+                const comments = includeComments ? await this.commentsService.getAllbyPosts(posts[i]._id, true) : [];
                 let post: postVM = {
                     ...posts[i],
                     departamento: enums.departamentos.find((item) => item._id.toString() === posts[i].departamento)?.name || 'Desconocido',
                     origen: enums.origenes.find((item) => item._id.toString() === posts[i].origen)?.name || 'Desconocido',
                     tipo: enums.tipohumedales.find((item) => item._id.toString() === posts[i].tipo)?.name || 'Desconocido',
                     zona: enums.zonas.find((item) => item._id.toString() === posts[i].zona)?.name || 'Desconocido',
+                    comments: comments
                 }
                 if(post.categoria === CATEGORIA.amenaza && post?.datos?.amenaza) post.datos.amenaza = {
                     ...post.datos.amenaza,
@@ -81,21 +84,21 @@ export class PostsService {
         });
     }
 
-    public async findAll(normalize: boolean = true, filterByStates: ESTADO[] = []): Promise <post[]> {
+    public async findAll(normalize: boolean = true, filterByStates: ESTADO[] = [], includeComments: boolean): Promise <post[]> {
         return new Promise(async (resolve) => {
             const filters: any = {};
             if (Array.isArray(filterByStates) && filterByStates.length > 0) filters.estado = {"$in": filterByStates}
-            const response: post[] = normalize ? await this.normalizePosts(await this.posts.find(filters).lean()) : await this.posts.find(filters).lean();
+            const response: post[] = normalize ? await this.normalizePosts(await this.posts.find(filters).lean(), includeComments) : await this.posts.find(filters).lean();
             return resolve(response ? response : []);
         })
     }
     
-    public async findOne(id: string, normalize: boolean = true): Promise<post> {
+    public async findOne(id: string, normalize: boolean = true, includeComments: boolean): Promise<post> {
         return new Promise(async (resolve, rejects) => {
             if (!id) return rejects(new BadGatewayException('id or type not include'));
             const response:post = await this.posts.findById(id);
             if (!response) return rejects(new NotFoundException('Enum not found.'));
-            return resolve(normalize ? await this.normalizePosts([response])[0] : response);
+            return resolve(normalize ? await this.normalizePosts([response], includeComments)[0] : response);
         });
     }
 

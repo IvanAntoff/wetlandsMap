@@ -1,5 +1,6 @@
 import { Amenaza } from "./amenaza.interface";
 import { Arte } from "./arte.interface";
+import { commentVM } from "./comment.interface";
 import { Humedal } from "./humedal.interface";
 import { Iniciativa } from "./iniciativa.interface";
 import { Investigacion } from "./investigacion.interface";
@@ -53,9 +54,9 @@ export type basicEnum = {
 }
 
 export interface groupedPosts {
-    aprobados: post[],
-    pendientes: post[],
-    rechazados: post[]
+    aprobados: postVM[],
+    pendientes: postVM[],
+    rechazados: postVM[]
 }
 
 export interface archivo {
@@ -73,4 +74,6 @@ export interface archivoVM {
 
 export interface postVM extends Omit<post, 'files'> {
     files: archivoVM[];
+    comments: commentVM[];
+    createdAt?: Date;
 }

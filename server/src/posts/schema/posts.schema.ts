@@ -59,4 +59,4 @@ export const PostSchema = new Schema ({
         }
     },
     fechacreacion: {type: Date}
-})
+},{timestamps: true});

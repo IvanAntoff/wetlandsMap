@@ -10,7 +10,7 @@ import { Header } from '../components/Header';
 import { ESTADO, groupedPosts, postVM } from '../interfaces/posts.interface';
 import { refresh } from 'ionicons/icons';
 
-const Control: React.FC = () => {
+const ControlPosts: React.FC = () => {
 	const [reloadData, setReloadData] = useState<boolean>(true);
 	const [ pendings, setPendings ] = useState<postVM[]>([]);
 	const [ approveds, setApproveds ] = useState<postVM[]>([]);
@@ -210,11 +210,13 @@ const Control: React.FC = () => {
 					</IonGrid>
 				}
 				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-70vw"}>
-					<PostReader post={selectedPost} mode={'complete'} />
+					{
+						selectedPost && <PostReader post={selectedPost} mode={'complete'} />
+					}
 				</IonModal>
 			</IonContent>
 		</IonPage>
 	);
 };
 
-export default Control;
+export default ControlPosts;

@@ -1,7 +1,7 @@
-import { StreamableFile } from "@nestjs/common";
-import { Readable } from "stream";
+import { Date } from "mongoose";
 import { Amenaza } from "./amenaza.interface";
 import { Arte } from "./arte.interface";
+import { comment } from "./comment.interface";
 import { Humedal } from "./humedal.interface";
 import { Iniciativa } from "./iniciativa.interface";
 import { Investigacion } from "./investigacion.interface";
@@ -63,4 +63,6 @@ export interface archivoVM {
 }
 export interface postVM extends Omit<post, 'files'> {
     files: archivoVM[];
+    comments: comment[];
+    createdAt?: Date;
 }

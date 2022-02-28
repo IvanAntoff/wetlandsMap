@@ -66,7 +66,7 @@ const PostCard: React.FC<postCard> = (props: postCard) => {
                                         color={button.color ? button.color : 'primary'} fill={'clear'} key={`PostCard-button-${index}`}
                                     >
                                         {button.label ? button.label : null}
-                                        {button.icon ? <IonIcon name={button.icon} />: null}
+                                        {button.icon ? <IonIcon icon={button.icon} />: null}
                                     </IonButton>
                                 )
                             })}

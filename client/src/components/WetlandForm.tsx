@@ -62,11 +62,11 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             axiosInstance.post(`${POSTS_URL}/posts`, {...post})
             .then((response) => {
                 stoptLoad();
-                if (response && (response.status === 200 || response.status === 204)) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
+                if (response && (response.status === 200 || response.status === 201)) showSuccess('Elemento publicado con exito! Gracias por su ayuda.')
                 setTimeout(()=> {
                     resetForm();
                     if(props.onSubmit) props.onSubmit();
-                }, 600)
+                }, 1000);
             })
             .catch((error: any) => {
                 console.error(error);
@@ -196,7 +196,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         return (
             <>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>* Actividades desarrolladas en zonas aledañas:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>* Actividades desarrolladas en zonas aledañas:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.humedal.aledaños")} >
                         {
                         props.enums.aledaños.map((item, index) => {
@@ -209,7 +209,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonText color={"primary"}><h4>Aspecto del agua</h4></IonText>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Color del agua:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Color del agua:</IonLabel>
                     <IonSelect placeholder={"Indique el color observado."} className={'alert-xl'} {...register("datos.humedal.color")} >
                         {
                         props.enums.colores.map((item, index) => {
@@ -219,7 +219,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Presencia de olor en el agua:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Presencia de olor en el agua:</IonLabel>
                     <IonSelect placeholder={"Indique si noto la presencia de olor en el agua."} className={'alert-xl'} {...register("datos.humedal.olor")} >
                         {
                         booleanEnums.map((item, index) => {
@@ -229,7 +229,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Presencia de flora:</IonLabel>
+                    <IonLabel position={'floating'} className="ion-text-wrap">Presencia de flora:</IonLabel>
                     <IonSelect placeholder={"Indique la flora observada."} multiple className={'alert-xl'} {...register("datos.humedal.flora")} >
                         {
                         props.enums.floras.map((item, index) => {
@@ -239,7 +239,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Presencia de fauna:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Presencia de fauna:</IonLabel>
                     <IonSelect placeholder={"Indique la fauna observada."} multiple className={'alert-xl'} {...register("datos.humedal.fauna")} >
                         {
                         props.enums.faunas.map((item, index) => {
@@ -249,7 +249,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Estado de márgenes de ribera:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Estado de márgenes de ribera:</IonLabel>
                     <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("datos.humedal.margen")} >
                         {
                         props.enums.margenes.map((item, index) => {
@@ -259,7 +259,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Morfología de la costa:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Morfología de la costa:</IonLabel>
                     <IonSelect placeholder={"Indique el estado observado en los margenes de ribera."} className={'alert-xl'} {...register("datos.humedal.morfologia")} >
                         {
                         props.enums.morfologias.map((item, index) => {
@@ -269,7 +269,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Historia:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Historia:</IonLabel>
                     <IonTextarea placeholder={"Relate, de conocerse, la historia del sitio."} {...register("datos.humedal.historia")} ></IonTextarea>
                 </IonItem>
             </>
@@ -280,7 +280,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         return (
             <>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>* Tipo de amenaza:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>* Tipo de amenaza:</IonLabel>
                     <IonSelect placeholder={"Indique el tipo de la amenaza."} className={'alert-xl'} {...register("datos.amenaza.tipo")} >
                         {
                         props.enums.tipoamenazas.map((item, index) => {
@@ -290,7 +290,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>* Tipo de origen de la amenaza/impacto ambiental:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>* Tipo de origen de la amenaza/impacto ambiental:</IonLabel>
                     <IonSelect placeholder={"De conocerla, indique el origen de la amenaza."} className={'alert-xl'} {...register("datos.amenaza.origen")} >
                         {
                         props.enums.origenes.map((item, index) => {
@@ -300,7 +300,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>* Fuente de generación:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>* Fuente de generación:</IonLabel>
                     <IonSelect placeholder={"Indique que genera la contaminacion/amenaza."} className={'alert-xl'} {...register("datos.amenaza.fuente")} >
                         {
                         props.enums.fuenteamenazas.map((item, index) => {
@@ -313,7 +313,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonText color={"primary"}><h4>Aspectos alterados en la calidad del agua</h4></IonText>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Olor:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Olor:</IonLabel>
                     <IonSelect placeholder={"Indique si noto presencia de olor/es."} className={'alert-xl'} {...register("datos.amenaza.olor")} >
                         {
                         booleanEnums.map((item, index) => {
@@ -323,7 +323,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Color :</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Color :</IonLabel>
                     <IonSelect placeholder={"Indique el color del agua."} className={'alert-xl'} {...register("datos.amenaza.color")} >
                         {
                         props.enums.colores.map((item, index) => {
@@ -336,7 +336,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonText color={"primary"}><h4>Presencia de elementos flotantes</h4></IonText>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Materia orgánica en la superficie:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Materia orgánica en la superficie:</IonLabel>
                     <IonSelect placeholder={"Indique si notó materia flotando."} className={'alert-xl'} {...register("datos.amenaza.materia")} >
                         {
                         booleanEnums.map((item, index) => {
@@ -346,11 +346,11 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Describa la materia flotante presenciada:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Describa la materia flotante presenciada:</IonLabel>
                     <IonTextarea placeholder={"Describa, si corresponde, lo presenciado."} {...register("datos.amenaza.materiadescripcion")} minlength={200} maxlength={1000} spellCheck={true} ></IonTextarea>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Espumas en la superficie:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Espumas en la superficie:</IonLabel>
                     <IonSelect placeholder={"Indique si notó espuma flotando."} className={'alert-xl'} {...register("datos.amenaza.espuma")} >
                         {
                         booleanEnums.map((item, index) => {
@@ -360,7 +360,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Algas en la superficie:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Algas en la superficie:</IonLabel>
                     <IonSelect placeholder={"Indique si notó algas flotando."} className={'alert-xl'} {...register("datos.amenaza.algas")} >
                         {
                         booleanEnums.map((item, index) => {
@@ -373,7 +373,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     <IonText color={"primary"}><h4>Documentación que acredite amenaza/impacto ambiental</h4></IonText>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Análisis de muestras de agua:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Análisis de muestras de agua:</IonLabel>
                     <IonSelect placeholder={"Existen análisis de muestras de agua."} className={'alert-xl'} {...register("datos.amenaza.analisis")} >
                         {
                         booleanEnums.map((item, index) => {
@@ -383,7 +383,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Tipo de análisis:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Tipo de análisis:</IonLabel>
                     <IonSelect placeholder={"Existen análisis de muestras de agua."} className={'alert-xl'} {...register("datos.amenaza.tipoanalises")} >
                         {
                         props.enums.tipoanalises.map((item, index) => {
@@ -393,7 +393,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Resultados de los estudios:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Resultados de los estudios:</IonLabel>
                     <IonSelect placeholder={"Conoce los resultados de los estudios?."} className={'alert-xl'} {...register("datos.amenaza.resultadoanalises")} >
                         {
                         props.enums.resultadoanalises.map((item, index) => {
@@ -403,7 +403,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Estudios de impacto ambiental:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Estudios de impacto ambiental:</IonLabel>
                     <IonSelect placeholder={"Existen estudios sobre el impacto ambieltal?."} className={'alert-xl'} {...register("datos.amenaza.estudioambiental")} >
                         {
                         booleanEnums.map((item, index) => {
@@ -413,7 +413,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Informe técnico ambiental:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Informe técnico ambiental:</IonLabel>
                     <IonSelect placeholder={"Existen informes técnicos ambientales?."} className={'alert-xl'} {...register("datos.amenaza.informetecnico")} >
                         {
                         booleanEnums.map((item, index) => {
@@ -423,7 +423,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 {/* <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Adjunta imágenes/videos:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Adjunta imágenes/videos:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("data.threath.documentation.images")} >
                         {
                         booleanEnumArray.map((images, index) => {
@@ -440,7 +440,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         return (
             <>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Tipo de iniciativa sustentable:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Tipo de iniciativa sustentable:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.iniciativa.tipo")} >
                         {
                         props.enums.tipoiniciativas.map((item, index) => {
@@ -450,7 +450,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 {/* <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Organizador/es de la iniciativa sustentable:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Organizador/es de la iniciativa sustentable:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.iniciativa.")} >
                         {
                         organizatorArray.map((organizator, index) => {
@@ -460,7 +460,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem> */}
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Participantes de la iniciativa sustentable:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Participantes de la iniciativa sustentable:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.iniciativa.participantes")} >
                         {
                         props.enums.participantes.map((item, index) => {
@@ -470,7 +470,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Objetivo de la iniciativa sustentable:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Objetivo de la iniciativa sustentable:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.iniciativa.objetivo")} >
                         {
                         props.enums.objetivoiniciativas.map((item, index) => {
@@ -487,7 +487,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         return (
             <>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Tipo de expresión artística:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Tipo de expresión artística:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.arte.tipo")} >
                         {
                         props.enums.tipoartes.map((item, index) => {
@@ -497,7 +497,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>¿Quiene participaron de la actividad?:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>¿Quiene participaron de la actividad?:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.arte.participantes")} >
                         {
                         props.enums.participantes.map((item, index) => {
@@ -514,7 +514,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
         return (
             <>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Instituciones participantes del proyecto de investigación:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Instituciones participantes del proyecto de investigación:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.investigacion.participantes")} >
                         {
                         props.enums.participantes.map((item, index) => {
@@ -524,7 +524,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Estado actual del proyecto de investigación:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Estado actual del proyecto de investigación:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.investigacion.estado")} >
                         {
                         props.enums.estadoinvestigaciones.map((item, index) => {
@@ -534,7 +534,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Tipo de resultados obtenidos:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Tipo de resultados obtenidos:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.investigacion.resultado")} >
                         {
                         props.enums.resultadoinvestigaciones.map((item, index) => {
@@ -544,7 +544,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                     </IonSelect>
                 </IonItem>
                 <IonItem hidden={showIfStepIs(4)}>
-                    <IonLabel position={'floating'}>Estado de publicación/comunicación de resultados obtenidos:</IonLabel>
+                    <IonLabel position={'floating'} className={"ion-text-wrap"}>Estado de publicación/comunicación de resultados obtenidos:</IonLabel>
                     <IonSelect placeholder={""} className={'alert-xl'} {...register("datos.investigacion.publicacion")} >
                         {
                         props.enums.publicaciones.map((item, index) => {
@@ -588,7 +588,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
             <IonRow className={"ion-align-items-center ion-justify-content-evenly"} style={{height: '100%'}}>
                 <IonCol size={"1"}>
                     <IonButton fill={"outline"} onClick={() => backStep()} hidden={step > FIRSTSTEP ? false : true}>
-                        <IonIcon name={"chevron-back"}/>
+                        <IonIcon icon={"chevron-back"}/>
                     </IonButton>        
                 </IonCol>
                 <IonCol size={"8"} className={"ion-nowrap nowarp"}>
@@ -647,7 +647,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                             </IonSelect>
                         </IonItem>
                         <IonItem hidden={showIfStepIs(3)}>
-                            <IonLabel position={'floating'}>Titulo:</IonLabel>
+                            <IonLabel position={'floating'} className={"ion-text-wrap"}>Titulo:</IonLabel>
                             <IonInput placeholder={"Ingrese un titulo."} {...register("titulo")} ></IonInput>
                         </IonItem>
                         <IonItem hidden={showIfStepIs(3)}>
@@ -685,7 +685,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 </IonCol>
                 <IonCol size={"1"}>
                     <IonButton fill={"outline"} onClick={() => nextStep()} hidden={step < LASTSTEP ? false : true}>
-                        <IonIcon name={"chevron-forward"}/>
+                        <IonIcon icon={"chevron-forward"}/>
                     </IonButton>
                 </IonCol>
             </IonRow>

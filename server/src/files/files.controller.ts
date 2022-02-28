@@ -46,7 +46,6 @@ export class FilesController {
             mimetype: file.mimetype
           });
         });
-        console.log(filenames)
         return(filenames);
       } catch (error) {
         return({message: 'Error al recuperar archivo', error: error});

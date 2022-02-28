@@ -9,10 +9,9 @@ import {
   IonTabs,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { checkmarkDoneCircleOutline, documentAttachOutline, home, mapOutline } from 'ionicons/icons';
+import { chatboxEllipsesOutline, checkboxOutline, documentAttachOutline, home, mapOutline } from 'ionicons/icons';
 import Map from './pages/Map';
 import Home from './pages/Home';
-import Control from './pages/Control';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -37,6 +36,8 @@ import './theme/customizations.css'
 import { useAuth0 } from "@auth0/auth0-react";
 import { wetlandusers } from './apiKeys';
 import Reports from './pages/Reports';
+import ControlPosts from './pages/ControlPosts';
+import ControlComments from './pages/ControlComments';
 
 const App: React.FC = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -58,7 +59,10 @@ const App: React.FC = () => {
             <Map />
           </Route>
           <Route path="/control">
-            <Control />
+            <ControlPosts />
+          </Route>
+          <Route path="/comments">
+            <ControlComments />
           </Route>
           <Route path="/reports">
             <Reports />
@@ -73,7 +77,7 @@ const App: React.FC = () => {
             <Home />
           </Route>
         </IonRouterOutlet>
-        <IonTabBar slot="bottom" color={'primary'}>
+        <IonTabBar slot="bottom" color={'primary'} draggable={true} style={{overflowY: 'scroll'}}>
           <IonTabButton tab="Home" href="/home">
             <IonIcon icon={home} />
             <IonLabel>Inicio</IonLabel>
@@ -85,8 +89,15 @@ const App: React.FC = () => {
           {
             isAuthorized() &&
             <IonTabButton tab="Control" href="/control">
-              <IonIcon icon={checkmarkDoneCircleOutline} />
+              <IonIcon icon={checkboxOutline} />
               <IonLabel>Publicaciones</IonLabel>
+            </IonTabButton>
+          }
+          {
+            isAuthorized() &&
+            <IonTabButton tab="Comentarios" href="/comments">
+              <IonIcon icon={chatboxEllipsesOutline} />
+              <IonLabel>Comentarios</IonLabel>
             </IonTabButton>
           }
           {

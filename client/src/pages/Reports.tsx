@@ -176,7 +176,9 @@ const Reports: React.FC = () => {
 					</IonGrid>
 				}
 				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-70vw"}>
-					<PostReader post={selectedPost} mode={'complete'} />
+					{ 
+						selectedPost && <PostReader post={selectedPost} mode={'complete'} />
+					}
 				</IonModal>
 			</IonContent>
 		</IonPage>

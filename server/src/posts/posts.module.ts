@@ -6,6 +6,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { EnumsService } from 'src/enums/enums.service';
 import { EnumSchema } from 'src/enums/schema/enums.schema';
 import { FilesService } from 'src/files/files.service';
+import { CommentsService } from 'src/comments/comments.service';
+import { CommentsSchema } from 'src/comments/schema/comments.schema';
 
 @Module({
   imports: [
@@ -32,9 +34,10 @@ import { FilesService } from 'src/files/files.service';
       {name: 'tipohumedales', schema: EnumSchema},
       {name: 'tipoiniciativas', schema: EnumSchema},
       {name: 'zonas', schema: EnumSchema},
+      {name: 'comments', schema: CommentsSchema},
     ])
   ],
-  providers: [PostsService, EnumsService, FilesService],
+  providers: [PostsService, EnumsService, FilesService, CommentsService],
   controllers: [PostsController]
 })
 export class PostsModule {}

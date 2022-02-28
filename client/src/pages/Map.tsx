@@ -11,12 +11,12 @@ import { axiosInstance } from '../axiosConf';
 import { PostReader } from '../components/PostReader';
 import { reduceText, toCapitalizeCase } from '../utils/sharedFn';
 import { Header } from '../components/Header';
-import { ESTADO, post } from '../interfaces/posts.interface';
+import { ESTADO, postVM } from '../interfaces/posts.interface';
 import { Enums } from '../interfaces/enum.interface';
 import { FiltersPosts, getFiltersRes } from '../components/FiltersPosts';
 
 const Map: React.FC = () => {
-	const [ postsData, setPostData ] = useState<post[]>([]);
+	const [ postsData, setPostData ] = useState<postVM[]>([]);
 	const [ enumsData, setEnumsData ] = useState<Enums>();
 	const [ mapCenter, setMapCenter ] = useState<{ latitude: number, longitude: number }>( { latitude: -32.4790999, longitude: -58.2339789 } )
 	const [ markers, setMarkers ] = useState<marker[]>([]);
@@ -29,7 +29,7 @@ const Map: React.FC = () => {
 	const [ loading, setLoading ] = useState<boolean>(false);
 	const [ infoMarkerIndex, setInfoMarkerIndex ] = useState<number>(-1);
 	const [ appliedFilters, setAppliedFilters ]	= useState<genericFilter[]>([]);
-	const [ selectedPost, setSelectedPost ] = useState<post | undefined>(undefined);
+	const [ selectedPost, setSelectedPost ] = useState<postVM | undefined>(undefined);
 	const [ showPostModal, setShowPostModal ] = useState<boolean>(false);
 	const editModeActive = useRef<boolean>(false);
 	const { user, isAuthenticated } = useAuth0();
@@ -40,7 +40,7 @@ const Map: React.FC = () => {
 			try {
 				const enums = await axiosInstance.get(`${POSTS_URL}/enums`);
 				if (enums && enums.data && !enumsData) setEnumsData(enums.data);
-				const response = await axiosInstance.get(`${POSTS_URL}/posts?state=${ESTADO.aprobado}`);
+				const response = await axiosInstance.get(`${POSTS_URL}/posts?state=${ESTADO.aprobado}&normalize=true&includecomments=true`);
 				if (!Array.isArray(response?.data)) return;
 				const auxMarkers: marker[] = [];
 				const posts = response.data;
@@ -72,7 +72,7 @@ const Map: React.FC = () => {
 	useEffect(() => {
 		const getUpdateMarkers = () => {
 			const markers: marker[]= [];
-			const posts: post[] = getFiltersRes(postsData, appliedFilters);
+			const posts: postVM[] = getFiltersRes(postsData, appliedFilters);
 			posts.forEach(post => {				
 				if (post.estado === ESTADO.aprobado) markers.push({
 					metadata: {
@@ -91,7 +91,7 @@ const Map: React.FC = () => {
 		getUpdateMarkers();
 	},[appliedFilters]);
 
-	const showPost = (post: post) => {
+	const showPost = (post: postVM) => {
 		if (!post) return;
 		setSelectedPost(post);
 		setShowPostModal(true);
@@ -142,6 +142,12 @@ const Map: React.FC = () => {
 		editModeOFF();
 		setOnClickPosition(location);
 		setShowFormModal(true);
+	}
+
+	const resetLocation = () => {
+		editModeOFF();
+		setOnClickPosition(undefined);
+		setShowFormModal(false);
 	}
 
 	const switchFabsVisibility = () => {
@@ -262,18 +268,20 @@ const Map: React.FC = () => {
 							/>
 							<IonFab horizontal={"end"} vertical={"bottom"}>
 								<IonFabButton color={"success"} onClick={() => editModeON()} hidden={!showFab.addFab} title={'Publicar nuevo punto!'}><IonIcon icon={add}></IonIcon></IonFabButton>
-								<IonFabButton color={"warning"} onClick={() => editModeOFF()} hidden={!showFab.cancelFab} title={'Cancelar carga'}><IonIcon icon={arrowUndoCircleOutline}></IonIcon></IonFabButton>
+								<IonFabButton color={"warning"} onClick={() => resetLocation()} hidden={!showFab.cancelFab} title={'Cancelar carga'}><IonIcon icon={arrowUndoCircleOutline}></IonIcon></IonFabButton>
 							</IonFab>
 						</IonCol>
 					</IonRow>
 				</IonGrid>
-				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true} onDidDismiss={() => closePost()} cssClass={"modal-width-70vw"}>
-					<PostReader post={selectedPost} mode={'complete'} />
+				<IonModal isOpen={showPostModal} showBackdrop={true} keyboardClose={true}  onDidDismiss={() => closePost()} cssClass={"modal-width-70vw"}>
+					{
+						selectedPost && <PostReader post={selectedPost} mode={'complete'} />
+					}
 				</IonModal>
-				<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} onDidDismiss={() => editModeOFF()}>
+				<IonModal isOpen={showFormModal} showBackdrop={true} cssClass={"postModal"} onWillDismiss={() => resetLocation()} onDidDismiss={() => resetLocation()}>
 					{
 						enumsData ? 
-						<WetlandForm location={onClickPosition ? onClickPosition : { latitude: 0, longitude: 0 }} enums={enumsData} />
+						<WetlandForm location={onClickPosition ? onClickPosition : { latitude: 0, longitude: 0 }} enums={enumsData} onSubmit={() => resetLocation()}/>
 						:
 						<h1>Cargando...</h1>
 					}

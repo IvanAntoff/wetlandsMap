@@ -72,10 +72,10 @@ export const FiltersPosts: React.FC<FiltersPostsProps> = (props: FiltersPostsPro
     )
 }
 
-export const FilterPostByCategory = (posts: post[], values: string | string[]): postVM[] => {
+export const FilterPostByCategory = (posts: postVM[], values: string | string[]): postVM[] => {
     if(posts.length === 0) return [];
     if(typeof(values) === 'string') values = values.split(',');
-    const resp: post[] = [];
+    const resp: postVM[] = [];
     for (let i = 0; i < posts.length; i++) {
         const post = posts[i];
         if (values.includes(post.categoria)) resp.push(post); 
@@ -83,10 +83,10 @@ export const FilterPostByCategory = (posts: post[], values: string | string[]): 
     return resp;
 }
 
-export const FilterPostByKeyword = (posts: post[], values: string | string[]): postVM[] => {
+export const FilterPostByKeyword = (posts: postVM[], values: string | string[]): postVM[] => {
     if(posts.length === 0) return [];
     if(typeof(values) === 'string') values = values.split(',');
-    const resp: post[] = [];
+    const resp: postVM[] = [];
     for (let i = 0; i < posts.length; i++) {
         const post = posts[i];
         for (let j = 0; j < post.keyword.length; j++) {
@@ -99,10 +99,10 @@ export const FilterPostByKeyword = (posts: post[], values: string | string[]): p
     return resp;
 }
 
-export const FilterPostByDate = (posts: post[], values: string | string[]): postVM[] => {
+export const FilterPostByDate = (posts: postVM[], values: string | string[]): postVM[] => {
     if(posts.length === 0) return [];
     if(typeof(values) === 'string') values = values.split(',');
-    const resp: post[] = [];
+    const resp: postVM[] = [];
     for (let i = 0; i < posts.length; i++) {
         const post = posts[i];
         for (let j = 0; j < values.length; j++) {
@@ -115,7 +115,7 @@ export const FilterPostByDate = (posts: post[], values: string | string[]): post
     return resp;
 }
 
-export const getFiltersRes = (posts: post[], filters: genericFilter[]) => {
+export const getFiltersRes = (posts: postVM[], filters: genericFilter[]) => {
     if(posts.length === 0) return [];
     if(filters.length === 0) return posts;
     for (let i = 0; i < filters.length; i++) {
