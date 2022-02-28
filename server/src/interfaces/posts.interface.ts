@@ -1,4 +1,3 @@
-import { Date } from "mongoose";
 import { Amenaza } from "./amenaza.interface";
 import { Arte } from "./arte.interface";
 import { comment } from "./comment.interface";

@@ -50,7 +50,7 @@ const App: React.FC = () => {
   return (
   <IonApp>
     <IonReactRouter>
-      <IonTabs>
+      <IonTabs >
         <IonRouterOutlet>
           <Route exact path="/home">
             <Home />
@@ -77,7 +77,7 @@ const App: React.FC = () => {
             <Home />
           </Route>
         </IonRouterOutlet>
-        <IonTabBar slot="bottom" color={'primary'} draggable={true} style={{overflowY: 'scroll'}}>
+        <IonTabBar slot="bottom" color={'primary'} style={{overflowX: 'auto'}}>
           <IonTabButton tab="Home" href="/home">
             <IonIcon icon={home} />
             <IonLabel>Inicio</IonLabel>
