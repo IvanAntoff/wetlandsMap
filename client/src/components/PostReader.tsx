@@ -232,7 +232,6 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
     } 
 
     const getComments = () => {
-        if(!Array.isArray(props.post.comments) || props.post.comments.length < 1) return;
         return (
             <IonRow className={'ion-margin-vertical'}>
                 <IonCol size={"12"}>
@@ -245,18 +244,21 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                         <IonButton color={"primary"} disabled={!enableCommentButton} onClick={sendComment}>Enviar</IonButton>
                     </IonCol>
                 }
-                <IonCol size={"12"}>
-                    {
-                        !seeComments ? 
-                        <IonItem button detail onClick={() => setSeeComments(true)}>
-                            <IonLabel  className="ion-text-wrap">Ver comentarios</IonLabel>
-                        </IonItem>
-                        : 
-                        props.post.comments.map((item, i) => 
-                            <CommentCard comment={item} key={`comment-${i}-auth-${item.author}}`}/>
-                        )
-                    }
-                </IonCol>
+                {
+                    (!Array.isArray(props.post.comments) || props.post.comments.length < 1) &&
+                    <IonCol size={"12"}>
+                        {
+                            !seeComments ? 
+                            <IonItem button detail onClick={() => setSeeComments(true)}>
+                                <IonLabel  className="ion-text-wrap">Ver comentarios</IonLabel>
+                            </IonItem>
+                            : 
+                            props.post.comments.map((item, i) => 
+                                <CommentCard comment={item} key={`comment-${i}-auth-${item.author}}`}/>
+                            )
+                        }
+                    </IonCol>
+                }
             </IonRow>
         )
     };
