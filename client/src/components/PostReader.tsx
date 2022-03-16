@@ -1,11 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { IonButton, IonButtons, IonCol, IonGrid, IonImg, IonItem, IonLabel, IonRow, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react"
+import { IonButton, IonButtons, IonCol, IonGrid, IonIcon, IonImg, IonItem, IonLabel, IonRow, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react"
+import { logoFacebook, logoTwitter, logoWhatsapp, mailOpen } from "ionicons/icons";
 import { useRef, useState } from "react";
 import { POSTS_URL } from "../apiKeys";
 import { axiosInstance } from "../axiosConf";
 import { imgFiles } from "../enums/data";
 import { CATEGORIA, postVM } from "../interfaces/posts.interface";
-import { booleanText, getCatergoryName, postToXLSX, toCapitalizeCase } from "../utils/sharedFn";
+import { booleanText, getCatergoryName, postToXLSX, reduceText, toCapitalizeCase } from "../utils/sharedFn";
 import CommentCard from "./CommentCard";
 
 interface PostReader {
@@ -320,6 +321,31 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                     getFiles()
                     :null
                 }
+                <IonRow className={'ion-margin-vertical'}>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Compartir</b></h2></IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"} className={'ion-padding'}>
+                        <IonButtons className={'ion-justify-content-evenly'}>
+                            <IonButton color={"primary"} fill={"outline"}  href={`https://facebook.com/sharer/sharer.php?u=${window.location.origin}/mapa/${props.post._id}`}  target="_blank" rel="noopener">
+                                Facebook&nbsp;
+                                <IonIcon icon={logoFacebook} ></IonIcon>
+                            </IonButton>
+                            <IonButton color={"secondary"} fill={"outline"}  href={`https://twitter.com/intent/tweet/?text=Publicacion:%20${reduceText(props.post.titulo, 100)}%20en%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                                Twitter&nbsp;
+                                <IonIcon icon={logoTwitter} ></IonIcon>
+                            </IonButton>
+                            <IonButton color={"success"} fill={"outline"}  href={`https://wa.me/?text=Publicacion:%20${reduceText(props.post.titulo, 100)}%20Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                                Whatsapp&nbsp;
+                                <IonIcon icon={logoWhatsapp} ></IonIcon>
+                            </IonButton>
+                            <IonButton color={"medium"} fill={"outline"}  href={`mailto:?subject=Publicacion:%20${reduceText(props.post.titulo, 100)}&body=Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                                Mail&nbsp;
+                                <IonIcon icon={mailOpen} ></IonIcon>
+                            </IonButton>
+                        </IonButtons>
+                    </IonCol>
+                </IonRow>
                 <IonRow className={'ion-margin-vertical'}>
                     <IonCol size={"12"}>
                         <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Opciones</b></h2></IonLabel></IonItem>

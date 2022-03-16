@@ -55,6 +55,11 @@ const App: React.FC = () => {
           <Route exact path="/home">
             <Home />
           </Route>
+          <Route exact path="/mapa/:postid"
+            render={(props) => {
+              return props.match.params.postid ? <Map postid={props.match.params.postid} /> : <Map/>;
+            }}
+          />
           <Route exact path="/mapa">
             <Map />
           </Route>

@@ -15,7 +15,11 @@ import { ESTADO, postVM } from '../interfaces/posts.interface';
 import { Enums } from '../interfaces/enum.interface';
 import { FiltersPosts, getFiltersRes } from '../components/FiltersPosts';
 
-const Map: React.FC = () => {
+interface mapProps {
+	postid?: string
+}
+
+const Map: React.FC<mapProps>= (props: mapProps) => {
 	const [ postsData, setPostData ] = useState<postVM[]>([]);
 	const [ enumsData, setEnumsData ] = useState<Enums>();
 	const [ mapCenter, setMapCenter ] = useState<{ latitude: number, longitude: number }>( { latitude: -32.4790999, longitude: -58.2339789 } )
@@ -49,7 +53,6 @@ const Map: React.FC = () => {
 						metadata: {
 							title: toCapitalizeCase(reduceText(post.titulo)),
 							description: toCapitalizeCase(reduceText(post?.descripcion)),
-							visible: false,
 							actions: [
 								{label: 'Ver publicacion', eventHandler: () => showPost(post)},
 							]
@@ -66,7 +69,13 @@ const Map: React.FC = () => {
 				stopLoading();
 			}
 		}
-		getData();
+		getData()
+		.then(() => {
+			if (!props.postid) return;
+			const post = postsData.find((post) => post._id === props.postid)
+			if (!post) return;
+			showPost(post);
+		})
 	},[postsData.length]);
 
 	useEffect(() => {
