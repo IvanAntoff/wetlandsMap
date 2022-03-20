@@ -4,5 +4,9 @@
 }
 {
     "_id" : ObjectId("61d17d18f079daaf42059b10"),
-    "name" : "Antrópica"
+    "name" : "Artificial"
+}
+{
+    "_id" : ObjectId("6237b3ff8cb2d05c7dbb8238"),
+    "name" : "Desconocido"
 }

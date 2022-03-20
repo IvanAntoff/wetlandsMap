@@ -26,15 +26,15 @@ const Tab2: React.FC = () => {
             <IonRow className={'background-color-primary ion-padding-vertical'}>
                 <IonCol size={'12'} className={'ion-justify-content-evenly'}>
                     <IonSlides pager={true} options={sliderOpts}>
-                    {
-                        files.map((file, i) => 
-                            <IonSlide className={'slider'} key={`IonSlide-${i}-name-${file}`}>
-                                <IonItem color={'primary'} lines={'none'} className={'slider-item'}>
-                                    <IonImg src={`/assets/imgs/home/pictures/${file}.jpg`} key={`img-${file}`}/>
-                                </IonItem>
-                            </IonSlide>
-                        )
-                    }
+                        {
+                            files.map((file, i) =>
+                                <IonSlide className={'slider'} key={`IonSlide-${i}-name-${file}`}>
+                                    <IonItem color={'primary'} lines={'none'} className={'slider-item'}>
+                                        <IonImg src={`/assets/imgs/home/pictures/${file}.jpg`} key={`img-${file}`} />
+                                    </IonItem>
+                                </IonSlide>
+                            )
+                        }
                     </IonSlides>
                 </IonCol>
             </IonRow>
@@ -44,8 +44,8 @@ const Tab2: React.FC = () => {
     const queEsHumedalesDigitales = () => {
         return (
             <IonRow className={'ion-justify-content-center ion-align-items-center '}>
-                <IonCol className={'ion-nowrap ion-justify-content-center ion-align-items-center ion-margin-vertical'}  sizeMd={"8"}sizeSm={"12"} sizeXs={"12"} >
-                    <div color="light" className={'ion-nowrap ion-justify-content-evenly ion-align-items-center ion-text-center'} style={{width: '100%', display: 'flex'}}>
+                <IonCol className={'ion-nowrap ion-justify-content-center ion-align-items-center ion-margin-vertical'} sizeMd={"8"} sizeSm={"12"} sizeXs={"12"} >
+                    <div color="light" className={'ion-nowrap ion-justify-content-evenly ion-align-items-center ion-text-center'} style={{ width: '100%', display: 'flex' }}>
                         <IonThumbnail>
                             <IonImg src="/assets/imgs/home/5.png" />
                         </IonThumbnail>
@@ -56,7 +56,7 @@ const Tab2: React.FC = () => {
                             <h1>¿Qué es Humedales Digitales?</h1>
                         </IonText>
                         <IonThumbnail>
-                            <IonImg src="/assets/imgs/home/4.png"/>
+                            <IonImg src="/assets/imgs/home/4.png" />
                         </IonThumbnail>
                         <IonThumbnail>
                             <IonImg src="/assets/imgs/home/1.png" />
@@ -64,10 +64,11 @@ const Tab2: React.FC = () => {
                     </div>
                     <IonItem color="light" lines={'none'} className={'ion-margin-horizontal'}>
                         <IonText color="primary">
-                            <h6>Humedales Digitales es un proyecto que busca sistematizar información sobre los humedales de la cuenca del río Gualeguaychú (Entre Ríos, Argentina) a través de un sitio digital interactivo.
-                            Este sitio web, invita a ciudadanos/as, académicos/as y tomadores de decisiones, a participar incorporando información socioambiental de la cuenca, en un mapa colaborativo.
-                            Esta iniciativa se fundamenta en las metodologías de la participación ciudadana y la democratización de la ciencia, creando herramientas que permitan apoyar y fortalecer la participación de las comunidades locales y el involucramiento de los diferentes actores, propiciando el diálogo de saberes y la participación activa que hacen al conocimiento y a la gestión sustentable de nuestros valiosos ecosistemas.
-                            El proyecto es una iniciativa del Laboratorio de Indicadores Biológicos y Gestión Ambiental de Calidad de Agua de la FCyT-UADER (Laboratorio IBGA), con sede en Gualeguaychú.
+                            <h6>
+                                Humedales Digitales es un proyecto que busca sistematizar información sobre los humedales de la cuenca del río Gualeguaychú (Entre Ríos, Argentina) a través de un sitio digital interactivo.
+                                Este sitio web, invita a ciudadanos/as, académicos/as y tomadores de decisiones, a participar incorporando información socioambiental de la cuenca, en un mapa colaborativo.
+                                Esta iniciativa se fundamenta en las metodologías de la participación ciudadana y la democratización de la ciencia, creando herramientas que permitan apoyar y fortalecer la participación de las comunidades locales y el involucramiento de los diferentes actores, propiciando el diálogo de saberes y la participación activa que hacen al conocimiento y a la gestión sustentable de nuestros valiosos ecosistemas.
+                                El proyecto es una iniciativa del Laboratorio de Indicadores Biológicos y Gestión Ambiental de Calidad de Agua de la FCyT-UADER (Laboratorio IBGA), con sede en Gualeguaychú.
                             </h6>
                         </IonText>
                     </IonItem>
@@ -76,15 +77,15 @@ const Tab2: React.FC = () => {
         )
     }
 
-    
+
     const quienesSomos = (backgroundColor: 'none' | 'primary') => {
         const color = {
             item: backgroundColor === 'primary' ? 'primary' : 'transparent',
             text: backgroundColor === 'primary' ? 'light' : 'primary',
-            bg:backgroundColor === 'primary' ? 'background-color-primary' : null
+            bg: backgroundColor === 'primary' ? 'background-color-primary' : null
         }
         return (
-            <IonRow className={'ion-margin-vertical'}>
+            <IonRow className={`${color.bg} ion-margin-vertical`}>
                 <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem color={color.item} lines={'none'}>
                         <IonImg src="/assets/imgs/home/ibga-big.png" />
@@ -97,7 +98,7 @@ const Tab2: React.FC = () => {
                     <IonItem color={color.item} lines={'none'} className={'ion-margin-horizontal'}>
                         <IonText color={color.text}>
                             <h6>
-                                El Laboratorio de Indicadores Biológicos y Gestión Ambiental de Calidad de Agua (IBGA), con sede en la ciudad de Gualeguaychú, fue creado mediante la resolución 0248/15 del Consejo Directivo de la Facultad de Ciencia y Tecnología de la Universidad Autónoma de Entre Ríos. Actualmente lo dirige la Lic. Irene Aguer.
+                                El Laboratorio de Indicadores Biológicos y Gestión Ambiental de Calidad de Agua (IBGA), con sede en la ciudad de Gualeguaychú, fue creado mediante la resolución 0248/15 del Consejo Directivo de la Facultad de Ciencia y Tecnología de la Universidad Autónoma de Entre Ríos. 
                             </h6>
                             <h6>
                                 Este espacio está destinado a la investigación, la docencia y la extensión. Surgió de la necesidad de evaluar el estado de conservación regional de los cuerpos de agua superficiales de la provincia de Entre Ríos, tanto para la preservación de su integridad y biodiversidad, como para sus potenciales usos y la gestión ambiental.
@@ -108,14 +109,15 @@ const Tab2: React.FC = () => {
             </IonRow>
         )
     }
+    
     const instituciones = (backgroundColor: 'none' | 'primary') => {
         const color = {
             item: backgroundColor === 'primary' ? 'primary' : 'transparent',
             text: backgroundColor === 'primary' ? 'light' : 'primary',
-            bg:backgroundColor === 'primary' ? 'background-color-primary' : null
+            bg: backgroundColor === 'primary' ? 'background-color-primary' : null
         }
         return (
-            <IonRow>
+            <IonRow className={`${color.bg} ion-margin-vertical`}>
                 <IonCol className={'ion-margin-vertical'} sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem color={color.item} lines={'inset'}>
                         <IonTitle color={color.text} ><b>Instituciones Participantes del Proyecto</b></IonTitle>
@@ -129,7 +131,7 @@ const Tab2: React.FC = () => {
                                 Licenciatura en Sistemas de la Información. Facultad de Ciencia y Tecnología, Sede Concepción del Uruguay. Universidad Autónoma de Entre Ríos.
                             </h6>
                             <h6>
-                                Profesorado de Química. Cátedras Química Biológica y Química Industrial. Instituto de formación docente continua “María Inés Elizalde”- IES. 
+                                Profesorado de Química. Cátedras Química Biológica y Química Industrial. Instituto de formación docente continua “María Inés Elizalde”- IES.
                             </h6>
                             <h6>
                                 Fundación Banco de Entre Ríos.
@@ -138,15 +140,61 @@ const Tab2: React.FC = () => {
                     </IonItem>
                 </IonCol>
                 <IonCol className={'ion-justify-content-center ion-align-items-center ion-margin-vertical'}>
-                    <IonItem color={'transparent'} lines={'none'} >
+                    <IonItem color={color.item} lines={'none'} >
                         <IonImg src="/assets/imgs/home/logo_fcyt.png" />
                     </IonItem>
-                    <IonItem color={'transparent'} lines={'none'} >
+                    <IonItem color={color.item} lines={'none'} >
                         <IonImg src="/assets/imgs/home/ibga_y_ifdc.png" />
                     </IonItem>
-                    <IonItem color={'transparent'} lines={'none'} >
-                        <IonImg src="/assets/imgs/home/logo_fbersa.png"/>
+                    <IonItem color={color.item} lines={'none'} >
+                        <IonImg src="/assets/imgs/home/logo_fbersa.png" />
                     </IonItem>
+                </IonCol>
+            </IonRow>
+        )
+    }
+
+    const conoceMas = (backgroundColor: 'none' | 'primary') => {
+        const color = {
+            item: backgroundColor === 'primary' ? 'primary' : 'transparent',
+            text: backgroundColor === 'primary' ? 'light' : 'primary',
+            bg: backgroundColor === 'primary' ? 'background-color-primary' : null
+        }
+        const slideOpts = {
+            initialSlide: 0,
+            autoplay: {
+                delay: 3500,
+            },
+            loop: true,
+            spaceBetween: 0,
+            speed: 30,
+            threshold: 0,
+            shortSwipes: true
+
+        }
+        return (
+            <IonRow className={`${color.bg} ion-margin-vertical ion-justify-content-center ion-text-center`}>
+                <IonCol sizeMd={"8"} sizeSm={"12"} sizeXs={"12"}>
+                    <IonItem color={color.item} lines={'inset'} className={'ion-text-center'}>
+                        <IonTitle color={color.text}><b>Conoce más sobre el mapa digital interactivo:</b></IonTitle>
+                    </IonItem>
+                    <IonSlides pager={true} options={slideOpts}>
+                        <IonSlide>
+                            <IonItem color={color.item} lines={'none'} className={'ion-margin-horizontal'}>
+                                <IonImg src={"/assets/imgs/home/conocemas/1.jpg"} />
+                            </IonItem>
+                        </IonSlide>
+                        <IonSlide>
+                            <IonItem color={color.item} lines={'none'} className={'ion-margin-horizontal'}>
+                                <IonImg src={"/assets/imgs/home/conocemas/2.jpg"} />
+                            </IonItem>
+                        </IonSlide>
+                        <IonSlide>
+                            <IonItem color={color.item} lines={'none'} className={'ion-margin-horizontal'}>
+                                <IonImg src={"/assets/imgs/home/conocemas/3.jpg"} />
+                            </IonItem>
+                        </IonSlide>
+                    </IonSlides>
                 </IonCol>
             </IonRow>
         )
@@ -156,10 +204,10 @@ const Tab2: React.FC = () => {
         const color = {
             item: backgroundColor === 'primary' ? 'primary' : 'transparent',
             text: backgroundColor === 'primary' ? 'light' : 'primary',
-            bg:backgroundColor === 'primary' ? 'background-color-primary' : null
+            bg: backgroundColor === 'primary' ? 'background-color-primary' : null
         }
-        return(
-            <IonRow className={'background-color-primary ion-margin-vertical'}>
+        return (
+            <IonRow className={`${color.bg} ion-margin-vertical`} >
                 <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem color={color.item} lines={'inset'}>
                         <IonTitle color={color.text}><b>¿Cómo Participar?</b></IonTitle>
@@ -170,6 +218,16 @@ const Tab2: React.FC = () => {
                             <h6><b>Paso 2: </b>Presiona el boton "+" ubicado en la esquina inferior derecha de la pantalla.</h6>
                             <h6><b>Paso 3: </b>Selecciona el sitio a cargar en el mapa.</h6>
                             <h6><b>Paso 4: </b>Si es el indicado, selecciona la opcion confirmar y completa los datos</h6>
+                            <h6><b>Para mayor información sobre cómo utilizar este mapa digital interactivo, te recomendamos que consultes:</b></h6>
+                            <ul>
+                                <li>
+                                    <b><a href="https://drive.google.com/drive/folders/1IWxJIhpnZBWw_wwFQbgSmzlUUcnFQHd3?usp=sharing">Manual de uso.</a></b>
+                                </li>
+                                <br />  
+                                <li>
+                                    <b><a href="https://drive.google.com/drive/folders/1IWxJIhpnZBWw_wwFQbgSmzlUUcnFQHd3?usp=sharing">Video tutorial.</a></b>
+                                </li>
+                            </ul>
                         </IonText>
                     </IonItem>
                 </IonCol>
@@ -181,13 +239,13 @@ const Tab2: React.FC = () => {
         const color = {
             item: backgroundColor === 'primary' ? 'primary' : 'transparent',
             text: backgroundColor === 'primary' ? 'light' : 'primary',
-            bg:backgroundColor === 'primary' ? 'background-color-primary' : null
+            bg: backgroundColor === 'primary' ? 'background-color-primary' : null
         }
         return (
             <IonRow className={`ion-align-items-center ion-margin-vertical ${color.bg}`}>
                 <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
                     <IonItem color={color.item} lines={'inset'}>
-                            <IonTitle color={color.text}><b>Agradecimientos</b></IonTitle>
+                        <IonTitle color={color.text}><b>Agradecimientos</b></IonTitle>
                     </IonItem>
                     <IonItem color={color.item} className={'ion-margin-horizontal'} lines={'none'}>
                         <IonText color={color.text}>
@@ -208,10 +266,10 @@ const Tab2: React.FC = () => {
         const color = {
             item: backgroundColor === 'primary' ? 'primary' : 'transparent',
             text: backgroundColor === 'primary' ? 'light' : 'primary',
-            bg:backgroundColor === 'primary' ? 'background-color-primary' : null
+            bg: backgroundColor === 'primary' ? 'background-color-primary' : null
         }
         return (
-            <IonRow className={''}>
+            <IonRow className={`${color.bg} ion-margin-vertical`} >
                 <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem lines={'inset'} color={color.item}>
                         <IonTitle color={color.text}><b>Contacto - Redes Sociales</b></IonTitle>
@@ -232,16 +290,17 @@ const Tab2: React.FC = () => {
     }
     return (
         <IonPage>
-            <Header login={{includeLogin: true, user: user}}/>
+            <Header login={{ includeLogin: true, user: user }} />
             <IonContent color="light">
                 <IonGrid className={'ion-no-margin ion-no-padding'}>
-                    { queEsHumedalesDigitales() }
-                    { getImagesList() }
-                    { quienesSomos('none') }
-                    { comoParticipar('primary') }
-                    { instituciones('none') }
-                    { agradecimientos('primary') }
-                    { socialMedia('none') }
+                    {queEsHumedalesDigitales()}
+                    {getImagesList()}
+                    {quienesSomos('none')}
+                    {conoceMas('primary')}
+                    {comoParticipar('none')}
+                    {instituciones('primary')}
+                    {agradecimientos('none')}
+                    {socialMedia('primary')}
                 </IonGrid>
             </IonContent>
         </IonPage>

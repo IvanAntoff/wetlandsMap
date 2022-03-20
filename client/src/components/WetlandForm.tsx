@@ -186,7 +186,7 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                 title = `Paso ${step}: Datos adicionales.`
             break;
             case LASTSTEP:
-                title = `¡Ultimo paso!`
+                title = `¡Último paso!`
             break;
         }
         return title;
@@ -671,10 +671,10 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                             </div>
                         </IonItem>
                         { getOptionesByType() }
-                        <IonText className={"ion-text-center"} hidden={showIfStepIs(LASTSTEP)}><h3>Esta a punto de completar la publicacion</h3></IonText>
+                        <IonText className={"ion-text-center"} hidden={showIfStepIs(LASTSTEP)}><h3>Esta a punto de completar la publicación</h3></IonText>
                         <IonItem  className={"ion-margin"} hidden={showIfStepIs(LASTSTEP)} lines={"none"}>
                             <IonText hidden={showIfStepIs(LASTSTEP)}>
-                                <h5>Aun esta a tiempo de realizar las modificaciones que usted crea necesarias.</h5><br/>
+                                <h5>Aún esta a tiempo de realizar las modificaciones que usted crea necesarias.</h5><br/>
                                 <h5>Una vez completada la publicación, nuestro equipo verificará el contenido de la misma. 
                                     Si la revisión es finalizada de manera exitosa su publicación será añadida al mapa. 
                                     Ante inconvenientes o consultas, comunicarse al correo-e <a href={"mailto:fcyt_laboratorioibga@uader.edu.ar"} target={"_blank"}>fcyt_laboratorioibga@uader.edu.ar</a></h5><br/>

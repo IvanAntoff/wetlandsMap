@@ -6,7 +6,7 @@ import { POSTS_URL } from "../apiKeys";
 import { axiosInstance } from "../axiosConf";
 import { imgFiles } from "../enums/data";
 import { CATEGORIA, postVM } from "../interfaces/posts.interface";
-import { booleanText, getCatergoryName, postToXLSX, reduceText, toCapitalizeCase } from "../utils/sharedFn";
+import { booleanText, dateToStr, getCatergoryName, postToXLSX, reduceText, toCapitalizeCase } from "../utils/sharedFn";
 import CommentCard from "./CommentCard";
 
 interface PostReader {
@@ -61,10 +61,10 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><h2><b>Aspecto del agua</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Presencia de flora: </b>{data?.flora || 'Desconocida'}</IonLabel></IonItem>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Presencia de flora: </b>{data?.flora?.map(item => `${item} `) || 'Desconocida'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Presencia de fauna: </b>{data?.fauna || 'Desconocida'}</IonLabel></IonItem>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Presencia de fauna: </b>{data?.fauna?.map(item => `${item} `) || 'Desconocida'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Color: </b>{data?.color || 'Desconocido'}</IonLabel></IonItem>
@@ -238,16 +238,22 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 <IonCol size={"12"}>
                     <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Comentarios</b></h2></IonLabel></IonItem>
                 </IonCol>
-                {
-                    isAuthenticated && user?.email &&
-                    <IonCol size={"12"}>
-                        <IonTextarea placeholder={"Deje su comentario"} onIonChange={(e) => setComment(e.detail.value ||    '')}/>
-                        <IonButton color={"primary"} disabled={!enableCommentButton} onClick={sendComment}>Enviar</IonButton>
+                    <IonCol size={"12"} className={'ion-margin-vertical'}>
+                        {
+                            isAuthenticated && user?.email ?
+                            <>
+                                <IonTextarea placeholder={"Deje su comentario"} onIonChange={(e) => setComment(e.detail.value ||    '')}/>
+                                <IonButton color={"primary"} disabled={!enableCommentButton} onClick={sendComment}>Enviar</IonButton>
+                            </>
+                            :
+                            <IonItem>
+                                <IonLabel color={"warning"} className="ion-text-center">Debe iniciar sesion para dejar comentarios.</IonLabel>
+                            </IonItem>
+                        }
                     </IonCol>
-                }
                 {
-                    (!Array.isArray(props.post.comments) || props.post.comments.length < 1) &&
-                    <IonCol size={"12"}>
+                    (Array.isArray(props.post.comments) && props.post.comments.length > 1) &&
+                    <IonCol size={"12"} className={'ion-margin-vertical'}>
                         {
                             !seeComments ? 
                             <IonItem button detail onClick={() => setSeeComments(true)}>
@@ -271,6 +277,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                         <IonToolbar color={'primary'}>
                             <IonTitle className={"ion-text-center"} ><h1 className={'ion-text-wrap'}><b>{toCapitalizeCase(props.post.titulo)}</b></h1></IonTitle>
                             <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Categoria:</b> {getCatergoryName(props.post.categoria)}</IonTitle>
+                            <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Fecha de carga:</b> {dateToStr(props.post.fechacreacion || props.post.createdAt)}</IonTitle>
                         </IonToolbar>
                     </IonCol>
                 </IonRow>
@@ -355,8 +362,8 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                             <IonButton color={'success'} onClick={() => {if (props.post) postToXLSX([props.post])}} fill={'outline'}>
                                 Descargar Excel
                             </IonButton>
-                            <IonButton color={'danger'} disabled={true} fill={'outline'}>
-                                Descargar PDF
+                            <IonButton color={'danger'} onClick={() => window.print()} fill={'outline'}>
+                                Imprimir / Descargar PDF
                             </IonButton>
                         </IonButtons>
                     </IonCol>

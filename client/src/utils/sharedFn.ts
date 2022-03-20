@@ -25,6 +25,14 @@ export const getCatergoryName = (type: CATEGORIA) :string => {
     return label;
 }
 
+export const dateToStr = (date: Date) :string => {
+    if (!date) return 'Desconocida';
+    const aux = new Date(date);
+    if (!aux || !aux.getDate || !aux.getMonth || !aux.getFullYear ) return 'Desconocida';
+    return `${aux.getDay().toString().padStart(2,'0')} / ${aux.getMonth().toString().padStart(2,'0')} / ${aux.getFullYear()}`;
+}
+
+
 export const postToXLSX = async (posts: postVM[] | post[], onError?:() => void) => {
     if(posts.length === 0) {
         if(onError) return onError;
