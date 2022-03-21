@@ -1,9 +1,11 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { IonCol, IonContent, IonGrid, IonItem, IonPage, IonRow, IonText, IonTitle, IonImg, IonThumbnail, IonSlides, IonSlide } from '@ionic/react';
 import { Header } from '../components/Header';
+import { useHistory } from 'react-router';
 
 const Tab2: React.FC = () => {
     const { user } = useAuth0();
+    const history = useHistory();
 
     const getImagesList = () => {
         const imageNumber = 17;
@@ -207,7 +209,7 @@ const Tab2: React.FC = () => {
             bg: backgroundColor === 'primary' ? 'background-color-primary' : null
         }
         return (
-            <IonRow className={`${color.bg} ion-margin-vertical`} >
+            <IonRow className={`${color.bg} ion-margin-vertical`} id={'ayuda'}>
                 <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                     <IonItem color={color.item} lines={'inset'}>
                         <IonTitle color={color.text}><b>¿Cómo Participar?</b></IonTitle>
@@ -290,7 +292,7 @@ const Tab2: React.FC = () => {
     }
     return (
         <IonPage>
-            <Header login={{ includeLogin: true, user: user }} />
+            <Header login={{ includeLogin: true, user: user }} buttons={[{title: "Ayuda", onClick: () => {document.getElementById("ayuda")?.scrollIntoView(true)}}, {title: "Añadir punto", onClick: () => history.push('/mapa')}]}/>
             <IonContent color="light">
                 <IonGrid className={'ion-no-margin ion-no-padding'}>
                     {queEsHumedalesDigitales()}

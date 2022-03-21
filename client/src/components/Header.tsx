@@ -8,7 +8,12 @@ interface headerInterface {
     login?: {
         includeLogin: boolean,
         user: User | undefined
-    }
+    },
+    buttons?:{
+        title: string,
+        onClick: () => void,
+        color?: string
+    }[]
 }
 
 export const Header: React.FC<headerInterface> = (props: headerInterface) => {
@@ -51,6 +56,14 @@ export const Header: React.FC<headerInterface> = (props: headerInterface) => {
                     </IonCol>
                     <IonCol sizeMd="3"sizeSm="12" sizeXs="12" className={'ion-justify-content-center ion-text-center ion-align-items-center'}>
                         <IonButtons className={'ion-justify-content-center ion-text-center ion-align-items-center'}>
+                        {
+                            props?.buttons && props.buttons.length > 0 &&
+                            props.buttons.map((item) => 
+                                <IonButton fill={"solid"} color={item?.color || 'secondary'} onClick={() => item.onClick && item.onClick()}>
+                                    {item.title || 'Error'}
+                                </IonButton>
+                            )
+                        }
                         {   
                             showLogIn === true ? 
                             getLogInButton(user)
