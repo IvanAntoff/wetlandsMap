@@ -88,7 +88,7 @@ const App: React.FC = () => {
             <Home />
           </Route>
         </IonRouterOutlet>
-        <IonTabBar slot="bottom" color={'primary'} style={{overflowX: 'auto'}}>
+        <IonTabBar slot="bottom" color={'primary'} style={{overflowX: 'auto'}} id={'tabs'}>
           <IonTabButton tab="Home" href="/home">
             <IonIcon icon={home} />
             <IonLabel>Inicio</IonLabel>

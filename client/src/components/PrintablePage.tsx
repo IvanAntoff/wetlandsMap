@@ -4,6 +4,7 @@ import { axiosInstance } from "../axiosConf"
 import { postVM } from "../interfaces/posts.interface"
 import { PostReader } from "./PostReader"
 import { useHistory } from "react-router-dom";
+import { scale } from "ionicons/icons"
 
 interface PrintablePagePost {
     postId: string
@@ -23,7 +24,12 @@ export const PrintablePage: React.FC<PrintablePagePost> = (props: PrintablePageP
                 return setTimeout(() => history.goBack(), 1000);
             }
             setPost(res.data[0]);
-            setTimeout(() => window.print(), 1000);
+            setTimeout(() => {
+                const tabs = document.getElementById('tabs')
+                if (tabs) tabs.style.display = 'none';
+                window.print();
+                if (tabs) tabs.style.display = 'flex';
+            }, 1000);
         })
         .catch(() => {
             setText('Error vuelva a intentarlo mas tarde.');
