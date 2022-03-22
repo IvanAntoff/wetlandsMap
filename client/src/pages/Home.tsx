@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { IonCol, IonContent, IonGrid, IonItem, IonPage, IonRow, IonText, IonTitle, IonImg, IonThumbnail, IonSlides, IonSlide } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonItem, IonPage, IonRow, IonText, IonTitle, IonImg, IonThumbnail, IonSlides, IonSlide, IonLabel } from '@ionic/react';
 import { Header } from '../components/Header';
 import { useHistory } from 'react-router';
 
@@ -279,10 +279,10 @@ const Tab2: React.FC = () => {
                     <IonItem lines={'none'} className={'ion-margin-horizontal'} color={color.item}>
                         <IonText color={color.text}>
                             <ul>
-                                <li><b>Nuestra web: </b><a href={'https://laboratorioibga.webnode.com/'} target={'_blank'}>laboratorioibga.webnode.com</a></li>
-                                <li><b>Nuestro Facebook: </b><a href={'https://www.facebook.com/IBGA01/'} target={'_blank'}>@IBGA01</a></li>
-                                <li><b>Nuestro Instagram: </b><a href={'https://www.instagram.com/laboratorio.ibga/'} target={'_blank'}>@laboratorio.ibga</a></li>
-                                <li><b>Nuestro Correo: </b><a href={'mailto: fcyt_laboratorioibga@uader.edu.ar'} target={'_blank'}>fcyt_laboratorioibga@uader.edu.ar</a></li>
+                                <li><b>Nuestra web: </b><a href={'https://laboratorioibga.webnode.com/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>laboratorioibga.webnode.com</a></li>
+                                <li><b>Nuestro Facebook: </b><a href={'https://www.facebook.com/IBGA01/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>@IBGA01</a></li>
+                                <li><b>Nuestro Instagram: </b><a href={'https://www.instagram.com/laboratorio.ibga/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>@laboratorio.ibga</a></li>
+                                <li><b>Nuestro Correo: </b><a href={'mailto: fcyt_laboratorioibga@uader.edu.ar'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>fcyt_laboratorioibga@uader.edu.ar</a></li>
                             </ul>
                         </IonText>
                     </IonItem>
@@ -290,6 +290,66 @@ const Tab2: React.FC = () => {
             </IonRow>
         )
     }
+
+    const publicaciones = (backgroundColor: 'none' | 'primary') => {
+        const color = {
+            item: backgroundColor === 'primary' ? 'primary' : 'transparent',
+            text: backgroundColor === 'primary' ? 'light' : 'primary',
+            bg: backgroundColor === 'primary' ? 'background-color-primary' : null
+        }
+        return (
+            <IonRow className={`ion-align-items-center ion-margin-vertical ${color.bg}`}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
+                    <IonItem color={color.item} lines={'inset'}>
+                        <IonTitle color={color.text}><b>Agradecimientos</b></IonTitle>
+                    </IonItem>
+                    <IonItem color={color.item} className={'ion-margin-horizontal'} lines={'none'}>
+                        <IonText color={color.text}>
+                            <h6>Agradecemos especialmente a la <b>Fundación Banco de Entre Ríos</b> por financiar este proyecto, mediante el <b>Programa Iniciativas Sustentables 2020</b>.</h6>
+                        </IonText>
+                    </IonItem>
+                </IonCol>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-justify-content-center ion-align-items-center ion-margin-vertical'}>
+                    <IonItem color={color.item} lines={'none'}>
+                        <IonImg src="/assets/imgs/home/logo_fbersa.png" />
+                    </IonItem>
+                </IonCol>
+            </IonRow>
+        )
+    }
+
+    const videos = (backgroundColor: 'none' | 'primary') => {
+        const color = {
+            item: backgroundColor === 'primary' ? 'primary' : 'transparent',
+            text: backgroundColor === 'primary' ? 'light' : 'primary',
+            bg: backgroundColor === 'primary' ? 'background-color-primary' : null
+        }
+        return (
+            <IonRow className={`ion-align-items-center ion-justify-content-evenly ion-margin-vertical ${color.bg}`}>
+                <IonCol sizeMd={"12"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
+                    <IonItem color={color.item} className={'ion-margin-horizontal'} lines={'none'}>
+                        <IonLabel color={color.text} className={'ion-justify-content-center ion-text-center'}>
+                            <b>Video Humedales Digitales</b>
+                        </IonLabel>
+                    </IonItem>
+                </IonCol>
+                <IonCol sizeMd={"3"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
+                    <IonItem color={color.item} lines={'inset'}>
+                        <iframe  height={400} src="https://www.youtube.com/embed/k7OQygXN_FU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                    </IonItem>
+                </IonCol>
+                <IonCol sizeMd={"3"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
+                    <IonItem color={color.item} lines={'inset'}>
+                    <iframe height="400" src="https://www.youtube.com/embed/7FSB0JOC2H4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ></iframe>                    </IonItem>
+                </IonCol>
+                <IonCol sizeMd={"3"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
+                    <IonItem color={color.item} lines={'inset'}>
+                    <iframe height="400" src="https://www.youtube.com/embed/BWKqmzk9LBw" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>                    </IonItem>
+                </IonCol>
+            </IonRow>
+        )
+    }
+
     return (
         <IonPage>
             <Header login={{ includeLogin: true, user: user }} buttons={[{title: "Ayuda", onClick: () => {document.getElementById("ayuda")?.scrollIntoView(true)}}, {title: "Añadir punto", onClick: () => history.push('/mapa')}]}/>
@@ -298,11 +358,13 @@ const Tab2: React.FC = () => {
                     {queEsHumedalesDigitales()}
                     {getImagesList()}
                     {quienesSomos('none')}
-                    {conoceMas('primary')}
-                    {comoParticipar('none')}
-                    {instituciones('primary')}
-                    {agradecimientos('none')}
-                    {socialMedia('primary')}
+                    {videos('primary')}
+                    {/* {publicaciones('none')} */}
+                    {conoceMas('none')}
+                    {comoParticipar('primary')}
+                    {instituciones('none')}
+                    {agradecimientos('primary')}
+                    {socialMedia('none')}
                 </IonGrid>
             </IonContent>
         </IonPage>

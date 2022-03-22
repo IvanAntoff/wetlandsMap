@@ -11,7 +11,7 @@ import CommentCard from "./CommentCard";
 
 interface PostReader {
     post: postVM,
-    mode: 'complete' | 'public'
+    mode: 'complete' | 'public' | 'print'
 }
 
 export const PostReader: React.FC<PostReader> = (props: PostReader) => {
@@ -46,6 +46,59 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
         if (resp && resp.status === 201) {
             setComment('');
         }
+    }
+
+    const getHeader = () => {
+        return (
+            <>
+                <IonRow>
+                    <IonCol size={"12"}>
+                        <IonToolbar color={'primary'}>
+                            <IonTitle className={"ion-text-center"} ><h1 className={'ion-text-wrap'}><b>{toCapitalizeCase(props.post.titulo)}</b></h1></IonTitle>
+                            <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Categoria:</b> {getCatergoryName(props.post.categoria)}</IonTitle>
+                            <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Fecha de carga:</b> {dateToStr(props.post.fechacreacion || props.post.createdAt)}</IonTitle>
+                        </IonToolbar>
+                    </IonCol>
+                </IonRow>
+                <IonRow>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Informacion general</b></h2></IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
+                        <IonItem lines={"none"}>
+                            <IonLabel  className="ion-text-wrap"><b>Tipo:</b> {toCapitalizeCase(props.post?.categoria) || 'Desconocido'}</IonLabel>
+                        </IonItem>
+                        <IonItem lines={"none"}>
+                            <IonLabel  className="ion-text-wrap"><b>Origen:</b> {toCapitalizeCase(props.post?.origen) || 'Desconocido'}</IonLabel>
+                        </IonItem>
+                    </IonCol>
+                    <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
+                        <IonItem lines={"none"}>
+                            <IonLabel  className="ion-text-wrap"><b>Depto:</b> {toCapitalizeCase(props.post?.departamento) || 'Desconocido'}</IonLabel>
+                        </IonItem>
+                        <IonItem lines={"none"}>
+                            <IonLabel  className="ion-text-wrap"><b>Zona:</b> {toCapitalizeCase(props.post?.zona) || 'Desconocida'}</IonLabel>
+                        </IonItem>
+                    </IonCol>
+                    <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
+                        <IonItem lines={"none"}>
+                            <IonLabel  className="ion-text-wrap"><b>Lat:</b> {props.post?.coordenadas?.latitude || 'Desconocida'}</IonLabel>
+                        </IonItem>
+                        <IonItem lines={"none"}>
+                            <IonLabel  className="ion-text-wrap"><b>Lon:</b> {props.post?.coordenadas?.longitude || 'Desconocida'}</IonLabel>
+                        </IonItem>
+                    </IonCol>
+                </IonRow>
+                <IonRow className={'ion-margin-vertical'}>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Descripcion</b></h2></IonLabel></IonItem>
+                    </IonCol>
+                    <IonCol size={"12"} className={'ion-padding'}>
+                        <IonText className={'ion-padding ion-margin-vertical'} >{props?.post?.descripcion|| 'La publicacion no incluye descripcion.'}</IonText>
+                    </IonCol>
+                </IonRow>
+            </>
+        )
     }
 
     const getData = () => {
@@ -271,106 +324,75 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
     };
 
     return(
-            <IonGrid className={"scroll"} fixed>
-                <IonRow>
-                    <IonCol size={"12"}>
-                        <IonToolbar color={'primary'}>
-                            <IonTitle className={"ion-text-center"} ><h1 className={'ion-text-wrap'}><b>{toCapitalizeCase(props.post.titulo)}</b></h1></IonTitle>
-                            <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Categoria:</b> {getCatergoryName(props.post.categoria)}</IonTitle>
-                            <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Fecha de carga:</b> {dateToStr(props.post.fechacreacion || props.post.createdAt)}</IonTitle>
-                        </IonToolbar>
-                    </IonCol>
-                </IonRow>
-                <IonRow>
-                    <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Informacion general</b></h2></IonLabel></IonItem>
-                    </IonCol>
-                    <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
-                        <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Tipo:</b> {toCapitalizeCase(props.post?.categoria) || 'Desconocido'}</IonLabel>
-                        </IonItem>
-                        <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Origen:</b> {toCapitalizeCase(props.post?.origen) || 'Desconocido'}</IonLabel>
-                        </IonItem>
-                    </IonCol>
-                    <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
-                        <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Depto:</b> {toCapitalizeCase(props.post?.departamento) || 'Desconocido'}</IonLabel>
-                        </IonItem>
-                        <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Zona:</b> {toCapitalizeCase(props.post?.zona) || 'Desconocida'}</IonLabel>
-                        </IonItem>
-                    </IonCol>
-                    <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
-                        <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Lat:</b> {props.post?.coordenadas?.latitude || 'Desconocida'}</IonLabel>
-                        </IonItem>
-                        <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Lon:</b> {props.post?.coordenadas?.longitude || 'Desconocida'}</IonLabel>
-                        </IonItem>
-                    </IonCol>
-                </IonRow>
-                <IonRow className={'ion-margin-vertical'}>
-                    <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Descripcion</b></h2></IonLabel></IonItem>
-                    </IonCol>
-                    <IonCol size={"12"} className={'ion-padding'}>
-                        <IonText className={'ion-padding ion-margin-vertical'} >{props?.post?.descripcion|| 'La publicacion no incluye descripcion.'}</IonText>
-                    </IonCol>
-                </IonRow>
-                {
-                    props.post.datos ?
-                    getData()
-                    : null
-                }
-                {
-                    Array.isArray(props?.post?.files) && props.post.files.length > 0 ?
-                    getFiles()
-                    :null
-                }
-                <IonRow className={'ion-margin-vertical'}>
-                    <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Compartir</b></h2></IonLabel></IonItem>
-                    </IonCol>
-                    <IonCol size={"12"} className={'ion-padding'}>
-                        <IonButtons className={'ion-justify-content-evenly'}>
-                            <IonButton color={"primary"} fill={"outline"}  href={`https://facebook.com/sharer/sharer.php?u=${window.location.origin}/mapa/${props.post._id}`}  target="_blank" rel="noopener">
-                                Facebook&nbsp;
-                                <IonIcon icon={logoFacebook} ></IonIcon>
-                            </IonButton>
-                            <IonButton color={"secondary"} fill={"outline"}  href={`https://twitter.com/intent/tweet/?text=Publicacion:%20${reduceText(props.post.titulo, 100)}%20en%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
-                                Twitter&nbsp;
-                                <IonIcon icon={logoTwitter} ></IonIcon>
-                            </IonButton>
-                            <IonButton color={"success"} fill={"outline"}  href={`https://wa.me/?text=Publicacion:%20${reduceText(props.post.titulo, 100)}%20Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
-                                Whatsapp&nbsp;
-                                <IonIcon icon={logoWhatsapp} ></IonIcon>
-                            </IonButton>
-                            <IonButton color={"medium"} fill={"outline"}  href={`mailto:?subject=Publicacion:%20${reduceText(props.post.titulo, 100)}&body=Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
-                                Mail&nbsp;
-                                <IonIcon icon={mailOpen} ></IonIcon>
-                            </IonButton>
-                        </IonButtons>
-                    </IonCol>
-                </IonRow>
-                <IonRow className={'ion-margin-vertical'}>
-                    <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Opciones</b></h2></IonLabel></IonItem>
-                    </IonCol>
-                    <IonCol size={"12"} className={'ion-padding'}>
-                        <IonButtons className={'ion-justify-content-evenly'}>
-                            <IonButton color={'success'} onClick={() => {if (props.post) postToXLSX([props.post])}} fill={'outline'}>
-                                Descargar Excel
-                            </IonButton>
-                            <IonButton color={'danger'} onClick={() => window.print()} fill={'outline'}>
-                                Imprimir / Descargar PDF
-                            </IonButton>
-                        </IonButtons>
-                    </IonCol>
-                </IonRow>
-                {
-                    getComments()
-                }
-            </IonGrid>
+        props.mode !== 'print' ?
+        <IonGrid className={"scroll"} fixed>
+            {
+                getHeader()
+            }
+            {
+                props.post.datos ?
+                getData()
+                : null
+            }
+            {
+                Array.isArray(props?.post?.files) && props.post.files.length > 0 ?
+                getFiles()
+                :null
+            }
+            <IonRow className={'ion-margin-vertical'}>
+                <IonCol size={"12"}>
+                    <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Compartir</b></h2></IonLabel></IonItem>
+                </IonCol>
+                <IonCol size={"12"} className={'ion-padding'}>
+                    <IonButtons className={'ion-justify-content-evenly'}>
+                        <IonButton color={"primary"} fill={"outline"}  href={`https://facebook.com/sharer/sharer.php?u=${window.location.origin}/mapa/${props.post._id}`}  target="_blank" rel="noopener">
+                            Facebook&nbsp;
+                            <IonIcon icon={logoFacebook} ></IonIcon>
+                        </IonButton>
+                        <IonButton color={"secondary"} fill={"outline"}  href={`https://twitter.com/intent/tweet/?text=Publicacion:%20${reduceText(props.post.titulo, 100)}%20en%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                            Twitter&nbsp;
+                            <IonIcon icon={logoTwitter} ></IonIcon>
+                        </IonButton>
+                        <IonButton color={"success"} fill={"outline"}  href={`https://wa.me/?text=Publicacion:%20${reduceText(props.post.titulo, 100)}%20Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                            Whatsapp&nbsp;
+                            <IonIcon icon={logoWhatsapp} ></IonIcon>
+                        </IonButton>
+                        <IonButton color={"medium"} fill={"outline"}  href={`mailto:?subject=Publicacion:%20${reduceText(props.post.titulo, 100)}&body=Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                            Mail&nbsp;
+                            <IonIcon icon={mailOpen} ></IonIcon>
+                        </IonButton>
+                    </IonButtons>
+                </IonCol>
+            </IonRow>
+            <IonRow className={'ion-margin-vertical'}>
+                <IonCol size={"12"}>
+                    <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Opciones</b></h2></IonLabel></IonItem>
+                </IonCol>
+                <IonCol size={"12"} className={'ion-padding'}>
+                    <IonButtons className={'ion-justify-content-evenly'}>
+                        <IonButton color={'success'} onClick={() => {if (props.post) postToXLSX([props.post])}} fill={'outline'}>
+                            Descargar Excel
+                        </IonButton>
+                        <IonButton color={'danger'} onClick={() => window.open(`${window.location.origin}/print/${props.post._id}`, '_blank') } fill={'outline'}>
+                            Imprimir / Descargar PDF
+                        </IonButton>
+                    </IonButtons>
+                </IonCol>
+            </IonRow>
+            {
+                getComments()
+            }
+        </IonGrid>
+        :
+        <IonGrid style={{width: '100%', height: '100%', overflow: 'visible'}}>
+            {
+                getHeader()
+            }
+            {
+                props.post.datos ?
+                getData()
+                : null
+            }
+        </IonGrid>
     )
 }

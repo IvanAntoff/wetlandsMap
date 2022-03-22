@@ -38,6 +38,7 @@ import { wetlandusers } from './apiKeys';
 import Reports from './pages/Reports';
 import ControlPosts from './pages/ControlPosts';
 import ControlComments from './pages/ControlComments';
+import { PrintablePage } from './components/PrintablePage';
 
 const App: React.FC = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -58,6 +59,11 @@ const App: React.FC = () => {
           <Route exact path="/mapa/:postid"
             render={(props) => {
               return props.match.params.postid ? <Map postid={props.match.params.postid} /> : <Map/>;
+            }}
+          />
+          <Route exact path="/print/:postid"
+            render={(props) => {
+              return <PrintablePage postId={props?.match?.params?.postid} />;
             }}
           />
           <Route exact path="/mapa">
