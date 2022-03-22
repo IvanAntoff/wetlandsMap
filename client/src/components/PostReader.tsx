@@ -384,7 +384,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
             }
         </IonGrid>
         :
-        <IonGrid style={{width: '100%', height: '100%', overflow: 'visible'}}>
+        <IonGrid style={{width: '100%', height: '100%', overflow: 'visible'}} id='toPrint'>
             {
                 getHeader()
             }

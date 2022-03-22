@@ -25,10 +25,16 @@ export const PrintablePage: React.FC<PrintablePagePost> = (props: PrintablePageP
             }
             setPost(res.data[0]);
             setTimeout(() => {
-                const tabs = document.getElementById('tabs')
+                const tabs = document.getElementById('tabs');
+                const toPrint = document.getElementById('toPrint');
                 if (tabs) tabs.style.display = 'none';
+                if (toPrint) toPrint.style.transform = 'scale(1,0.8)';
                 window.print();
                 if (tabs) tabs.style.display = 'flex';
+                if (toPrint) {
+                    toPrint.style.transform = 'scale(1,1)';
+                    toPrint.style.overflow = 'scroll';
+                };
             }, 1000);
         })
         .catch(() => {
