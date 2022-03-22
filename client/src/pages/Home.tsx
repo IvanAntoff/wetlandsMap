@@ -2,6 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { IonCol, IonContent, IonGrid, IonItem, IonPage, IonRow, IonText, IonTitle, IonImg, IonThumbnail, IonSlides, IonSlide, IonLabel } from '@ionic/react';
 import { Header } from '../components/Header';
 import { useHistory } from 'react-router';
+import { ImageModal } from '../components/ImageModal';
 
 const Tab2: React.FC = () => {
     const { user } = useAuth0();
@@ -22,18 +23,16 @@ const Tab2: React.FC = () => {
             speed: 30,
             threshold: 0,
             shortSwipes: true
-
+             
         }
         return (
-            <IonRow className={'background-color-primary ion-padding-vertical'}>
-                <IonCol size={'12'} className={'ion-justify-content-evenly'}>
+            <IonRow className={'background-color-primary ion-padding-vertical ion-justify-content-center'}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-justify-content-evenly'}>
                     <IonSlides pager={true} options={sliderOpts}>
                         {
                             files.map((file, i) =>
-                                <IonSlide className={'slider'} key={`IonSlide-${i}-name-${file}`}>
-                                    <IonItem color={'primary'} lines={'none'} className={'slider-item'}>
-                                        <IonImg src={`/assets/imgs/home/pictures/${file}.jpg`} key={`img-${file}`} />
-                                    </IonItem>
+                                <IonSlide key={`IonSlide-${i}-name-${file}`}>
+                                    <ImageModal src={`/assets/imgs/home/pictures/${file}.jpg`} key={`img-${file}`} />
                                 </IonSlide>
                             )
                         }

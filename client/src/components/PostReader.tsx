@@ -4,7 +4,7 @@ import { logoFacebook, logoTwitter, logoWhatsapp, mailOpen } from "ionicons/icon
 import { useRef, useState } from "react";
 import { POSTS_URL } from "../apiKeys";
 import { axiosInstance } from "../axiosConf";
-import { imgFiles } from "../enums/data";
+import { docFiles, imgFiles } from "../enums/data";
 import { CATEGORIA, postVM } from "../interfaces/posts.interface";
 import { booleanText, dateToStr, getCatergoryName, postToXLSX, reduceText, toCapitalizeCase } from "../utils/sharedFn";
 import CommentCard from "./CommentCard";
@@ -265,22 +265,40 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
     const getFiles = () => {
         if(!props.post || !props.post.files || !Array.isArray(props.post.files) || props.post?.files.length === 0) return null;
         const files = props.post.files.filter((item) => item.url)
-
+        files.sort((a, b) => {
+            if (imgFiles.includes(a.mimetype)) return 1
+            if (a.mimetype > b.mimetype) return 1;
+            if (a.mimetype < b.mimetype) return -1;
+            return 0;
+        });
         return (
             <IonRow className={'ion-margin-vertical'}>
                 <IonCol size={"12"}>
                     <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Archivos</b></h2></IonLabel></IonItem>
                 </IonCol>
-                <IonCol size={"12"} className={'ion-padding'}>
                     {
                         files.map((item,i) => {
-                            if(imgFiles.includes(item.mimetype)) {
-                                return <IonImg src={item.url} key={`ionImg-${item.filename}-${i}`}></IonImg>
+                            if (imgFiles.includes(item.mimetype)) return (
+                                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-padding'}>
+                                    <IonImg src={item.url} key={`ionImg-${item.filename}-${i}`}></IonImg>
+                                </IonCol>
+                            );
+                            if (docFiles.includes(item.mimetype)) {
+                                return (
+                                    <IonCol sizeMd={"4"} sizeSm={"4"} sizeXs={"4"} className={'ion-padding ion-justify-content-center ion-align-items-center ion-text-center'}>
+                                        <IonText>{item.name}</IonText>
+                                        {
+                                            item.mimetype.includes('pdf') ?
+                                            <IonImg src={"/assets/icon/pdf.png"} onClick={() => window.open(`${item.url}`, '_blank')} key={`pdf-${item.filename}-${i}`} style={{height: '64px'}} />
+                                            :
+                                            <IonImg src={"/assets/icon/doc.png"} onClick={() => window.open(`${item.url}`, '_blank')} key={`doc-${item.filename}-${i}`} style={{height: '64px'}} />
+                                        }
+                                    </IonCol>
+                                );
                             }
                             return null;
                         })
                     }
-                </IonCol>
             </IonRow>
         )
     } 

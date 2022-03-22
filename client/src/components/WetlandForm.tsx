@@ -7,7 +7,7 @@ import { POSTS_URL } from "../apiKeys";
 import { axiosInstance } from "../axiosConf";
 import { archivo, CATEGORIA, categorias, ESTADO, post } from "../interfaces/posts.interface";
 import { Enums } from "../interfaces/enum.interface";
-import { booleanEnums, imgFiles } from "../enums/data";
+import { booleanEnums, docFiles, imgFiles } from "../enums/data";
 
 interface wetlandFormProps{
     enums: Enums,
@@ -665,9 +665,9 @@ export const WetlandForm: React.FC<wetlandFormProps> = (props) => {
                             </IonSelect>
                         </IonItem> */}
                         <IonItem hidden={showIfStepIs(3)}>
-                            <IonLabel position={'stacked'} style={{width: '100%', maxWidth: '100%'}}>Imagenes/fotos:</IonLabel>
+                            <IonLabel position={'stacked'} style={{width: '100%', maxWidth: '100%'}}>Imagenes y/o documentos:</IonLabel>
                             <div style={{display: 'flex', width: '100%', padding: '10px'}}>
-                                <input type="file" multiple accept={`${imgFiles}`} disabled={disableFilesUpload} onChange={(e) => uploadFiles(e?.target?.files)} style={{display: 'flex'}}/>
+                                <input type="file" multiple accept={`${imgFiles}, ${docFiles}`} disabled={disableFilesUpload} onChange={(e) => uploadFiles(e?.target?.files)} style={{display: 'flex'}}/>
                             </div>
                         </IonItem>
                         { getOptionesByType() }
