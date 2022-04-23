@@ -1,8 +1,9 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { IonCol, IonContent, IonGrid, IonItem, IonPage, IonRow, IonText, IonTitle, IonImg, IonThumbnail, IonSlides, IonSlide, IonLabel } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonItem, IonPage, IonRow, IonText, IonTitle, IonImg, IonThumbnail, IonSlides, IonSlide, IonLabel, IonIcon } from '@ionic/react';
 import { Header } from '../components/Header';
 import { useHistory } from 'react-router';
 import { ImageModal } from '../components/ImageModal';
+import { logoChrome, logoFacebook, logoInstagram, mail } from 'ionicons/icons';
 
 const Tab2: React.FC = () => {
     const { user } = useAuth0();
@@ -87,8 +88,8 @@ const Tab2: React.FC = () => {
         }
         return (
             <IonRow className={`${color.bg} ion-margin-vertical`}>
-                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
-                    <IonItem color={color.item} lines={'none'}>
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'column ion-align-items-center ion-justify-content-center'}>
+                    <IonItem color={color.item} lines={'none'} className={'widthLogo'}>
                         <IonImg src="/assets/imgs/home/ibga-big.png" />
                     </IonItem>
                 </IonCol>
@@ -140,14 +141,14 @@ const Tab2: React.FC = () => {
                         </IonText>
                     </IonItem>
                 </IonCol>
-                <IonCol className={'ion-justify-content-center ion-align-items-center ion-margin-vertical'}>
-                    <IonItem color={color.item} lines={'none'} >
+                <IonCol className={'column ion-justify-content-evenly ion-align-items-center ion-margin-vertical'}>
+                    <IonItem color={color.item} lines={'none'} className={'widthLogo'}>
                         <IonImg src="/assets/imgs/home/logo_fcyt.png" />
                     </IonItem>
-                    <IonItem color={color.item} lines={'none'} >
+                    <IonItem color={color.item} lines={'none'} className={'widthLogo'}>
                         <IonImg src="/assets/imgs/home/ibga_y_ifdc.png" />
                     </IonItem>
-                    <IonItem color={color.item} lines={'none'} >
+                    <IonItem color={color.item} lines={'none'} className={'widthLogo'}>
                         <IonImg src="/assets/imgs/home/logo_fbersa.png" />
                     </IonItem>
                 </IonCol>
@@ -222,11 +223,11 @@ const Tab2: React.FC = () => {
                             <h6><b>Para mayor información sobre cómo utilizar este mapa digital interactivo, te recomendamos que consultes:</b></h6>
                             <ul>
                                 <li>
-                                    <b><a href="https://drive.google.com/drive/folders/1IWxJIhpnZBWw_wwFQbgSmzlUUcnFQHd3?usp=sharing">Manual de uso.</a></b>
+                                    <b><a href="https://drive.google.com/drive/folders/1IWxJIhpnZBWw_wwFQbgSmzlUUcnFQHd3?usp=sharing" target={'_blank'} style={{color: `var(--ion-color-${color.text})`}} >Manual de uso.</a></b>
                                 </li>
                                 <br />  
                                 <li>
-                                    <b><a href="https://drive.google.com/drive/folders/1IWxJIhpnZBWw_wwFQbgSmzlUUcnFQHd3?usp=sharing">Video tutorial.</a></b>
+                                    <b><a href="https://drive.google.com/drive/folders/1IWxJIhpnZBWw_wwFQbgSmzlUUcnFQHd3?usp=sharing" target={'_blank'} style={{color: `var(--ion-color-${color.text})`}} >Video tutorial.</a></b>
                                 </li>
                             </ul>
                         </IonText>
@@ -254,9 +255,9 @@ const Tab2: React.FC = () => {
                         </IonText>
                     </IonItem>
                 </IonCol>
-                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-justify-content-center ion-align-items-center ion-margin-vertical'}>
-                    <IonItem color={color.item} lines={'none'}>
-                        <IonImg src="/assets/imgs/home/logo_fbersa.png" />
+                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'column ion-justify-content-center ion-align-items-center ion-margin-vertical'}>
+                    <IonItem color={color.item} lines={'none'} className={'widthLogo'}>
+                        <IonImg src="/assets/imgs/home/logo_fbersa.png"/>
                     </IonItem>
                 </IonCol>
             </IonRow>
@@ -277,11 +278,11 @@ const Tab2: React.FC = () => {
                     </IonItem>
                     <IonItem lines={'none'} className={'ion-margin-horizontal'} color={color.item}>
                         <IonText color={color.text}>
-                            <ul>
-                                <li><b>Nuestra web: </b><a href={'https://laboratorioibga.webnode.com/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>laboratorioibga.webnode.com</a></li>
-                                <li><b>Nuestro Facebook: </b><a href={'https://www.facebook.com/IBGA01/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>@IBGA01</a></li>
-                                <li><b>Nuestro Instagram: </b><a href={'https://www.instagram.com/laboratorio.ibga/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>@laboratorio.ibga</a></li>
-                                <li><b>Nuestro Correo: </b><a href={'mailto: fcyt_laboratorioibga@uader.edu.ar'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>fcyt_laboratorioibga@uader.edu.ar</a></li>
+                            <ul style={{listStyleType: 'none'}}>
+                                <li><IonIcon icon={logoChrome}/><b>&nbsp;Nuestra web: </b><a href={'https://laboratorioibga.webnode.com/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>laboratorioibga.webnode.com</a></li>
+                                <li><IonIcon icon={logoFacebook}/><b>&nbsp;Nuestro Facebook: </b><a href={'https://www.facebook.com/IBGA01/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>@IBGA01</a></li>
+                                <li><IonIcon icon={logoInstagram}/><b>&nbsp;Nuestro Instagram: </b><a href={'https://www.instagram.com/laboratorio.ibga/'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>@laboratorio.ibga</a></li>
+                                <li><IonIcon icon={mail}/><b>&nbsp;Nuestro Correo: </b><a href={'mailto: fcyt_laboratorioibga@uader.edu.ar'} target={'_blank'} style={{color: `var(--ion-color-${color.text})`}}>fcyt_laboratorioibga@uader.edu.ar</a></li>
                             </ul>
                         </IonText>
                     </IonItem>
@@ -362,8 +363,8 @@ const Tab2: React.FC = () => {
                     {conoceMas('none')}
                     {comoParticipar('primary')}
                     {instituciones('none')}
-                    {agradecimientos('primary')}
-                    {socialMedia('none')}
+                    {socialMedia('primary')}
+                    {agradecimientos('none')}
                 </IonGrid>
             </IonContent>
         </IonPage>

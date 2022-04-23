@@ -73,3 +73,13 @@
     height: 100%;
     width: fit-content;
 }
+
+.widthLogo {
+    max-width: 30vw;
+    min-width: 370px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
