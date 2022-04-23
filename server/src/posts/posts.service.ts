@@ -15,7 +15,7 @@ export class PostsService {
         private commentsService: CommentsService
     ) {}
 
-    public normalizePosts(posts: post[], includeComments: boolean): Promise<postVM[]> {
+    public async normalizePosts(posts: post[], includeComments: boolean): Promise<postVM[]> {
         return new Promise(async (resolve, reject) => {
             if (!Array.isArray(posts)) return reject(new BadRequestException('Posts not includes.'));
             const enums = await this.enumsService.enumFindAll('todos');
@@ -93,12 +93,21 @@ export class PostsService {
         })
     }
     
-    public async findOne(id: string, normalize: boolean = true, includeComments: boolean): Promise<post> {
+    public async findOne(id: string, normalize: boolean = true, includeComments: boolean): Promise<post | postVM> {
         return new Promise(async (resolve, rejects) => {
-            if (!id) return rejects(new BadGatewayException('id or type not include'));
-            const response:post = await this.posts.findById(id);
-            if (!response) return rejects(new NotFoundException('Enum not found.'));
-            return resolve(normalize ? await this.normalizePosts([response], includeComments)[0] : response);
+            try {     
+                if (!id) return rejects(new BadGatewayException('id or type not include'));
+                let response:post | postVM= await this.posts.findById(id).lean();
+                if (!response) return rejects(new NotFoundException('Post not found.'));
+                if(normalize) {
+                    const aux: postVM[] = await (this.normalizePosts([response], includeComments));
+                    if(!aux || !Array.isArray(aux) || aux.length == 0) return rejects(new NotFoundException('Normalize post not found.'));
+                    response = aux[0]
+                }
+                return resolve(response);
+            } catch (error) {
+                return error
+            }
         });
     }
 

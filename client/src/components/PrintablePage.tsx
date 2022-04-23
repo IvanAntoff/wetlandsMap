@@ -4,7 +4,6 @@ import { axiosInstance } from "../axiosConf"
 import { postVM } from "../interfaces/posts.interface"
 import { PostReader } from "./PostReader"
 import { useHistory } from "react-router-dom";
-import { scale } from "ionicons/icons"
 
 interface PrintablePagePost {
     postId: string
@@ -16,14 +15,13 @@ export const PrintablePage: React.FC<PrintablePagePost> = (props: PrintablePageP
     const history = useHistory();
 
     useEffect(() => {
-        console.log(props.postId)
-        axiosInstance.get(`${POSTS_URL}/posts?id=${props.postId}&normalize=${true}`)
+        axiosInstance.get(`${POSTS_URL}/posts/${props.postId}?normalize=${true}&includecomments=${false}`)
         .then(res => {
-            if(!res || !Array.isArray(res?.data) || !res.data[0]) {
+            if(!res || !res.data) {
                 setText('La publicacion buscada no existe.');
                 return setTimeout(() => history.goBack(), 1000);
             }
-            setPost(res.data[0]);
+            setPost(res.data);
             setTimeout(() => {
                 const tabs = document.getElementById('tabs');
                 const toPrint = document.getElementById('toPrint');

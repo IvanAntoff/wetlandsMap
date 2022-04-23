@@ -391,7 +391,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                         <IonButton color={'success'} onClick={() => {if (props.post) postToXLSX([props.post])}} fill={'outline'}>
                             Descargar Excel
                         </IonButton>
-                        <IonButton color={'danger'} onClick={() => window.open(`${window.location.origin}/print/${props.post._id}`, '_blank') } fill={'outline'}>
+                        <IonButton color={'danger'} href={`${window.location.origin}/print/${props.post._id}`} fill={'outline'} target="_blank" rel="noopener">
                             Imprimir / Descargar PDF
                         </IonButton>
                     </IonButtons>
