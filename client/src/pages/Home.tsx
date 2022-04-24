@@ -4,6 +4,8 @@ import { Header } from '../components/Header';
 import { useHistory } from 'react-router';
 import { ImageModal } from '../components/ImageModal';
 import { logoChrome, logoFacebook, logoInstagram, mail } from 'ionicons/icons';
+import { News } from '../enums/data';
+import { NewsModal } from '../components/NewsModal';
 
 const Tab2: React.FC = () => {
     const { user } = useAuth0();
@@ -298,22 +300,21 @@ const Tab2: React.FC = () => {
             bg: backgroundColor === 'primary' ? 'background-color-primary' : null
         }
         return (
-            <IonRow className={`ion-align-items-center ion-margin-vertical ${color.bg}`}>
-                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
-                    <IonItem color={color.item} lines={'inset'}>
-                        <IonTitle color={color.text}><b>Agradecimientos</b></IonTitle>
-                    </IonItem>
+            <IonRow className={`ion-align-items-center ion-justify-content-evenly ion-margin-vertical ${color.bg}`}>
+                <IonCol sizeMd={"12"} sizeSm={"12"} sizeXs={"12"} className={'ion-margin-vertical'} >
                     <IonItem color={color.item} className={'ion-margin-horizontal'} lines={'none'}>
-                        <IonText color={color.text}>
-                            <h6>Agradecemos especialmente a la <b>Fundación Banco de Entre Ríos</b> por financiar este proyecto, mediante el <b>Programa Iniciativas Sustentables 2020</b>.</h6>
-                        </IonText>
+                        <IonLabel color={color.text} className={'ion-justify-content-center ion-text-center'}>
+                            <b>Noticias:</b>
+                        </IonLabel>
                     </IonItem>
                 </IonCol>
-                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-justify-content-center ion-align-items-center ion-margin-vertical'}>
-                    <IonItem color={color.item} lines={'none'}>
-                        <IonImg src="/assets/imgs/home/logo_fbersa.png" />
-                    </IonItem>
-                </IonCol>
+                {
+                    News.map((item, index) => 
+                    <IonCol sizeMd={"3"} sizeSm={"12"} sizeXs={"12"} key={`News-${item.title}-${index}`}>
+                        <NewsModal {...item}/>
+                    </IonCol>
+                    )
+                }
             </IonRow>
         )
     }
@@ -359,12 +360,12 @@ const Tab2: React.FC = () => {
                     {getImagesList()}
                     {quienesSomos('none')}
                     {videos('primary')}
-                    {/* {publicaciones('none')} */}
-                    {conoceMas('none')}
-                    {comoParticipar('primary')}
-                    {instituciones('none')}
-                    {socialMedia('primary')}
-                    {agradecimientos('none')}
+                    {publicaciones('none')}
+                    {conoceMas('primary')}
+                    {comoParticipar('none')}
+                    {instituciones('primary')}
+                    {socialMedia('none')}
+                    {agradecimientos('primary')}
                 </IonGrid>
             </IonContent>
         </IonPage>
