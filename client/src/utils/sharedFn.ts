@@ -48,12 +48,12 @@ export const postToXLSX = async (posts: postVM[] | post[], onError?:() => void) 
         investigaciones: [],
     }
     // XLSX Headers by type
-    const basicHeader = ['Departamento', 'Zona', 'Latitud', 'Logitud', 'Categoria', 'Tipo', 'Origen', 'Fecha de carga', 'Titulo', 'Descripcion'];
+    const basicHeader = ['Departamento', 'Zona', 'Latitud', 'Logitud', 'Categoría', 'Tipo', 'Origen', 'Fecha de carga', 'Título', 'Descripción'];
     const humedalesHeader = [ 'Historia', 'Color', 'Olor', 'Aledaños', 'Flora', 'Fauna', 'Margenes', 'Morfologia' ];
-    const amenazasHeader = ['Tipo', 'Origen', 'Fuente', 'Olor', 'Color', 'Materia flotando', 'Descripcion de la materia', 'Espuma', 'Algas', 'Analisis', 'Tipo analisis', 'Resultados de analisis', 'Informe tecnico', 'Estudio ambiental'];
+    const amenazasHeader = ['Tipo', 'Origen', 'Fuente', 'Olor', 'Color', 'Materia flotando', 'Descripción de la materia', 'Espuma', 'Algas', 'Analisis', 'Tipo analisis', 'Resultados de analisis', 'Informe tecnico', 'Estudio ambiental'];
     const iniciativasHeader = [ 'tipo', 'participantes', 'objetivo' ];
     const artesHeader = [ 'tipo', 'participantes' ];
-    const investigacionesHeader = [ 'participantes', 'estado', 'resultado', 'publicacion' ];
+    const investigacionesHeader = [ 'participantes', 'estado', 'resultado', 'publicación' ];
     data.humedales.push(basicHeader.concat(humedalesHeader));
     data.amenazas.push(basicHeader.concat(amenazasHeader));
     data.iniciativas.push(basicHeader.concat(iniciativasHeader));

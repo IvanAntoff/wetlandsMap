@@ -54,7 +54,7 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 							title: toCapitalizeCase(reduceText(post.titulo)),
 							description: toCapitalizeCase(reduceText(post?.descripcion)),
 							actions: [
-								{label: 'Ver publicacion', eventHandler: () => showPost(post)},
+								{label: 'Ver publicación', eventHandler: () => showPost(post)},
 							]
 						},
 						center: {latitude: parseFloat(post.coordenadas.latitude),longitude: parseFloat(post.coordenadas.longitude)},
@@ -89,7 +89,7 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 						description: reduceText(post.descripcion),
 						visible: false,
 						actions: [
-							{label: 'Ver publicacion', eventHandler: () => showPost(post)},
+							{label: 'Ver publicación', eventHandler: () => showPost(post)},
 						]
 					},
 					center: {latitude: parseFloat(post.coordenadas.latitude),longitude: parseFloat(post.coordenadas.longitude)},
@@ -128,7 +128,7 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 			const infoMarker = {
 				metadata: {
 					title: 'Iniciar carga',
-					description: `¿Desea cargar nueva informacion en este punto?`,
+					description: `¿Desea cargar nueva información  en este punto?`,
 					visible: true,
 					actions: [
 						{label: 'Confirmar', eventHandler: () => confirmLocation(value)},
@@ -245,7 +245,7 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 												post={post}
 												buttons={[
 													{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post._id)}, icon: 'pin'},
-													{label: 'Ver publicacion', onClick: ()=> showPost(post), icon: 'pin'}											
+													{label: 'Ver publicación', onClick: ()=> showPost(post), icon: 'pin'}											
 												]}
 											/>
 										)

@@ -166,7 +166,7 @@ const ControlPosts: React.FC = () => {
 											buttons={[
 												{label: 'Aprobar', color: 'success', onClick: () => updateState(item._id, ESTADO.pendiente, ESTADO.aprobado)},
 												{label: 'Rechazar', color: 'danger', onClick: () => updateState(item._id, ESTADO.pendiente, ESTADO.rechazado)},
-												{label: 'Ver publicacion', onClick: () => showPost(item)},
+												{label: 'Ver publicación', onClick: () => showPost(item)},
 											]}																			
 										/>
 									)
@@ -180,7 +180,7 @@ const ControlPosts: React.FC = () => {
 										index={i} post={item}
 										buttons={[
 											{label: 'Rechazar', color: 'danger', onClick: () => updateState(item._id, ESTADO.aprobado, ESTADO.rechazado)},
-											{label: 'Ver publicacion', onClick: () => showPost(item)},
+											{label: 'Ver publicación', onClick: () => showPost(item)},
 										]}																			
 									/>
 								)
@@ -194,7 +194,7 @@ const ControlPosts: React.FC = () => {
 											index={i} post={item}
 											buttons={[
 												{label: 'Aprobar', color: 'success', onClick: () => updateState(item._id, ESTADO.rechazado, ESTADO.aprobado)},
-												{label: 'Ver publicacion', onClick: () => showPost(item)},
+												{label: 'Ver publicación', onClick: () => showPost(item)},
 												{label: 'Eliminar', color: 'danger', onClick: () => showRemoveAlert(item._id)},
 											]}																			
 										/>

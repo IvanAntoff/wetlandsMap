@@ -18,7 +18,7 @@ export const PrintablePage: React.FC<PrintablePagePost> = (props: PrintablePageP
         axiosInstance.get(`${POSTS_URL}/posts/${props.postId}?normalize=${true}&includecomments=${false}`)
         .then(res => {
             if(!res || !res.data) {
-                setText('La publicacion buscada no existe.');
+                setText('La publicación buscada no existe.');
                 return setTimeout(() => history.goBack(), 1000);
             }
             setPost(res.data);

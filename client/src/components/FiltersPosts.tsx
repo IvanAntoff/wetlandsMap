@@ -4,7 +4,7 @@ import { axiosInstance } from "../axiosConf";
 import { keywordsItems } from "../enums/data";
 import { Enums } from "../interfaces/enum.interface";
 import { genericFilter } from "../interfaces/interfaces";
-import { categorias, post, postVM } from "../interfaces/posts.interface";
+import { categorias, postVM } from "../interfaces/posts.interface";
 import { GenericFilters } from "./GenericFilters";
 
 type FiltersPostsType = 'All' | 'Date' | 'Category' | 'Keywords';
@@ -38,8 +38,8 @@ export const FiltersPosts: React.FC<FiltersPostsProps> = (props: FiltersPostsPro
 
         const postFilters = [
             {
-                title: 'Tipo de publicacion',
-                placeholder: 'Seleccione una categoria',
+                title: 'Típo de publicación',
+                placeholder: 'Seleccione una categoría',
                 items: categorias,
                 multiple: true,
                 type: 'Category',
@@ -52,7 +52,7 @@ export const FiltersPosts: React.FC<FiltersPostsProps> = (props: FiltersPostsPro
                 type: 'Keyword'
             },
             {
-                title: 'Año de publicacion',
+                title: 'Año de publicación',
                 placeholder: 'Seleccione un año',
                 items: getDateItems(),
                 multiple: true,

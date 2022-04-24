@@ -41,7 +41,7 @@ const PostCard: React.FC<postCard> = (props: postCard) => {
                 <IonGrid className={"ion-no-padding"}>
                     <IonRow>
                         <IonCol className={"ion-no-padding"} size={props.check ? '11' : '12'}>
-                            <IonCardTitle>{toCapitalizeCase(props.post?.titulo) || 'Titulo no disponible.' }</IonCardTitle>
+                            <IonCardTitle>{toCapitalizeCase(props.post?.titulo) || 'Título no disponible.' }</IonCardTitle>
                             <IonCardSubtitle><b>Ubicacion:</b>&nbsp;{props?.post?.departamento || 'Desconocida'}</IonCardSubtitle>
                         </IonCol>
                         {
@@ -55,7 +55,7 @@ const PostCard: React.FC<postCard> = (props: postCard) => {
             </IonCardHeader>
             <IonCardContent >
                 <IonText>
-                    {reduceText(props.post?.descripcion) || 'Descripcion no disponible.'}
+                    {reduceText(props.post?.descripcion) || 'Descripción no disponible.'}
                 </IonText>
                 { props.buttons && props.buttons.length > 0 ? 
                     <IonItem lines={"none"} color={checked ? 'light' : ''}>

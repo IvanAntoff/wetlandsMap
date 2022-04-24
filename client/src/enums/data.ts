@@ -6,7 +6,7 @@ export const categorias = [
     {name: "Amenazas / impactos antrópicos o naturales", value: CATEGORIA.amenaza},
     {name: "Iniciativas sustentables", value: CATEGORIA.iniciativa},
     {name: "Expresiones artísticas", value: CATEGORIA.arte},
-    {name: "Proyectos de investigación", value: CATEGORIA.investigacion}
+    {name: "Proyectos de Investigación/Extensión", value: CATEGORIA.investigacion}
 ]
 
 // input files types

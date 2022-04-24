@@ -66,7 +66,7 @@ const Reports: React.FC = () => {
 	}
 
 	const generateReport = async () => {
-		if(!Array.isArray(checkedPosts?.current) || checkedPosts.current.length === 0) return showAlert('Debe seleccionar al menos una publicacion para generar reportes.', 'Error!', '');
+		if(!Array.isArray(checkedPosts?.current) || checkedPosts.current.length === 0) return showAlert('Debe seleccionar al menos una publicación para generar reportes.', 'Error!', '');
 		try {
 			const auxPosts: post[] = [];
 			checkedPosts.current.forEach(index => {
@@ -161,7 +161,7 @@ const Reports: React.FC = () => {
 										<PostCard key={`PostCard-content-index${i}'id'${item._id}`}
 											index={i} post={item}
 											buttons={[
-												{label: 'Ver publicacion', onClick: () => showPost(item)},
+												{label: 'Ver publicación', onClick: () => showPost(item)},
 											]}
 											check={{
 												onCheck: (post) => storePostIndex(post._id),

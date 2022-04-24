@@ -55,21 +55,21 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                     <IonCol size={"12"}>
                         <IonToolbar color={'primary'}>
                             <IonTitle className={"ion-text-center"} ><h1 className={'ion-text-wrap'}><b>{toCapitalizeCase(props.post.titulo)}</b></h1></IonTitle>
-                            <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Categoria:</b> {getCatergoryName(props.post.categoria)}</IonTitle>
+                            <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Categoría:</b> {getCatergoryName(props.post.categoria)}</IonTitle>
                             <IonTitle size={"small"} className={"ion-margin-bottom"}><b>Fecha de carga:</b> {dateToStr(props.post.fechacreacion || props.post.createdAt)}</IonTitle>
                         </IonToolbar>
                     </IonCol>
                 </IonRow>
                 <IonRow>
                     <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Informacion general</b></h2></IonLabel></IonItem>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Información general</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
                         <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Tipo:</b> {toCapitalizeCase(props.post?.categoria) || 'Desconocido'}</IonLabel>
+                            <IonLabel  className="ion-text-wrap"><b>Categoría:</b> {toCapitalizeCase(props.post?.categoria) || 'Desconocido'}</IonLabel>
                         </IonItem>
                         <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Origen:</b> {toCapitalizeCase(props.post?.origen) || 'Desconocido'}</IonLabel>
+                            <IonLabel  className="ion-text-wrap"><b>Tipo de humedal:</b> {toCapitalizeCase(props.post?.origen) || 'Desconocido'}</IonLabel>
                         </IonItem>
                     </IonCol>
                     <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
@@ -91,10 +91,10 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
                 <IonRow className={'ion-margin-vertical'}>
                     <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Descripcion</b></h2></IonLabel></IonItem>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Descripción</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"} className={'ion-padding'}>
-                        <IonText className={'ion-padding ion-margin-vertical'} >{props?.post?.descripcion|| 'La publicacion no incluye descripcion.'}</IonText>
+                        <IonText className={'ion-padding ion-margin-vertical'} >{props?.post?.descripcion|| 'La publicación no incluye descripción.'}</IonText>
                     </IonCol>
                 </IonRow>
             </>
@@ -108,7 +108,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
             return (
                 <IonRow>
                     <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Informacion adicional</b></h2></IonLabel></IonItem>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Información adicional</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><h2><b>Aspecto del agua</b></h2></IonLabel></IonItem>
@@ -142,7 +142,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
             return (
                 <IonRow>
                     <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Informacion adicional</b></h2></IonLabel></IonItem>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Información adicional</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Origen de la amenaza/impacto ambienta: </b>{data?.origen || 'Origen desconocido'}</IonLabel></IonItem>
@@ -151,7 +151,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Fuente de generación: </b>{data?.fuente || 'Desconocida'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Tipo de amenaza/impacto ambienta: </b>{data?.tipo || 'Desconocido'}</IonLabel></IonItem>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Típo de amenaza/impacto ambienta: </b>{data?.tipo || 'Desconocido'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><h2><b>Presencia de elementos flotantes</b></h2></IonLabel></IonItem>
@@ -166,8 +166,8 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Algas: </b>{booleanText(data?.algas) || 'Desconocido'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Descripcion de materia: </b></IonLabel></IonItem>
-                        <IonText>{data?.materiadescripcion || 'No posee descripcion'}</IonText>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Descripción de materia: </b></IonLabel></IonItem>
+                        <IonText>{data?.materiadescripcion || 'No posee descripción'}</IonText>
                     </IonCol>
                     <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Olor: </b>{booleanText(data?.olor) || 'Desconocido'}</IonLabel></IonItem>
@@ -179,7 +179,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Análisis de muestras de agua: </b>{booleanText(data?.analisis) || 'No incluye'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Tipo de análisis: </b>{data?.tipoanalises || 'Desconocido'}</IonLabel></IonItem>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Típo de análisis: </b>{data?.tipoanalises || 'Desconocido'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Resultados: </b>{data.resultadoanalises || 'Desconocido'}</IonLabel></IonItem>
@@ -198,10 +198,10 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
             return(
                 <IonRow>
                     <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Informacion adicional</b></h2></IonLabel></IonItem>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Información adicional</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Tipo de iniciativa sustentable: </b>{data?.tipo || 'Desconocida'}</IonLabel></IonItem>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Típo de iniciativa sustentable: </b>{data?.tipo || 'Desconocida'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Objetivo: </b>{data?.objetivo || 'Desconocido'}</IonLabel></IonItem>
@@ -220,10 +220,10 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
             return(
                 <IonRow>
                     <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Informacion adicional</b></h2></IonLabel></IonItem>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Información adicional</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Tipo de expresión artística: </b>{data?.tipo || 'Desconocida'}</IonLabel></IonItem>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Típo de expresión artística: </b>{data?.tipo || 'Desconocida'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Participantes: </b>{data?.participantes || 'Desconocida'}</IonLabel></IonItem>
@@ -236,7 +236,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
             return(
                 <IonRow>
                     <IonCol size={"12"}>
-                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Informacion adicional</b></h2></IonLabel></IonItem>
+                        <IonItem lines={"full"}  className={"ion-text-center"}  color={'primary'}><IonLabel  className="ion-text-wrap"><h2><b>Información adicional</b></h2></IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Instituciones participantes del proyecto: </b>{data?.participantes || 'Desconocido'}</IonLabel></IonItem>
@@ -245,10 +245,10 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                         <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Estado actual del proyecto: </b>{data?.estado || 'Desconocidos'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Tipo de resultados: </b>{data?.resultado || 'Desconocidos'}</IonLabel></IonItem>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Típo de resultados: </b>{data?.resultado || 'Desconocidos'}</IonLabel></IonItem>
                     </IonCol>
                     <IonCol size={"12"}>
-                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>Publicacion/comunicación de resultados: </b>{data?.publicacion || 'No indica'}</IonLabel></IonItem>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>publicación/comunicación de resultados: </b>{data?.publicacion || 'No indica'}</IonLabel></IonItem>
                     </IonCol>
                 </IonRow>
             )
@@ -367,15 +367,15 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                             Facebook&nbsp;
                             <IonIcon icon={logoFacebook} ></IonIcon>
                         </IonButton>
-                        <IonButton color={"secondary"} fill={"outline"}  href={`https://twitter.com/intent/tweet/?text=Publicacion:%20${reduceText(props.post.titulo, 100)}%20en%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                        <IonButton color={"secondary"} fill={"outline"}  href={`https://twitter.com/intent/tweet/?text=Publicación:%20${reduceText(props.post.titulo, 100)}%20en%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
                             Twitter&nbsp;
                             <IonIcon icon={logoTwitter} ></IonIcon>
                         </IonButton>
-                        <IonButton color={"success"} fill={"outline"}  href={`https://wa.me/?text=Publicacion:%20${reduceText(props.post.titulo, 100)}%20Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                        <IonButton color={"success"} fill={"outline"}  href={`https://wa.me/?text=Publicación:%20${reduceText(props.post.titulo, 100)}%20Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
                             Whatsapp&nbsp;
                             <IonIcon icon={logoWhatsapp} ></IonIcon>
                         </IonButton>
-                        <IonButton color={"medium"} fill={"outline"}  href={`mailto:?subject=Publicacion:%20${reduceText(props.post.titulo, 100)}&body=Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
+                        <IonButton color={"medium"} fill={"outline"}  href={`mailto:?subject=Publicación:%20${reduceText(props.post.titulo, 100)}&body=Visitala%20en:%20${window.location.origin}/mapa/${props.post._id}`} target="_blank" rel="noopener">
                             Mail&nbsp;
                             <IonIcon icon={mailOpen} ></IonIcon>
                         </IonButton>
