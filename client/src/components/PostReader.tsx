@@ -314,13 +314,13 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                     {
                         files.map((item,i) => {
                             if (imgFiles.includes(item.mimetype)) return (
-                                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-padding'}>
-                                    <IonImg src={item.url} key={`ionImg-${item.filename}-${i}`}></IonImg>
+                                <IonCol sizeMd={"6"} sizeSm={"12"} sizeXs={"12"} className={'ion-padding'} key={`ionImg-${item.filename}-${i}`}>
+                                    <IonImg src={item.url}></IonImg>
                                 </IonCol>
                             );
                             if (docFiles.includes(item.mimetype)) {
                                 return (
-                                    <IonCol sizeMd={"4"} sizeSm={"4"} sizeXs={"4"} className={'ion-padding ion-justify-content-center ion-align-items-center ion-text-center'}>
+                                    <IonCol sizeMd={"4"} sizeSm={"4"} sizeXs={"4"} className={'ion-padding ion-justify-content-center ion-align-items-center ion-text-center'} key={`file-${item.filename}-${i}`}>
                                         <IonText>{item.name}</IonText>
                                         {
                                             item.mimetype.includes('pdf') ?
