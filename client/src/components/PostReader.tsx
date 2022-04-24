@@ -41,7 +41,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
         }
         const resp =  await axiosInstance.post(`${POSTS_URL}/comments`, newComment)
         .catch((error) => {
-            console.log(error);
+            console.error(error);
         });
         if (resp && resp.status === 201) {
             setComment('');
@@ -103,7 +103,14 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
 
     const getData = () => {
         if (!props.post || !props.post.datos) return null;
-        if (props.post.categoria === CATEGORIA.humedal && props.post.datos?.humedal) {
+        if (props.post.categoria === CATEGORIA.humedal) {
+            if(!props.post.datos?.humedal) return (
+                <IonRow>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>No posee Información adicional</b></IonLabel></IonItem>
+                    </IonCol>
+                </IonRow>
+            )
             const data = props.post.datos.humedal;
             return (
                 <IonRow>
@@ -137,7 +144,14 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
-        if (props.post.categoria === CATEGORIA.amenaza && props.post.datos?.amenaza) {
+        if (props.post.categoria === CATEGORIA.amenaza) {
+            if(!props.post.datos?.amenaza) return (
+                <IonRow>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>No posee Información adicional</b></IonLabel></IonItem>
+                    </IonCol>
+                </IonRow>
+            )
             const data = props.post.datos.amenaza;
             return (
                 <IonRow>
@@ -193,7 +207,14 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
-        if (props.post.categoria === CATEGORIA.iniciativa && props.post.datos?.iniciativa) {
+        if (props.post.categoria === CATEGORIA.iniciativa) {
+            if(!props.post.datos?.iniciativa) return (
+                <IonRow>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>No posee Información adicional</b></IonLabel></IonItem>
+                    </IonCol>
+                </IonRow>
+            )
             const data = props.post.datos.iniciativa;
             return(
                 <IonRow>
@@ -215,7 +236,14 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
-        if (props.post.categoria === CATEGORIA.arte && props.post.datos?.arte) {
+        if (props.post.categoria === CATEGORIA.arte) {
+            if(!props.post.datos?.arte) return (
+                <IonRow>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>No posee Información adicional</b></IonLabel></IonItem>
+                    </IonCol>
+                </IonRow>
+            )
             const data = props.post.datos.arte;
             return(
                 <IonRow>
@@ -231,7 +259,14 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                 </IonRow>
             )
         }
-        if (props.post.categoria === CATEGORIA.investigacion && props.post.datos?.investigacion) {
+        if (props.post.categoria === CATEGORIA.investigacion) {
+            if(!props.post.datos?.investigacion) return (
+                <IonRow>
+                    <IonCol size={"12"}>
+                        <IonItem lines={"none"}><IonLabel  className="ion-text-wrap"><b>No posee Información adicional</b></IonLabel></IonItem>
+                    </IonCol>
+                </IonRow>
+            )
             const data = props.post.datos?.investigacion;
             return(
                 <IonRow>

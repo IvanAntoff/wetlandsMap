@@ -51,7 +51,7 @@ export const PostSchema = new Schema ({
             tipo: {type: String},
             participantes: {type: String}
         },
-        investigation: {
+        investigacion: {
             participantes: {type: String},
             estado: {type: String},
             resultado: {type: String},

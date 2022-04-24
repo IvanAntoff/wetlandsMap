@@ -9,7 +9,6 @@ interface ImageProps {
 
 export const ImageModal: React.FC<ImageProps> = (props: ImageProps) => {
     const [ bigPicture, setBigPicture ] = useState<boolean>(false);
-    console.log(props.src)
     return (
         !bigPicture ?
         <IonThumbnail onClick={() => setBigPicture(true)} style={{"--size": props?.size || '350px'}}>

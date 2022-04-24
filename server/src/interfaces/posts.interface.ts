@@ -23,7 +23,7 @@ export interface post {
         amenaza?: Amenaza,
         iniciativa?: Iniciativa,
         arte?: Arte,
-        investigation?: Investigacion
+        investigacion?: Investigacion
     }
     fechacreacion: Date;
 }

@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
-import { ESTADO, groupedPosts, post } from 'src/interfaces/posts.interface';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { CATEGORIA, ESTADO, groupedPosts, post } from 'src/interfaces/posts.interface';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -52,6 +52,11 @@ export class PostsController {
     @Post()
     public create(@Body() newPost: post): Promise<post> {
         try {
+            if(newPost.categoria === CATEGORIA.humedal) newPost.datos = newPost.datos.humedal ? {humedal: newPost.datos.humedal} : {}; 
+            if(newPost.categoria === CATEGORIA.amenaza) newPost.datos = newPost.datos.amenaza ? {amenaza: newPost.datos.amenaza} : {}; 
+            if(newPost.categoria === CATEGORIA.arte) newPost.datos = newPost.datos.arte ? {arte: newPost.datos.arte} : {}; 
+            if(newPost.categoria === CATEGORIA.iniciativa) newPost.datos = newPost.datos.iniciativa ? {iniciativa: newPost.datos.iniciativa} : {}; 
+            if(newPost.categoria === CATEGORIA.investigacion) newPost.datos = newPost.datos.investigacion ? {investigacion: newPost.datos.investigacion} : {}; 
             return this.postsService.create(newPost)
         }
         catch (error) {

@@ -58,12 +58,12 @@ export class PostsService {
                     participantes: enums.participantes.find((item) => item._id.toString() === post.datos.iniciativa.participantes)?.name || 'Desconocido',
                     tipo: enums.tipoiniciativas.find((item) => item._id.toString() === post.datos.iniciativa.participantes)?.name || 'Desconocido',
                 }
-                else if(post.categoria === CATEGORIA.investigacion && post.datos?.investigation) post.datos.investigation = {
-                    ...post.datos.investigation,
-                    participantes: enums.participantes.find((item) => item._id.toString() === post.datos.investigation.participantes)?.name || 'Desconocido',
-                    estado: post.datos.investigation?.estado ? enums.estadoinvestigaciones.find((item) => item._id.toString() === post.datos.investigation.estado)?.name || 'Desconocido' : null,
-                    publicacion: post.datos.investigation?.publicacion ? enums.publicaciones.find((item) => item._id.toString() === post.datos.investigation.publicacion)?.name || 'Desconocido' : null,
-                    resultado: post.datos.investigation?.resultado ? enums.resultadoinvestigaciones.find((item) => item._id.toString() === post.datos.investigation.resultado)?.name || 'Desconocido' : null,
+                else if(post.categoria === CATEGORIA.investigacion && post.datos?.investigacion) post.datos.investigacion = {
+                    ...post.datos.investigacion,
+                    participantes: enums.participantes.find((item) => item._id.toString() === post.datos.investigacion.participantes)?.name || 'Desconocido',
+                    estado: post.datos.investigacion?.estado ? enums.estadoinvestigaciones.find((item) => item._id.toString() === post.datos.investigacion.estado)?.name || 'Desconocido' : null,
+                    publicacion: post.datos.investigacion?.publicacion ? enums.publicaciones.find((item) => item._id.toString() === post.datos.investigacion.publicacion)?.name || 'Desconocido' : null,
+                    resultado: post.datos.investigacion?.resultado ? enums.resultadoinvestigaciones.find((item) => item._id.toString() === post.datos.investigacion.resultado)?.name || 'Desconocido' : null,
                 }
                 if(Array.isArray(post.files) && post.files.length > 0) {
                     const files: archivoVM[] = [];
