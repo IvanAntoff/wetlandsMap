@@ -1,8 +1,19 @@
 .infobox-actions {
     height: max-content !important;
-    min-height: 30px !important;
+    min-height: max-content !important;
 }
 
+.infobox-body {
+    max-height: 350px !important;
+    max-width: 300px !important;
+    min-height: 150px !important;
+}
+
+.infobox-info {
+    max-height: 350px !important;
+    max-width: 300px !important;
+    min-height: 100px !important;
+}
 #missingCredential {
     display: flex !important;
     margin-top: calc(25%) !important;
