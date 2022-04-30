@@ -95,7 +95,7 @@ export default function BingMapsReact({
           }
         }
         newPin.metadata = pushPin.metadata;
-        if (pushPin.metadata.visible === true) {
+        if (pushPin?.metadata) {
           infoboxHandler.current.setOptions({
             location: pushPin.center,
             title: pushPin.metadata.title,
@@ -103,7 +103,7 @@ export default function BingMapsReact({
             actions: actions,
             showPointer: true,
             showCloseButton: true,
-            visible: true,
+            visible: pushPin.metadata.visible ? pushPin.metadata.visible : false,
           });
         }
         Maps.Events.addHandler(newPin, "mouseover", (e) => {

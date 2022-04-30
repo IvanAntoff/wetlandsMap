@@ -87,7 +87,6 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 					metadata: {
 						title: toCapitalizeCase(reduceText(post.titulo, 50)),
 						description: reduceText(post.descripcion),
-						visible: false,
 						actions: [
 							{label: 'Ver publicación', eventHandler: () => showPost(post)},
 						]
@@ -110,11 +109,11 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 		setShowPostModal(false);
 	}
 
-	const getPostPosition = (id:string) => {
+	const getPostPosition = (id:string, zoom: number = 10) => {
 		const mapPosition = postsData.find((post) => post._id === (id));
 		if (mapPosition) {
 			setMapCenter({latitude: parseFloat(mapPosition.coordenadas.latitude), longitude: parseFloat(mapPosition.coordenadas.longitude)})
-			setZoom(10)
+			setZoom(zoom)
 		}
 	}
 
@@ -233,7 +232,7 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 				<IonGrid className={'fullHeight'}>
 					<IonRow className={'fullHeight'}>
 						{	colsSize.postCol !== '0' ?
-							<IonCol sizeMd={colsSize.postCol} sizeSm={"12"} sizeXs={"12"} className={'scroll'}>
+							<IonCol sizeMd={colsSize.postCol} sizeSm={"12"} sizeXs={"12"} className={'scroll fullHeight'}>
 								<FiltersPosts active={['Category', 'Keywords']} getAppliedFilters={(filters) => setAppliedFilters(filters)}/>
 								{
 									postsData.length > 0 ? 
@@ -244,7 +243,7 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 												index={index}
 												post={post}
 												buttons={[
-													{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post._id)}, icon: 'pin'},
+													{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post._id, 15)}, icon: 'pin'},
 													{label: 'Ver publicación', onClick: ()=> showPost(post), icon: 'pin'}											
 												]}
 											/>
