@@ -10,3 +10,7 @@
     "_id" : ObjectId("6237b3ff8cb2d05c7dbb8238"),
     "name" : "Desconocido"
 }
+{
+    "_id" : ObjectId("62f0269f8cb2d05c7dd0319d"),
+    "name" : "Mixto (Natural/Artificial)"
+}

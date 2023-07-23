@@ -83,35 +83,16 @@ export default function BingMapsReact({
     (pushPinsToAdd, map, Maps) => {
       removePushpins(map, Maps);
       pushPinsToAdd.forEach((pushPin) => {
-        if (pushPin === null) {
-          return;
-        }
+        if (pushPin === null) return;
         const newPin = new Maps.Pushpin(pushPin.center, pushPin.options);
-        let actions = [];
-        if (pushPin.metadata && pushPin.metadata.actions && Array.isArray(pushPin.metadata.actions)){
-          for (let i = 0; i < pushPin.metadata.actions.length; i++) {
-            const action = pushPin.metadata.actions[i];
-            if (action.label && action.eventHandler) actions.push(action)
-          }
-        }
         newPin.metadata = pushPin.metadata;
-        if (pushPin?.metadata) {
-          infoboxHandler.current.setOptions({
-            location: pushPin.center,
-            title: pushPin.metadata.title,
-            description: pushPin.metadata.description,
-            actions: actions,
-            showPointer: true,
-            showCloseButton: true,
-            visible: pushPin.metadata.visible ? pushPin.metadata.visible : false,
-          });
-        }
         Maps.Events.addHandler(newPin, "mouseover", (e) => {
           infoboxHandler.current.setOptions({
             location: e.target.getLocation(),
             title: e.target.metadata.title,
             description: e.target.metadata.description,
             visible: true,
+            actions: Array.isArray(e.target.metadata?.actions) ? e.target.metadata.actions : undefined 
           });
         });
         Maps.Events.addHandler(newPin, "mouseout", (e) => {

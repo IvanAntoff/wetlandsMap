@@ -110,11 +110,13 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 	}
 
 	const getPostPosition = (id:string, zoom: number = 10) => {
+		if (!id) return;
 		const mapPosition = postsData.find((post) => post._id === (id));
-		if (mapPosition) {
-			setMapCenter({latitude: parseFloat(mapPosition.coordenadas.latitude), longitude: parseFloat(mapPosition.coordenadas.longitude)})
-			setZoom(zoom)
-		}
+		if (!mapPosition) return; 
+		const latitude = parseFloat(mapPosition.coordenadas.latitude);
+		const longitude = parseFloat(mapPosition.coordenadas.longitude);
+		setMapCenter({ latitude, longitude })
+		setZoom(zoom)
 	}
 
 	const getClickedLocation = (value: bingMapPosition) => {
@@ -243,7 +245,7 @@ const Map: React.FC<mapProps>= (props: mapProps) => {
 												index={index}
 												post={post}
 												buttons={[
-													{label: 'Ver en el mapa', onClick: ()=> {getPostPosition(post._id, 15)}, icon: 'pin'},
+													{label: 'Ver en el mapa', onClick: ()=> getPostPosition(post._id, 15), icon: 'pin'},
 													{label: 'Ver publicación', onClick: ()=> showPost(post), icon: 'pin'}											
 												]}
 											/>

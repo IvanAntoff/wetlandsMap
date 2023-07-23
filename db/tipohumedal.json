@@ -19,6 +19,10 @@
     "name" : "Arroyo"
 }
 {
+    "_id" : ObjectId("62f02719846e75b021c071e8"),
+    "name" : "Otro"
+}
+{
     "_id" : ObjectId("61d175def079daaf42059962"),
     "name" : "Desconocido"
 }

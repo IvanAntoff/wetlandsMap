@@ -69,7 +69,7 @@ export const PostReader: React.FC<PostReader> = (props: PostReader) => {
                             <IonLabel  className="ion-text-wrap"><b>Categoría:</b> {toCapitalizeCase(props.post?.categoria) || 'Desconocido'}</IonLabel>
                         </IonItem>
                         <IonItem lines={"none"}>
-                            <IonLabel  className="ion-text-wrap"><b>Tipo de humedal:</b> {toCapitalizeCase(props.post?.origen) || 'Desconocido'}</IonLabel>
+                            <IonLabel  className="ion-text-wrap"><b>Típo de humedal:</b> {toCapitalizeCase(props.post?.origen) || 'Desconocido'}</IonLabel>
                         </IonItem>
                     </IonCol>
                     <IonCol sizeMd={"4"} sizeSm={"12"} sizeXs={"12"}>
